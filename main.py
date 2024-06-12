@@ -11,7 +11,7 @@ def main():
         todayEnums = enumsToday.getEnumsToday(today)
         print(todayEnums)
         while inserir:  
-            finura = int((input("Finura: ")))
+            finura = str((input("Finura: ")))
             agulhasBroken = int(input("Agulhas quebradas: "))
             asw = input("Vai continuar? digite s: ")
             if asw.upper() != "S":
@@ -25,7 +25,7 @@ def main():
     for today in range(3):
         agulhasInput(today)
         
-    #total day
+    #total day display or not 
         
         
     
