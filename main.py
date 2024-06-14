@@ -1,6 +1,9 @@
-from enums.enumsToday import Enumstoday
+
+from products.Products import Products
 
 def main():
+    products = Products()
+    """
     today = 0
     enumsToday = Enumstoday()
     
@@ -26,7 +29,7 @@ def main():
         agulhasInput(today)
         
     #total day display or not 
-        
+        """
         
     
     
