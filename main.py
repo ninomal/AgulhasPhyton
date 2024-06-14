@@ -2,12 +2,12 @@
 from products.Products import Products
 
 def main():
-    products = Products()
     """
     today = 0
     enumsToday = Enumstoday()
-    
-    dayMonth = int(input("Digite o dia e o mes: "))
+    day = int(input("Digite o Dia: "))
+    month = int(input("Digite o Mes: "))
+    products = Products(month, DAY)
     
     def agulhasInput(today):
         inserir = True
