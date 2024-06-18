@@ -1,10 +1,18 @@
 from products.Products import Products
 from api.api import Api
+from enums.enumsFinuras import EnumsFinuras
 
 
 def main():
+    teste = "f18"
+    teste2 = "f32"
     api = Api()
     api.teste()
+    enumsFinuras = EnumsFinuras()
+    print(enumsFinuras.checkFinurasEnums(teste))
+    print(enumsFinuras.checkFinurasEnums(teste2))
+    print(enumsFinuras.finurasEnumsSelect(teste))
+    
     """
     today = 0
     enumsToday = Enumstoday()

@@ -2,7 +2,7 @@ from pymongo import MongoClient
 
 class Api():
     def __init__(self):
-        self.conectionString = "mongodb://localhost:27017/"
+        self.conectionString = "mongodb://localhost:27017/?directConnection=true"
         self.conectOn = MongoClient(self.conectionString)
         self.conected = self.conectOn['agulhasData']
         self.colection = self.conected.get_collection("AgulhasCollection")
@@ -34,7 +34,7 @@ class Api():
         pass
     
     def insert(self, name, data):
-        self.colection.insert_one({"teste": 1234})
+        self.colection.insert_one({name :data})
     
     def teste(self):
         self.insert("teste", 123456)
