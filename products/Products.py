@@ -4,7 +4,7 @@ from enums.enumsMonthNameStr import EnumsMonthNameStr
 
 RASCHELLIST = [3975, 4575, 4475, 4565]
 JAQUARDLIST = [4496, 2760]
-KETEN = [2670]
+KETEN = [2660]
 
 class Products():
     def __init__(self, month, day) :
@@ -31,8 +31,7 @@ class Products():
             self.monthTotalDict["Jacquard"] = {finuras : total} 
         for finuras in KETEN:
             #take total in mongodb
-            self.monthTotalDict["Keten"] = {finuras : total} 
-        
+            self.monthTotalDict["Keten"] = {finuras : total}       
         return  self.monthTotalDict
         #cross the id and colect finuras in month
     
@@ -43,7 +42,22 @@ class Products():
       
     def monthSlectID(self):
         return (self.day + self.enumsMonthNameStr)
-        
-   
+    
+    def eraseTurn(self, day, month, turn):
+        #select turn and re write
+        pass
+    
+    def deletDaySelect(self):
+        #delete day here
+        pass
+    
+    def selectMonthgrafics(self, month):
+        #select month to se grafics
+        pass
+    
+    def monthComparation(self, month1, month2):
+        #select the month for comparation
+        pass
+    
     
     

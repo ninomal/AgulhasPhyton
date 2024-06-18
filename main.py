@@ -1,7 +1,10 @@
-
 from products.Products import Products
+from api.api import Api
+
 
 def main():
+    api = Api()
+    api.teste()
     """
     today = 0
     enumsToday = Enumstoday()
