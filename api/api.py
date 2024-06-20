@@ -1,10 +1,10 @@
-from models.conection import DBconection
-
+from models.conection.conection import DBconection
+from models.repository.myConection import MyConection
 
 class Api():
     def __init__(self):
-       self.mongoDBConect = DBconection()                           
-       self.colection = self.mongoDBConect.getColection()
+       self.mongoDB = DBconection()                           
+       self.mongodbConection = MyConection(self.mongoDB,self.mongoDB.getColection())
         
   
     def addUserMongodb(self, userDataID):
@@ -30,13 +30,12 @@ class Api():
     
     def getMountId(self):
         pass
-    
-    def insert(self, name, data):
-        self.colection.insert_one({name :data})
+   
     
     def teste(self):
-        self.insert("teste", 14141416)
-        dbt_colect = self.colection     
-        print(dbt_colect)
+        teste = {"teste": 14141416789}
+        self.mongodbConection.insert_document(teste)
+        #dbt_colect = self.mongodbConection.getColection()
+        #print(dbt_colect)
     
   
