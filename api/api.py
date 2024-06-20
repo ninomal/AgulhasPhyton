@@ -1,14 +1,12 @@
-from pymongo import MongoClient
+from models.conection import DBconection
+
 
 class Api():
     def __init__(self):
-        self.conectionString = "mongodb://localhost:27017/?directConnection=true"
-        self.conectOn = MongoClient(self.conectionString)
-        self.conected = self.conectOn['agulhasData']
-        self.colection = self.conected.get_collection("AgulhasCollection")
-        #self.client = MongoClient("localhost", 27017)
+       self.mongoDBConect = DBconection()                           
+       self.colection = self.mongoDBConect.getColection()
         
-    
+  
     def addUserMongodb(self, userDataID):
         posts = self.client.posts
         post_id = posts.insert_one(userDataID).inserted_id
@@ -37,7 +35,7 @@ class Api():
         self.colection.insert_one({name :data})
     
     def teste(self):
-        self.insert("teste", 123456)
+        self.insert("teste", 14141416)
         dbt_colect = self.colection     
         print(dbt_colect)
     
