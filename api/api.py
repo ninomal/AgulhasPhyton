@@ -1,37 +1,49 @@
 from models.conection.conection import DBconection
 from models.repository.myConection import MyConection
+from enums.enumsFinuras import EnumsFinuras
+from typing import Dict
+import collections, functools, operator
 
 class Api():
     def __init__(self):
        self.mongoDB = DBconection()                           
        self.mongodbConection = MyConection(self.mongoDB,self.mongoDB.getColection())
-        
+       self.enumsFinuras = EnumsFinuras()
+       self.listNeedlesBrokenDay = []        
   
-    def addUserMongodb(self, userDataID):
-        posts = self.client.posts
-        post_id = posts.insert_one(userDataID).inserted_id
+    def addDayMongodb(self, day , dictData ):
+        dictDay = {day : dictData}
+        return dictDay
         
-    def addFinuraMongodbserMongodb(self, finuraData):
-        pass
-        #add user here
+    def addFinurasAgulhasMongodb(self, finuras, agulhas ) :
+        finurasDict = {finuras: agulhas}
+        return finurasDict
         
-    def addAgulhasBrokenMongodbserMongodb(self, agulhasData):
-        pass
-        #add user here
+    def addAgulhasinDictList(self,finuras, agulhasData ):
+        finurasStr = str(self.enumsFinuras.finurasEnumsSelect(finuras))
+        self.listNeedlesBrokenDay.append[{finurasStr : agulhasData}]
+        return self.listNeedlesBrokenDay
+    
+    def clearList(self):
+        self.listNeedlesBrokenDay = []
+        
+    def sumOfDay(self, data : Dict) -> Dict:
+        result = dict(functools.reduce(operator.add,
+                        map(collections.Counter, data)))
+        return result
 
-    def addTotalOfDayMongodb(self, totalOfDay):
-        pass
+    def addTotalOfDayMongodb(self, totalOfDay : Dict ) -> Dict:
+        self.mongodbConection.insert_document(totalOfDay)
         
     def getFinuras(self):
         pass
     
     def getTotalofDay(self):
-        pass
-    
+        return self.listNeedlesBrokenDay
+             
     def getMountId(self):
         pass
-   
-    
+      
     def teste(self):
         teste = {"teste": 14141416789}
         self.mongodbConection.insert_document(teste)

@@ -35,6 +35,10 @@ def main():
         agulhasInput(today)
         
     #total day display or not 
+    def products.getTotalofDay(self):
+        for intens in self.listOfNeddleBroken:
+            print(intens)
+    
         """
         
     
