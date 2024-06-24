@@ -9,19 +9,24 @@ class Api():
        self.mongoDB = DBconection()                           
        self.mongodbConection = MyConection(self.mongoDB,self.mongoDB.getColection())
        self.enumsFinuras = EnumsFinuras()
-       self.listNeedlesBrokenDay = []        
+       self.listNeedlesBrokenDay = []       
+       
+    def addDayMongoDB(self, day, finuras, agulhas, turno, setor):
+        finurasFunc = self.addFinuras(finuras, agulhas)
+        agulhasDict = self.addAgulhasinDictList()
+        dayMongo = self.addDay(day,setor, turno,  finurasFunc)
   
-    def addDayMongodb(self, day , dictData ):
-        dictDay = {day : dictData}
+    def addDay(self, day , setor, turno, finuras : Dict, agulhasDictList : Dict) -> Dict:
+        dayStr = str(day)
+        dictDay = {dayStr : {setor :{turno: {finuras : agulhasDictList}}}}
         return dictDay
-        
-    def addFinurasAgulhasMongodb(self, finuras, agulhas ) :
+             
+    def addFinuras(self, finuras, agulhas):
         finurasDict = {finuras: agulhas}
         return finurasDict
         
     def addAgulhasinDictList(self,finuras, agulhasData ):
-        finurasStr = str(self.enumsFinuras.finurasEnumsSelect(finuras))
-        self.listNeedlesBrokenDay.append[{finurasStr : agulhasData}]
+        self.listNeedlesBrokenDay.append[{finuras : agulhasData}]
         return self.listNeedlesBrokenDay
     
     def clearList(self):
@@ -32,8 +37,10 @@ class Api():
                         map(collections.Counter, data)))
         return result
 
-    def addTotalOfDayMongodb(self, totalOfDay : Dict ) -> Dict:
-        self.mongodbConection.insert_document(totalOfDay)
+    def addTotalOfDay(self ):
+        listOfDay = self.listNeedlesBrokenDay
+        #name
+        #add value
         
     def getFinuras(self):
         pass
