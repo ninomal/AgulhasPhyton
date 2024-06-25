@@ -6,7 +6,7 @@ class Api():
     def __init__(self):
        self.mongoDB = DBconection()                           
        self.mongodbConection = MyConection(self.mongoDB,self.mongoDB.getColection())
-          
+       
        
     def addDayMongoDB(self, ):
         pass
@@ -20,10 +20,8 @@ class Api():
     def getMountId(self):
         pass
       
-    def teste(self, data):      
-        print(data)
+    def addDayAgulhaMongoDB(self, data):    
         self.mongodbConection.insert_document(data)
-        #dbt_colect = self.mongodbConection.getColection()
-        #print(dbt_colect)
+        print(data)
     
   

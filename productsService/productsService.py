@@ -1,17 +1,15 @@
 from api.api import Api
 
+
 class ProductsService:
     def __init__(self):
         self.api = Api()
      
     def adduserIdMonthId(self, monthIdData):
-        self.api.getMountId(monthIdData)
+        self.api.getMountId(monthIdData)      
         
-    def addFinura(self, finura):
-        self.api.addFinuraMongodbserMongodb(finura)
-        
-    def addAgulhaBroke(self, algulhas):
-        self.api.addAgulhasBrokenMongodbserMongodb(algulhas)
+    def addDayAgulhaBrokeMongoDB(self, algulhas):
+        self.api.addDayAgulhaMongoDB(algulhas)
         
     def addTotalOfDay(self, totalDay):
         self.api.addTotalOfDayMongodb(totalDay)

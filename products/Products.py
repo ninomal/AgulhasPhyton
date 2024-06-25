@@ -11,7 +11,9 @@ KETEN = [2660]
 
 class Products():
     def __init__(self, month, day) :
-        self.day = day
+        self.day = str(day)
+        self.month = str(month)
+        self.nameColection = self.day + self.month
         self.monthTotalDict = {}
         self.productService = ProductsService()
         self.enumsMonthDays = EnumsMonthDays()
@@ -64,18 +66,17 @@ class Products():
         #select the month for comparation
         pass
     
-    def addDayMongoDB(self, day, finuras, agulhas, turno, setor):
-        finurasFunc = self.addFinuras(finuras, agulhas)
+    def addDayMongoDB(self, finuras, agulhas, turno, setor):
         agulhasDict = self.addAgulhasinDictList(finuras, agulhas)
-        dayMongo = self.addDay(day, setor, turno, agulhasDict, finurasFunc)
+        dayMongo = self.addDay(self.nameColection, setor, turno, agulhasDict)
         return dayMongo
   
-    def addDay(self, day , setor, turno, finuras : Dict, agulhasDictList ) -> Dict:
+    def addDay(self, day , setor, turno,  agulhasDictList ):
         dayStr = str(day)
         dictDay = {dayStr : {setor :{turno: agulhasDictList}}}
         return dictDay
              
-    def addFinuras(self, finuras, agulhas):
+    def convertFinurasInCodeBar(self, finuras, agulhas):
         finurasDict = {finuras: agulhas}
         return finurasDict
         
@@ -91,7 +92,3 @@ class Products():
                         map(collections.Counter, data)))
         return result
     
-    def teste(self):
-        result = self.addDayMongoDB(1, "f18", 10, "TA", "Rasc" )
-        result2 = self.addDayMongoDB(1, "f24", 10, "TB", "Rasc" )
-        print(result, result2)
