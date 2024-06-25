@@ -5,8 +5,9 @@ from enums.enumsFinuras import EnumsFinuras
 
 def main():
     api = Api()
-    api.teste()
     enumsFinuras = EnumsFinuras()
+    products = Products(1, 2)
+    products.teste()
     
     """
     today = 0
