@@ -21,7 +21,9 @@ class Products():
         self.monthStr = self.enumsMonthNameStr.colectMonthsName(month)
         self.monthDays = self.enumsMonthDays.colectMonths(month)
         self.enumsFinuras = EnumsFinuras()
-        self.listNeedlesBrokenDay = []  
+        self.listNeedlesBrokenDayTA = [] 
+        self.listNeedlesBrokenDayTB = []  
+        self.listNeedlesBrokenDayTC = []   
         
         
     def monthTotal(self, month):   
@@ -66,24 +68,32 @@ class Products():
         #select the month for comparation
         pass
     
-    def addDayMongoDB(self, finuras, agulhas, turno, setor):
-        agulhasDict = self.addAgulhasinDictList(finuras, agulhas)
-        dayMongo = self.addDay(self.nameColection, setor, turno, agulhasDict)
+    def addDayMongoDB(self, setor):
+        dayMongo = self.addDay( setor)
         return dayMongo
   
-    def addDay(self, day , setor, turno,  agulhasDictList ):
-        dayStr = str(day)
-        dictDay = {dayStr : {setor :{turno: agulhasDictList}}}
+    def addDay(self,  setor):
+        dictDay = {self.nameColection : {setor :{"TA": self.listNeedlesBrokenDayTA,
+                                     "TB": self.listNeedlesBrokenDayTB, 
+                                     "TC": self.listNeedlesBrokenDayTC }}}
         return dictDay
              
     def convertFinurasInCodeBar(self, finuras, agulhas):
         finurasDict = {finuras: agulhas}
         return finurasDict
         
-    def addAgulhasinDictList(self, finuras, agulhasData ):
-        self.listNeedlesBrokenDay.append({finuras : agulhasData})
-        return self.listNeedlesBrokenDay
-    
+    def addAgulhasinDictList(self, turno, finuras, agulhasData ):
+        match(turno):
+            case "TA":
+                self.listNeedlesBrokenDayTA.append({finuras : agulhasData})
+                return self.listNeedlesBrokenDayTA
+            case "TB":
+                self.listNeedlesBrokenDayTB.append({finuras : agulhasData})
+                return self.listNeedlesBrokenDayTB
+            case "TC":
+                self.listNeedlesBrokenDayTC.append({finuras : agulhasData})
+                return self.listNeedlesBrokenDayTC
+            
     def clearList(self):
         self.listNeedlesBrokenDay = []
         
