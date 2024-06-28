@@ -2,6 +2,7 @@ from productsService.productsService import ProductsService
 from enums.enumsMonth import EnumsMonthDays
 from enums.enumsMonthNameStr import EnumsMonthNameStr
 from enums.enumsFinuras import EnumsFinuras
+from enums.enumsFinuras import EnumsFinuras
 from typing import Dict
 import collections, functools, operator
 
@@ -21,9 +22,11 @@ class Products():
         self.monthStr = self.enumsMonthNameStr.colectMonthsName(month)
         self.monthDays = self.enumsMonthDays.colectMonths(month)
         self.enumsFinuras = EnumsFinuras()
+        self.enumsFinuras = EnumsFinuras()
         self.listNeedlesBrokenDayTA = [] 
         self.listNeedlesBrokenDayTB = []  
-        self.listNeedlesBrokenDayTC = []   
+        self.listNeedlesBrokenDayTC = [] 
+        self.listSumNedlleDict = {}
         
         
     def monthTotal(self, month):   
@@ -95,10 +98,27 @@ class Products():
                 return self.listNeedlesBrokenDayTC
             
     def clearList(self):
-        self.listNeedlesBrokenDay = []
+        self.listNeedlesBrokenDayTA = []
+        self.listNeedlesBrokenDayTB = []
+        self.listNeedlesBrokenDayTC = []
+        self.listSumNedlleDict = {}
         
-    def sumOfDay(self, data : Dict) -> Dict:
-        result = dict(functools.reduce(operator.add,
-                        map(collections.Counter, data)))
-        return result
+    def sumDay(self, finura, agulha):  
+        finurasCode = self.enumsFinuras.finurasCodeReturn(finura)
+        match finurasCode:
+            case "3975":
+                self.listSumNedlleDict = {"3975": agulha }
+            case"4575":
+                self.listSumNedlleDict = {"4575": agulha }
+            case "4496":
+                self.listSumNedlleDict = {"4496" : agulha}
+            case "2660":
+                self.listSumNedlleDict= {"2660" : agulha}
+            case "2670":
+                self.listSumNedlleDict = {"2670" : agulha}
+            case "4565":
+                self.listSumNedlleDict= {"4565" : agulha}
+            case _:
+                return "ERROR"
+            
     

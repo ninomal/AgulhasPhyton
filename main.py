@@ -2,13 +2,22 @@ from products.Products import Products
 from api.api import Api
 from enums.enumsFinuras import EnumsFinuras
 from enums.enumsToday import Enumstoday
+from enums.enumsInserir import EnumsInserir
 
 
 def main():
     api = Api()
     enumsFinuras = EnumsFinuras()
+    products = Products("01", "06")
+    agulha = 12
+    for x in range(10):
+        finura = "F14"   
+        products.sumDay(finura, agulha)
+        agulha +=14
+        print(products.listSumNedlleDict)
     
-  
+    
+    """
     
     today = 0
     enumsToday = Enumstoday()
@@ -17,16 +26,17 @@ def main():
     products = Products(month, day)
     
     def agulhasInput(today):
-        inserir = True
+        inserirEnums = EnumsInserir().INSERIR
         todayEnums = enumsToday.getEnumsToday(today)
         print(todayEnums)
         while inserir:  
             finuras = str((input("Finura: ")))
+            finuras = finuras.upper()
             agulhasBroken = int(input("Agulhas quebradas: "))
             products.addAgulhasinDictList(todayEnums, finuras, agulhasBroken)
             answer = input("Vai continuar? digite s: ")
             if answer.upper() != "S":
-                inserir = False         
+                inserirEnums.NAOINSERIR        
         result = products.addDay(setor)
         products.productService.addDayAgulhaBrokeMongoDB(result)
         products.clearList()
@@ -37,7 +47,7 @@ def main():
         setor = "RASCH"
         agulhasInput(today)
     
-    """
+    
     print("Jacquard")
     for today in range(3):
         setor = "Jac"
