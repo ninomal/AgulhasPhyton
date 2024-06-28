@@ -26,7 +26,7 @@ class Products():
         self.listNeedlesBrokenDayTA = [] 
         self.listNeedlesBrokenDayTB = []  
         self.listNeedlesBrokenDayTC = [] 
-        self.listSumNedlleDict = {}
+        self.listSumNedlleDict = []
         
         
     def monthTotal(self, month):   
@@ -75,10 +75,11 @@ class Products():
         dayMongo = self.addDay( setor)
         return dayMongo
   
-    def addDay(self,  setor):
+    def addDay(self,  setor)->Dict:
         dictDay = {self.nameColection : {setor :{"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
-                                     "TC": self.listNeedlesBrokenDayTC }}}
+                                     "TC": self.listNeedlesBrokenDayTC,
+                                     "total": self.listSumNedlleDict}}}
         return dictDay
              
     def convertFinurasInCodeBar(self, finuras, agulhas):
@@ -101,23 +102,23 @@ class Products():
         self.listNeedlesBrokenDayTA = []
         self.listNeedlesBrokenDayTB = []
         self.listNeedlesBrokenDayTC = []
-        self.listSumNedlleDict = {}
+        self.listSumNedlleDict = []
         
     def sumDay(self, finura, agulha):  
         finurasCode = self.enumsFinuras.finurasCodeReturn(finura)
         match finurasCode:
             case "3975":
-                self.listSumNedlleDict = {"3975": agulha }
+                self.listSumNedlleDict.append({"3975": agulha })
             case"4575":
-                self.listSumNedlleDict = {"4575": agulha }
+                self.listSumNedlleDict.append({"4575": agulha })
             case "4496":
-                self.listSumNedlleDict = {"4496" : agulha}
+                self.listSumNedlleDict.append({"4496" : agulha})
             case "2660":
-                self.listSumNedlleDict= {"2660" : agulha}
+                self.listSumNedlleDict.append({"2660" : agulha})
             case "2670":
-                self.listSumNedlleDict = {"2670" : agulha}
+                self.listSumNedlleDict.append({"2670" : agulha})
             case "4565":
-                self.listSumNedlleDict= {"4565" : agulha}
+                self.listSumNedlleDict.append({"4565" : agulha})
             case _:
                 return "ERROR"
             
