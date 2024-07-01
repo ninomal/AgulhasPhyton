@@ -11,3 +11,7 @@ class MyConection:
         
     def getColection(self):
         self.getColection()
+        
+    def findINcolection(self, name):
+        findColection = self.__colection.find(name)
+        return findColection

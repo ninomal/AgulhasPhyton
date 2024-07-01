@@ -11,3 +11,6 @@ class DBconection:
     def getColection(self):
         return self.__colection
         
+    def findINColection(self, name):
+        findVar = self.__colection.find(name)   
+        return findVar

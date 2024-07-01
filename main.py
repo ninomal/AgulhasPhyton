@@ -7,8 +7,14 @@ from enums.enumsToday import Enumstoday
 def main():
     api = Api()
     enumsFinuras = EnumsFinuras()
-     
     
+    products = Products("01", "07")
+    name = {"teste": 12345}
+    iten = products.productService.getTotalofDay(name)
+    for items in iten:
+        print(items)
+    
+    """  
     today = 0
     enumsToday = Enumstoday()
     day = str(input("Digite o Dia: "))
@@ -49,7 +55,7 @@ def main():
         agulhasInput(today)
     addDataMongoDB(setor)
        
-
+    """
      
     """
     #total day display or not 

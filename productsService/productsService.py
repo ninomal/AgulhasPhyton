@@ -11,17 +11,14 @@ class ProductsService:
     def addDayAgulhaBrokeMongoDB(self, algulhas):
         self.api.addDayAgulhaMongoDB(algulhas)
         
-    def addTotalOfDay(self, totalDay):
-        self.api.addTotalOfDayMongodb(totalDay)
-    
     def getMountId(self):
         self.api.getMountId()   
         
     def getFinuras(self):
         self.api.getFinuras()
     
-    def getTotalofDay(self):
-        self.api.getTotalofDay()
-    
+    def getTotalofDay(self, name):
+        totalDay = self.api.getTotalofDay(name)
+        return totalDay
    
         
