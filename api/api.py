@@ -23,6 +23,8 @@ class Api():
       
     def addDayAgulhaMongoDB(self, data):    
         self.mongodbConection.insert_document(data)
-        
+    
+    def sumTotalDay(self):
+       self.mongodbConection.sumTotalDay()
     
   

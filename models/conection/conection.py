@@ -6,11 +6,13 @@ class DBconection:
         self.__conectionString = configs_mongodb_conect.get("conectionIP")
         self.__conectOn = MongoClient(self.__conectionString)
         self.__bankConected = self.__conectOn[configs_mongodb_conect.get("nameOfBank")]
-        self.__colection = self.__bankConected.get_collection(configs_mongodb_conect.get("nameOfColection"))
+        self.__collection = self.__bankConected.get_collection(configs_mongodb_conect.get("nameOfColection"))
         
     def getColection(self):
-        return self.__colection
+        return self.__collection
         
     def findINColection(self, name):
-        findVar = self.__colection.find(name)   
+        findVar = self.__collection.find(name)   
         return findVar
+    
+    
