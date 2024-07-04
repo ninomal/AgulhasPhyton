@@ -5,20 +5,20 @@ class ProductsService:
     def __init__(self):
         self.api = Api()
      
-    def adduserIdMonthId(self, monthIdData):
-        self.api.getMountId(monthIdData)      
-        
     def addDayAgulhaBrokeMongoDB(self, algulhas):
         self.api.addDayAgulhaMongoDB(algulhas)
-        
-    def getMountId(self):
-        self.api.getMountId()   
-        
-    def getFinuras(self):
-        self.api.getFinuras()
+              
+    def getDay(self, day):
+        self.api.getDay(day)
     
     def getTotalofDay(self, name):
         totalDay = self.api.getTotalofDay(name)
         return totalDay
+    
+    def deleteTurn(self, turn):
+        self.api.deleteTurn(turn) 
+        
+    def deleteDay(self, day):
+        self.api.deleteDay(day)
    
         

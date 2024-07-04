@@ -15,7 +15,6 @@ class Products():
     def __init__(self, month, day) :
         self.day = str(day)
         self.month = str(month)
-        self.nameColection = self.day + self.month
         self.monthTotalDict = {}
         self.productService = ProductsService()
         self.enumsMonthDays = EnumsMonthDays()
@@ -53,24 +52,13 @@ class Products():
         finuraGet = self.productService.getFinuras()
         total = self.productService.getTotalofDay()   
         return (f"O dia ",day,"\n A finura ", finuraGet," quebrou o total de: ", total)
-      
-    def monthSlectID(self):
-        return (self.day + self.enumsMonthNameStr)
-    
-    def eraseTurn(self, day, month, turn):
-        #select turn and re write
-        pass
-    
-    def deletDaySelect(self):
-        #delete day here
-        pass
-    
+          
     def selectMonthgrafics(self, month):
-        #select month to se grafics
+        #select month to se grafics IO
         pass
     
     def monthComparation(self, month1, month2):
-        #select the month for comparation
+        #select the month for comparation IO
         pass
     
     def addDayMongoDB(self, setor):
@@ -78,7 +66,7 @@ class Products():
         return dayMongo
   
     def addDay(self,  setor)->Dict:
-        dictDay ={self.nameColection : "teste" ,setor :{"TA": self.listNeedlesBrokenDayTA,
+        dictDay ={self.day : self.month, setor :{"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
                                      "TC": self.listNeedlesBrokenDayTC,
                                      "total": self.listSumNedlleDict}}
