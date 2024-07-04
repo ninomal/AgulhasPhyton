@@ -6,6 +6,7 @@ from enums.enumsFinuras import EnumsFinuras
 from typing import Dict
 import collections, functools, operator
 
+
 RASCHELLIST = [3975, 4575, 4475, 4565]
 JAQUARDLIST = [4496, 2760]
 KETEN = [2660]
@@ -27,6 +28,7 @@ class Products():
         self.listNeedlesBrokenDayTB = []  
         self.listNeedlesBrokenDayTC = [] 
         self.listSumNedlleDict = []
+        self.NEDLLESCODESUM = RASCHELLIST + JAQUARDLIST + KETEN
         
         
     def monthTotal(self, month):   
@@ -76,10 +78,10 @@ class Products():
         return dayMongo
   
     def addDay(self,  setor)->Dict:
-        dictDay = {self.nameColection : {setor :{"TA": self.listNeedlesBrokenDayTA,
+        dictDay ={self.nameColection : "teste" ,setor :{"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
                                      "TC": self.listNeedlesBrokenDayTC,
-                                     "total": self.listSumNedlleDict}}}
+                                     "total": self.listSumNedlleDict}}
         return dictDay
              
     def convertFinurasInCodeBar(self, finuras, agulhas):
@@ -104,7 +106,7 @@ class Products():
         self.listNeedlesBrokenDayTC = []
         self.listSumNedlleDict = []
         
-    def sumDay(self, finura, agulha):  
+    def finuraCodeDay(self, finura, agulha):  
         finurasCode = self.enumsFinuras.finurasCodeReturn(finura)
         match finurasCode:
             case "3975":
@@ -122,4 +124,11 @@ class Products():
             case _:
                 return "ERROR"
             
-    
+    def sumDay(self):
+        aggregated = collections.defaultdict(int)
+        # Aggregate the values for each key using reduce and lambda function
+        for nedlleList in self.listSumNedlleDict:
+            for key, value in nedlleList.items():
+                aggregated[key] += value
+        self.listSumNedlleDict = [{'{}'.format(key): value} for key, value in aggregated.items()]
+        return self.listSumNedlleDict

@@ -16,7 +16,7 @@ def main():
     #for items in iten:
         #print(items)
     
-    """
+    
     today = 0
     enumsToday = Enumstoday()
     day = str(input("Digite o Dia: "))
@@ -32,7 +32,8 @@ def main():
             finuras = finuras.upper()
             agulhasBroken = int(input("Agulhas quebradas: "))
             products.addAgulhasinDictList(todayEnums, finuras, agulhasBroken)
-            products.sumDay(finuras, agulhasBroken)
+            products.finuraCodeDay(finuras, agulhasBroken)
+            products.sumDay()
             answer = input("Vai continuar? digite s: ")
             if answer.upper() != "S":
                 inserir = False  
@@ -40,16 +41,16 @@ def main():
     def addDataMongoDB(setor):
         result = products.addDay(setor)
         products.productService.addDayAgulhaBrokeMongoDB(result)
-        print(products.listSumNedlleDict)
         products.clearList()
-                           
+    
+                       
     print("Raschell")
     setor = "RASCH"
     for today in range(3):
         agulhasInput(today)
     addDataMongoDB(setor)
    
-      
+    """ 
     print("Jacquard")
     setor = "JACQ"
     for today in range(3):
