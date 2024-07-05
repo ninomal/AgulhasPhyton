@@ -54,9 +54,9 @@ class EnumsFinuras:
         checkStr = str(check)
         checkSet = {checkStr.upper()}
         if FINURAS.intersection(checkSet):
-            return ("Finura ok")
+            return True
         else:
-            return ("Finura errada")
+            return False
                 
     def finurasCodeReturn(self, finuras):
         if finuras in FINURAS3975:

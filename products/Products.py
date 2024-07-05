@@ -2,7 +2,6 @@ from productsService.productsService import ProductsService
 from enums.enumsMonth import EnumsMonthDays
 from enums.enumsMonthNameStr import EnumsMonthNameStr
 from enums.enumsFinuras import EnumsFinuras
-from enums.enumsFinuras import EnumsFinuras
 from typing import Dict
 import collections, functools, operator
 
@@ -21,7 +20,6 @@ class Products():
         self.enumsMonthNameStr = EnumsMonthNameStr()
         self.monthStr = self.enumsMonthNameStr.colectMonthsName(month)
         self.monthDays = self.enumsMonthDays.colectMonths(month)
-        self.enumsFinuras = EnumsFinuras()
         self.enumsFinuras = EnumsFinuras()
         self.listNeedlesBrokenDayTA = [] 
         self.listNeedlesBrokenDayTB = []  
@@ -111,6 +109,9 @@ class Products():
                 self.listSumNedlleDict.append({"4565" : agulha})
             case _:
                 return "ERROR"
+            
+    def finuraCheck(self, finuras):
+        return self.enumsFinuras.checkFinurasEnums(finuras)
             
     def sumDay(self):
         aggregated = collections.defaultdict(int)

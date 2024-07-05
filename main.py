@@ -1,22 +1,12 @@
 from products.Products import Products
 from api.api import Api
-from enums.enumsFinuras import EnumsFinuras
 from enums.enumsToday import Enumstoday
 
 
 def main():
-    api = Api()
-    enumsFinuras = EnumsFinuras()
-    
-    
+    api = Api() 
     products = Products("01", "07")
-    name = {"teste": 12345}
-    #iten = products.productService.getTotalofDay(name)
-    print(api.sumTotalDay())
-    #for items in iten:
-        #print(items)
-    
-    
+    #remove
     today = 0
     enumsToday = Enumstoday()
     day = str(input("Digite o Dia: "))
@@ -24,20 +14,36 @@ def main():
     products = Products(month, day)
     
     def agulhasInput(today):
+        setor = "RASCH"
+        eraser = "S"
+        finurasCheck = False
         inserir = True
         todayEnums = enumsToday.getEnumsToday(today)
         print(todayEnums)
-        while inserir:  
-            finuras = str((input("Finura: ")))
-            finuras = finuras.upper()
-            agulhasBroken = int(input("Agulhas quebradas: "))
-            products.addAgulhasinDictList(todayEnums, finuras, agulhasBroken)
-            products.finuraCodeDay(finuras, agulhasBroken)
-            products.sumDay()
-            answer = input("Vai continuar? digite s: ")
-            if answer.upper() != "S":
-                inserir = False  
-     
+        while inserir:
+            try:
+                while finurasCheck != True:
+                    finuras = str((input("Finura: ")))
+                    finurasCheck = products.finuraCheck(finuras)
+                    if finurasCheck == False:
+                        print("Finura errada")       
+            except TypeError:
+                print("Type error")
+            try :
+                while eraser == "S":
+                    agulhasBroken = int(input("Agulhas quebradas: "))
+                    eraser = str(input(("Agulhas estão erradas? digite s para apagar ")))
+                    eraser.upper()
+            except ValueError :
+                print("Numero invalido")
+            finally:
+                products.addAgulhasinDictList(todayEnums, finuras, agulhasBroken)
+                products.finuraCodeDay(finuras, agulhasBroken)
+                products.sumDay()
+                answer = input("Vai continuar? digite s: ")
+                if answer.upper() != "S":
+                    inserir = False  
+            
     def addDataMongoDB(setor):
         result = products.addDay(setor)
         products.productService.addDayAgulhaBrokeMongoDB(result)
@@ -48,6 +54,7 @@ def main():
     setor = "RASCH"
     for today in range(3):
         agulhasInput(today)
+    print(products.sumDay())
     addDataMongoDB(setor)
    
     """ 
