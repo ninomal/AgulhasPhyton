@@ -1,9 +1,12 @@
 from products.Products import Products
 from api.api import Api
 from enums.enumsToday import Enumstoday
-
+from IO.io import IO
 
 def main():
+    io = IO()
+    io.ioMainLoop()
+    """
     api = Api() 
     products = Products("01", "07")
     #remove
@@ -54,10 +57,9 @@ def main():
     setor = "RASCH"
     for today in range(3):
         agulhasInput(today)
-    print(products.sumDay())
     addDataMongoDB(setor)
    
-    """ 
+     
     print("Jacquard")
     setor = "JACQ"
     for today in range(3):
