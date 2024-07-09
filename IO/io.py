@@ -1,16 +1,29 @@
 from tkinter import *
+import random
 
 class IO:
     def __init__(self):
         self.windows = Tk()
         self.windows.title("Diario")
-        self.windows.config(padx= 300, pady= 200)
-        #self.canvas = Canvas(height=300, width=300)
-        #self.canvas.grid(column=1 , row = 0)
+        self.windows.config(padx= 50, pady= 50)
+        self.canvasImage()
         self.labels()
         self.entrys()
         self.button()
         
+    def canvasImage(self):
+        self.canvas = Canvas(height=300, width=600)
+        self.canvas.grid(row= 0, column= 0)
+        self.logo_img = PhotoImage(file= self.randomImagem())
+        self.canvas.create_image(100, 100, image = self.logo_img)
+        
+    
+    def randomImagem(self):
+        rng = random.Random()
+        randInt = rng.randint(1, 5)
+        path = f"IO\image\ess{randInt}.png"
+        print(path)
+        return path
         
     def labels(self):
         self.DIALABEL = Label(text="Dia:")
