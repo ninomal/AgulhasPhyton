@@ -15,7 +15,11 @@ class IO:
         self.entrys()
         self.buttonADD()
         self.radioButon()
+        self.buttonContinue()
+        self.buttonPassTurn()
         self.clearLIstEntrys()
+        
+        
               
     def canvasImage(self):
         self.canvas = Canvas(height=300, width=600)
@@ -54,23 +58,25 @@ class IO:
         self.ADDBUTTON.grid(row = 5, column= 1)
     
     def buttonContinue(self):
-        pass #here
-    
+        self.continueButton = Button(text="Adicionar mais", 
+                        width= 17, command= self.clearLIstEntrys )
+        self.continueButton.grid(row = 5 , column= 0)
+        
     def buttonPassTurn(self):
-        pass  #here
+        self.passTurn = Button(text="Passar o turno", 
+                        width= 17, command= self.clearLIstEntrys )
+        self.passTurn.grid(row = 5 , column= 2)
         
     def radioButon(self):
         turnLabel = Label(text= "TURNO:")
         turn = StringVar()
-        turn.set("TA")
         ta = Radiobutton(text="TA",variable= turn, value= "TA")
         tb = Radiobutton(text="TB",variable= turn, value= "TB")
         tc = Radiobutton(text="TC",variable= turn, value= "TC")
-
         turnLabel.grid(row = 1, column=3)
         ta.grid(row=2, column=3)
         tb.grid(row=3, column=3)
-        tc.grid(row=4, column=3)  
+        tc.grid(row=4, column=3)       
         return turn
         
     def finurasCheck(self):
@@ -79,7 +85,7 @@ class IO:
         if not asw:
             self.popFinuras()
         else:
-            return True
+            return asw
     
     def popFinuras(self):
         messagebox.showwarning(title="Erro", message= "Finura Errada")
@@ -88,7 +94,8 @@ class IO:
     def popADD(self):
         finuras = self.finurasCheck()
         if finuras :
-            ask = mensagemBox = messagebox.askyesno("Confirmação", message= "Confirmar os dados")
+            ask = mensagemBox = messagebox.askyesno("Confirmação", 
+                                    message= "Confirmar os dados")
             self.askTrue(ask)
             return ask
      
@@ -98,17 +105,23 @@ class IO:
             mes = self.MES_ENTRY.get()
             finura = self.FINURAS_ENTRY.get()
             agulhas = self.AGULHAS_ENTRY.get()
-            self.addFunc(dia, mes, finura, agulhas)
+            turn = self.radioButon().get()
+            self.addFunc(dia, mes, turn, finura, agulhas)
                   
-    def addFunc(self, dia, mes, finura , agulha):
-        return self.listData.append([dia, mes, finura, agulha])
+    def addFunc(self, dia, mes, turn, finura , agulha):
+        dataList = [dia, mes, turn, finura, agulha]
+        list(map(lambda data: self.listData.append(data), dataList))
+        print(self.listData)
+        return self.listData
     
+     
     def clearLIstEntrys(self):
         self.listData = []
-        self.DIA_ENTRY.delete(0, END)
-        self.MES_ENTRY.delete(0, END)
+        #self.DIA_ENTRY.delete(0, END)
+        #self.MES_ENTRY.delete(0, END)
         self.FINURAS_ENTRY.delete(0, END)
         self.AGULHAS_ENTRY.delete(0, END)
+        
     
     def ioMainLoop(self):
         self.windows.mainloop()
