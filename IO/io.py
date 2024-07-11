@@ -1,5 +1,4 @@
-from tkinter import *
-from tkinter import messagebox
+from customtkinter import *
 from products.Products import Products
 import random
 
@@ -9,19 +8,24 @@ class IO:
         self.contsAdd = 0
         self.products = Products("01", "07")
         self.listData = []
-        self.windows = Tk()
+        self.windows = CTk()
+        self.windows.geometry("1000x750")
         self.windows.title("Diario")
-        self.windows.config(padx= 20, pady= 10)
-        self.canvasImage()
-        self.labels()
-        self.entrys()
         self.buttonADD()
-        self.radioButon()
+        #self.canvasImage()
+        #self.labels()
+        #self.entrys()
+        self.buttonADD()
+        #self.radioButon()
         self.buttonContinue()
         self.buttonPassTurn()
-        self.clearLIstEntrys()
-               
-                     
+        #self.clearLIstEntrys()
+    
+    def buttonForme(self, name, comandFunc):
+        self.button = CTkButton(text=f"{name}",hover_color="#C850C0", border_color="#FFCC70", 
+                border_width=2, master= self.windows , command= comandFunc)
+        return self.button        
+                          
     def canvasImage(self):
         self.canvas = Canvas(height=300, width=600)
         self.canvas.grid(row= 0, column= 1)
@@ -55,18 +59,16 @@ class IO:
         self.AGULHAS_ENTRY.grid(row=4, column= 1)
 
     def buttonADD(self): 
-        self.ADDBUTTON = Button(text= "Adicionar", width= 17, command= self.popADD)
-        self.ADDBUTTON.grid(row = 5, column= 1)
+        self.addButton = self.buttonForme("Adicionar", comandFunc= self.popADD)
+        self.addButton.place(relx=0.4, rely=0.6,anchor="w")
         
     def buttonContinue(self):
-        self.continueButton = Button(text="Adicionar mais", 
-                        width= 17, command= self.clearLIstEntrys )
-        self.continueButton.grid(row = 5 , column= 0)
+        self.continueButton = self.buttonForme("Adicionar mais",comandFunc= self.clearLIstEntrys )
+        self.continueButton.place(relx=0.4, rely=0.7,anchor="w")
         
     def buttonPassTurn(self):  
-        self.passTurn = Button(text="Passar o turno", 
-                        width= 17, command=  self.passTurnFunc)
-        self.passTurn.grid(row = 5 , column= 2)
+        self.passTurn = self.buttonForme("Passar o turno", comandFunc= self.passTurnFunc)
+        self.passTurn.place(relx=0.4, rely=0.7,anchor="e")
         
     def passTurnFunc(self):
         self.conts += 1
