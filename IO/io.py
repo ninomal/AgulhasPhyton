@@ -5,6 +5,8 @@ import random
 
 class IO:
     def __init__(self):
+        self.conts = 0
+        self.contsAdd = 0
         self.products = Products("01", "07")
         self.listData = []
         self.windows = Tk()
@@ -18,9 +20,8 @@ class IO:
         self.buttonContinue()
         self.buttonPassTurn()
         self.clearLIstEntrys()
-        
-        
-              
+               
+                     
     def canvasImage(self):
         self.canvas = Canvas(height=300, width=600)
         self.canvas.grid(row= 0, column= 1)
@@ -53,32 +54,42 @@ class IO:
         self.AGULHAS_ENTRY = Entry(width= 20)
         self.AGULHAS_ENTRY.grid(row=4, column= 1)
 
-    def buttonADD(self):
+    def buttonADD(self): 
         self.ADDBUTTON = Button(text= "Adicionar", width= 17, command= self.popADD)
         self.ADDBUTTON.grid(row = 5, column= 1)
-    
+        
     def buttonContinue(self):
         self.continueButton = Button(text="Adicionar mais", 
                         width= 17, command= self.clearLIstEntrys )
         self.continueButton.grid(row = 5 , column= 0)
         
-    def buttonPassTurn(self):
+    def buttonPassTurn(self):  
         self.passTurn = Button(text="Passar o turno", 
-                        width= 17, command= self.clearLIstEntrys )
+                        width= 17, command=  self.passTurnFunc)
         self.passTurn.grid(row = 5 , column= 2)
         
+    def passTurnFunc(self):
+        self.conts += 1
+        self.clearLIstEntrys()
+        if self.conts == 1:
+            self.turn.set("TB")
+        else:
+            self.turn.set("TC")
+            self.conts = 0
+         
     def radioButon(self):
-        turnLabel = Label(text= "TURNO:")
-        turn = StringVar()
-        ta = Radiobutton(text="TA",variable= turn, value= "TA")
-        tb = Radiobutton(text="TB",variable= turn, value= "TB")
-        tc = Radiobutton(text="TC",variable= turn, value= "TC")
+        turnLabel = Label(text= "TURNO:")     
+        self.turn = StringVar()
+        self.turn.set("TA")
+        ta = Radiobutton(text="TA",variable= self.turn, value= "TA")
+        tb = Radiobutton(text="TB",variable= self.turn, value= "TB")
+        tc = Radiobutton(text="TC",variable= self.turn, value= "TC")
         turnLabel.grid(row = 1, column=3)
         ta.grid(row=2, column=3)
         tb.grid(row=3, column=3)
         tc.grid(row=4, column=3)       
-        return turn
-        
+        return self.turn
+              
     def finurasCheck(self):
         finura = self.FINURAS_ENTRY.get()
         asw = self.products.finuraCheck(finura)
@@ -90,10 +101,17 @@ class IO:
     def popFinuras(self):
         messagebox.showwarning(title="Erro", message= "Finura Errada")
         self.clearLIstEntrys()
-               
+    
+    def popEraserError(self):
+        messagebox.showwarning(title="Erro",
+                message= "Clicar em Adicionar mais ou Passar o turno")
+                            
     def popADD(self):
+        self.contsAdd +=1
         finuras = self.finurasCheck()
-        if finuras :
+        if self.contsAdd > 1:
+            self.popEraserError()
+        elif finuras :
             ask = mensagemBox = messagebox.askyesno("Confirmação", 
                                     message= "Confirmar os dados")
             self.askTrue(ask)
@@ -105,7 +123,7 @@ class IO:
             mes = self.MES_ENTRY.get()
             finura = self.FINURAS_ENTRY.get()
             agulhas = self.AGULHAS_ENTRY.get()
-            turn = self.radioButon().get()
+            turn = self.turn.get()
             self.addFunc(dia, mes, turn, finura, agulhas)
                   
     def addFunc(self, dia, mes, turn, finura , agulha):
@@ -113,14 +131,14 @@ class IO:
         list(map(lambda data: self.listData.append(data), dataList))
         print(self.listData)
         return self.listData
-    
-     
+       
     def clearLIstEntrys(self):
         self.listData = []
         #self.DIA_ENTRY.delete(0, END)
         #self.MES_ENTRY.delete(0, END)
         self.FINURAS_ENTRY.delete(0, END)
         self.AGULHAS_ENTRY.delete(0, END)
+        self.contsAdd = 0
         
     
     def ioMainLoop(self):
