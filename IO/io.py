@@ -1,5 +1,6 @@
 from customtkinter import *
 from products.Products import Products
+from PIL import Image
 import random
 
 class IO:
@@ -9,54 +10,61 @@ class IO:
         self.products = Products("01", "07")
         self.listData = []
         self.windows = CTk()
-        self.windows.geometry("1000x750")
+        self.windows.geometry("700x700")
         self.windows.title("Diario")
+        set_default_color_theme("green")
+        set_appearance_mode("dark")
         self.buttonADD()
-        #self.canvasImage()
-        #self.labels()
-        #self.entrys()
+        #self.popFinuras()
+        self.canvasImage()
+        self.labels()
+        self.entrys()
         self.buttonADD()
-        #self.radioButon()
+        self.radioButon()
         self.buttonContinue()
         self.buttonPassTurn()
         #self.clearLIstEntrys()
-    
+           
     def buttonForme(self, name, comandFunc):
         self.button = CTkButton(text=f"{name}",hover_color="#C850C0", border_color="#FFCC70", 
-                border_width=2, master= self.windows , command= comandFunc)
+                border_width=2, master= self.windows , command= comandFunc)  
         return self.button        
                           
     def canvasImage(self):
-        self.canvas = Canvas(height=300, width=600)
-        self.canvas.grid(row= 0, column= 1)
-        self.logo_img = PhotoImage(file= self.randomImagem())
-        self.canvas.create_image(100, 100, image = self.logo_img)
+        logo_img = Image.open(self.randomImagem())
+        canvas = CTkImage(dark_image= logo_img, light_image= logo_img, size=(650,640))
+        CTkLabel(master=self.windows, text="", image= canvas).pack(expand=True, side="left")
         
     def randomImagem(self):
         rng = random.Random()
         randInt = rng.randint(1, 5)
         path = f"IO\image\ess{randInt}.png"
         return path
-               
+
+    def labelsForme(self, text):
+        label = CTkLabel(master=self.windows, text= f"{text}", 
+                        fg_color="transparent", bg_color="transparent")
+        return label
+    
     def labels(self):
-        self.DIALABEL = Label(text="Dia:")
-        self.DIALABEL.grid(row= 1, column= 0)
-        self.MES = Label(text= "Mês:")
-        self.MES.grid(row = 2, column=0)
-        self.FINURA = Label(text= "Finura:")
-        self.FINURA.grid(row = 3, column=0)
-        self.AGULHAS = Label(text= "Agulhas quebradas:")
-        self.AGULHAS.grid(row = 4, column=0)
+        self.diaLabel = self.labelsForme("Dia:")
+        self.diaLabel.place(relx=0.76, rely=0.48,anchor="e")
+        self.mes = self.labelsForme("Mês:")
+        self.mes.place(relx=0.76, rely=0.54,anchor="e")
+        self.finura = self.labelsForme("Finura:")
+        self.finura.place(relx=0.76, rely=0.60,anchor="e")
+        self.agulhas = self.labelsForme("Agulhas quebradas:")
+        self.agulhas.place(relx=0.76, rely=0.66,anchor="e")
         
     def entrys(self):
-        self.DIA_ENTRY = Entry(width= 20)
-        self.DIA_ENTRY.grid(row=1, column= 1)
-        self.MES_ENTRY = Entry(width= 20)
-        self.MES_ENTRY.grid(row=2, column= 1)
-        self.FINURAS_ENTRY = Entry(width= 20)
-        self.FINURAS_ENTRY.grid(row=3, column= 1)
-        self.AGULHAS_ENTRY = Entry(width= 20)
-        self.AGULHAS_ENTRY.grid(row=4, column= 1)
+        self.dia_entry = CTkEntry(master= self.windows, width= 150)
+        self.dia_entry.place(relx=0.980, rely=0.48,anchor="e")
+        self.mes_entry = CTkEntry(master= self.windows, width= 150)
+        self.mes_entry.place(relx=0.980, rely=0.54,anchor="e")
+        self.finuras_entry = CTkEntry(master= self.windows, width= 150)
+        self.finuras_entry.place(relx=0.980, rely=0.60,anchor="e")
+        self.agulhas_entry = CTkEntry(master= self.windows, width= 150)
+        self.agulhas_entry.place(relx=0.980, rely=0.66,anchor="e")
 
     def buttonADD(self): 
         self.addButton = self.buttonForme("Adicionar", comandFunc= self.popADD)
@@ -80,20 +88,12 @@ class IO:
             self.conts = 0
          
     def radioButon(self):
-        turnLabel = Label(text= "TURNO:")     
-        self.turn = StringVar()
-        self.turn.set("TA")
-        ta = Radiobutton(text="TA",variable= self.turn, value= "TA")
-        tb = Radiobutton(text="TB",variable= self.turn, value= "TB")
-        tc = Radiobutton(text="TC",variable= self.turn, value= "TC")
-        turnLabel.grid(row = 1, column=3)
-        ta.grid(row=2, column=3)
-        tb.grid(row=3, column=3)
-        tc.grid(row=4, column=3)       
+        self.turn = CTkComboBox(master= self.windows, values=['TA', 'TB', 'TC'])
+        self.turn.place(relx=0.980, rely=0.4,anchor="e")      
         return self.turn
               
     def finurasCheck(self):
-        finura = self.FINURAS_ENTRY.get()
+        finura = self.finuras_entry.get()
         asw = self.products.finuraCheck(finura)
         if not asw:
             self.popFinuras()
@@ -101,8 +101,12 @@ class IO:
             return asw
     
     def popFinuras(self):
-        messagebox.showwarning(title="Erro", message= "Finura Errada")
-        self.clearLIstEntrys()
+        masterPoP = CTk()
+        masterPoP.geometry("300x200")
+        messagebox = CTkLabel(master= masterPoP, text= "Finura Errada")
+        #messagebox.pack(padx=20, pady=20)
+        
+        #self.clearLIstEntrys()
     
     def popEraserError(self):
         messagebox.showwarning(title="Erro",
@@ -114,17 +118,17 @@ class IO:
         if self.contsAdd > 1:
             self.popEraserError()
         elif finuras :
-            ask = mensagemBox = messagebox.askyesno("Confirmação", 
+            ask = mensagemBox = CTkInputDialog("Confirmação", 
                                     message= "Confirmar os dados")
             self.askTrue(ask)
             return ask
      
     def askTrue(self, ask):
         if ask == True:
-            dia = self.DIA_ENTRY.get()   
-            mes = self.MES_ENTRY.get()
-            finura = self.FINURAS_ENTRY.get()
-            agulhas = self.AGULHAS_ENTRY.get()
+            dia = self.dia_entry.get()   
+            mes = self.mes_entry.get()
+            finura = self.finuras_entry.get()
+            agulhas = self.agulhas_entry.get()
             turn = self.turn.get()
             self.addFunc(dia, mes, turn, finura, agulhas)
                   
