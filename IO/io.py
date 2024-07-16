@@ -12,43 +12,50 @@ class IO:
         self.windows = CTk()
         self.windows.geometry("700x700")
         self.windows.title("Diario")
-        set_default_color_theme("green")
         set_appearance_mode("dark")
+        set_default_color_theme("blue")
         self.buttonADD()
         #self.popFinuras()
-        self.canvasImage()
+        #self.canvasImage()
         self.labels()
         self.entrys()
         self.buttonADD()
         self.radioButon()
         self.buttonContinue()
         self.buttonPassTurn()
+        self.frame1()
         #self.clearLIstEntrys()
            
+    def frame1(self):
+        frame = CTkFrame(master= self.windows, bg_color="white")
+        frame.pack(expand ="true", fill = "both", padx = 120, pady = 150, side = LEFT)      
+           
     def buttonForme(self, name, comandFunc):
-        self.button = CTkButton(text=f"{name}",hover_color="#C850C0", border_color="#FFCC70", 
-                border_width=2, master= self.windows , command= comandFunc)  
+        self.button = CTkButton(text=f"{name}",hover_color="#C850C0",
+                                border_color="#FFCC70", border_width=2,
+                                master= self.windows , command= comandFunc)  
         return self.button        
-                          
+    """                      
     def canvasImage(self):
+        self.windows1 = CTk()
+        self.windows1.geometry("300x300")
         logo_img = Image.open(self.randomImagem())
         canvas = CTkImage(dark_image= logo_img, light_image= logo_img, size=(650,640))
-        CTkLabel(master=self.windows, text="", image= canvas).pack(expand=True, side="left")
+        self.canvas = CTkLabel(master=self.windows1, text="", image= canvas).pack(expand=True,fill="both", side="left")
         
     def randomImagem(self):
         rng = random.Random()
         randInt = rng.randint(1, 5)
         path = f"IO\image\ess{randInt}.png"
         return path
-
+    """
     def labelsForme(self, text):
-        label = CTkLabel(master=self.windows, text= f"{text}", 
-                        fg_color="transparent", bg_color="transparent")
+        label = CTkLabel(master=self.windows, text= f"{text}", bg_color='transparent')
         return label
     
     def labels(self):
         self.diaLabel = self.labelsForme("Dia:")
-        self.diaLabel.place(relx=0.76, rely=0.48,anchor="e")
+        self.diaLabel.pack(padx= 20, pady =20)
         self.mes = self.labelsForme("Mês:")
         self.mes.place(relx=0.76, rely=0.54,anchor="e")
         self.finura = self.labelsForme("Finura:")
