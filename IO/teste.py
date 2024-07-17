@@ -12,9 +12,9 @@ root.title("Diario")
 
 
 
-image_frame = Canvas(root, width=660, height=658,background="#080121")
+image_frame = Canvas(root, width=660, height=400,background="#080121")
 image_frame.place(x=742, y=360)
-logo_img = PhotoImage(file= "IO\image\ess2.png")
+logo_img = PhotoImage(file= "IO\image\ess3.png")
 image_frame.create_image(100, 100, image = logo_img)
 
 

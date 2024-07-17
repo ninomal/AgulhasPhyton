@@ -16,27 +16,25 @@ class IO:
         self.windows.geometry("1156x834")
         self.windows.title("Diario")
         self.windows.config(background="#080121")
-        #self.popFinuras()
-        self.canvasImage()
-        self.buttonADD()
         self.frame1()
-        self.buttonContinue()
-        self.buttonPassTurn()
+        self.buttonPainel()
+        self.canvasImage()
         self.firma()
-        #self.clearLIstEntrys()
+        
+        self.clearLIstEntrys()
         
     def firma(self):
         label_footer = tk.Label(self.windows, text="Radical dreamers aw rpg ltda", 
                         font=("Helvetica", 17), fg="#1b52a4", bg="#080121")
-        label_footer.place(x=682, y=777, width=349, height=45)
+        label_footer.place(x=820, y=791, width=349, height=45)
            
     def frame1(self):
         self.anchorPane = tk.Frame(self.windows, width=251, height=276, background="#4A1985")
         self.anchorPane.place(x=55, y=64) 
         
-        self.monthEntry = tk.Label(self.anchorPane, text="Mês:", font=("Helvetica", 21),
+        month_label = tk.Label(self.anchorPane, text="Mês:", font=("Helvetica", 21),
                                bg="#4A1985")
-        self.monthEntry.place(x=29, y=14, width=54, height=31)
+        month_label.place(x=29, y=14, width=54, height=31)
         
         label_day1 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21),
                               bg="#4A1985")
@@ -54,8 +52,8 @@ class IO:
                                 bg="#4A1985")
         self.label_agulha.place(x=19, y=225, width=95, height=31)
 
-        month = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        month.place(x=89, y=17, width=45, height=25)
+        self.monthEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
+        self.monthEntry.place(x=89, y=17, width=45, height=25)
 
         day1 = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         day1.place(x=89, y=48, width=45, height=25)
@@ -93,12 +91,15 @@ class IO:
 
         text_agulha = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         text_agulha.place(x=120, y=228, width=81, height=26)
+        
+        self.comboTurno()
+        self.comboxSetor()
                    
     def canvasImage(self): 
-        image_frame = Canvas(self.windows, width=660, height=658,background="#080121")
+        image_frame = Canvas(self.windows, width=660, height=420, background="#080121")
         image_frame.place(x=742, y=360)
-        logo_img = Image.open(self.randomImagem())
-        image_frame.create_image(100, 100, image = logo_img)
+        self.logo_img = PhotoImage(file= self.randomImagem())
+        image_frame.create_image(100, 100, image = self.logo_img)
         
     def randomImagem(self):
         rng = random.Random()
