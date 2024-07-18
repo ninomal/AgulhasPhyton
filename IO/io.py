@@ -55,11 +55,11 @@ class IO:
         self.monthEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.monthEntry.place(x=89, y=17, width=45, height=25)
 
-        day1 = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        day1.place(x=89, y=48, width=45, height=25)
+        dayInit = tk.Entry(self.anchorPane, font=("Helvetica", 14))
+        dayInit.place(x=89, y=48, width=45, height=25)
 
-        text_day2 = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        text_day2.place(x=120, y=144, width=81, height=26)
+        self.dayEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
+        self.dayEntry.place(x=120, y=144, width=81, height=26)
 
         self.finuraEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.finuraEntry.place(x=120, y=185, width=81, height=26)
@@ -68,30 +68,15 @@ class IO:
         self.agulhaEntry.place(x=120, y=228, width=81, height=26)
         
         combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
-                                   font=("Helvetica", 14))
+                                   font=("Helvetica", 14), background= "#A580CA", foreground="#A580CA")
         combo_setor.place(x=21, y=92, width=87, height=25)
         combo_setor.set("Setor")
 
         combo_turno = ttk.Combobox(self.anchorPane, values=["TA", "TB", "TC"],
-                                   font=("Helvetica", 14))
+                                   font=("Helvetica", 14), background= "#A580CA", foreground="#A580CA")
         combo_turno.place(x=142, y=92, width=87, height=25)
-        combo_turno.set("Turno")
-
-        month = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        month.place(x=89, y=17, width=45, height=25)
-
-        self.day1 = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        self.day1.place(x=89, y=48, width=45, height=25)
-
-        self.dayEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        self.dayEntry.place(x=120, y=144, width=81, height=26)
-
-        text_finura = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        text_finura.place(x=120, y=185, width=81, height=26)
-
-        text_agulha = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        text_agulha.place(x=120, y=228, width=81, height=26)
         
+        combo_turno.set("Turno")      
         self.comboTurno()
         self.comboxSetor()
                    
@@ -153,49 +138,124 @@ class IO:
             self.popFinuras()
         else:
             return asw
+        
+    def monthNotNumber(self):
+        monthStr = self.monthEntry.get()
+        try:
+            month = int(monthStr)
+            if type(month) != int or month >=13 or month == None:
+                return True
+            else:
+                return False
+        except  ValueError :
+            pass
+        
+        
+    def dayNotnumber(self):
+        dayStr = self.dayEntry.get()
+        try:
+            day = int(dayStr)
+            if type(day) != int or day >=32 or day == None:
+                return True
+            else:
+                return False
+        except  ValueError :
+            pass
+              
+    def agulhaNotNumber(self):
+        agulhaStr = self.agulhaEntry.get()
+        try:
+            agulha = int(agulhaStr)
+            if type(agulha) != int or agulha == None:
+                return True
+            else:
+                return False
+        except ValueError:
+            pass
+            
+    def popValueError(self):
+        masterPoP = Tk()
+        masterPoP.geometry("300x200")
+        messagebox = tk.Label(master= masterPoP, text= "Valor invalido")
+        messagebox.pack(padx= 40, pady= 40)   
+        self.agulhaEntry.delete(0, END)
+        self.dayEntry.delete(0, END)
+        self.monthEntry.delete(0, END)
+        self.listData = []
+        self.contsAdd = 0
+            
+    def popAgulhaErrada(self):
+        masterPoP = Tk()
+        masterPoP.geometry("300x200")
+        messagebox = tk.Label(master= masterPoP, text= "Agulha invalida")
+        messagebox.pack(padx= 40, pady= 40)   
+        self.agulhaEntry.delete(0, END)
+        self.contsAdd = 0
+    
+            
+    def popDay(self):
+        masterPoP = Tk()
+        masterPoP.geometry("300x200")
+        messagebox = tk.Label(master= masterPoP, text= "Dia errado")
+        messagebox.pack(padx= 40, pady= 40)   
+        self.dayEntry.delete(0, END)
+        self.contsAdd = 0
     
     def popFinuras(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
         messagebox = tk.Label(master= masterPoP, text= "Finura Errada")
-        messagebox.pack(padx=20, pady=20)   
+        messagebox.pack(padx=40, pady=40)   
         self.clearLIstEntrys()
+        
+    def popMonth(self):
+        masterPoP = Tk()
+        masterPoP.geometry("300x200")
+        messagebox = tk.Label(master= masterPoP, text= "Mês INVALIDO")
+        messagebox.pack(padx=40, pady=40)   
+        self.monthEntry.delete(0, END)
+        self.contsAdd = 0
     
     def popEraserError(self):
         messagebox.showwarning(title="Erro",
                 message= "Clicar em Adicionar mais ou Passar o turno")
-       #messagebox.pack(padx=20, pady=20)  
-                            
+                               
     def popADD(self):
         self.contsAdd +=1
         finuras = self.finurasCheck()
         if self.contsAdd > 1:
             self.popEraserError()
+        elif self.monthNotNumber():
+            self.popMonth()
+        elif self.dayNotnumber():
+            self.popDay()
+        elif self.agulhaNotNumber():
+            self.popAgulhaErrada()
         elif finuras :
-            ask = mensagemBox = tk.Label("Confirmação", 
+            ask  = messagebox.askyesno("Confirmação", 
                                     message= "Confirmar os dados")
             self.askTrue(ask)
             return ask
      
     def askTrue(self, ask):
-        if ask == True:
-            dia = self.dayEntry.get()   
-            mes = self.monthEntry.get()
-            finura = self.finuraEntry.get()
-            agulhas = self.agulhaEntry.get()
-            turn = self.combo_turno.get()
-            self.addFunc(dia, mes, turn, finura, agulhas)
+        try:
+            if ask == True:
+                dia = int(self.dayEntry.get())   
+                mes = int(self.monthEntry.get())
+                finura = self.finuraEntry.get()
+                agulhas = int(self.agulhaEntry.get())
+                turn = self.combo_turno.get()
+                self.addFunc(dia, mes, turn, finura, agulhas)
+        except ValueError:
+            self.popValueError()
                   
     def addFunc(self, dia, mes, turn, finura , agulha):
         dataList = [dia, mes, turn, finura, agulha]
         list(map(lambda data: self.listData.append(data), dataList))
-        print(self.listData)
         return self.listData
        
     def clearLIstEntrys(self):
         self.listData = []
-        #self.DIA_ENTRY.delete(0, END)
-        #self.MES_ENTRY.delete(0, END)
         self.finuraEntry.delete(0, END)
         self.agulhaEntry.delete(0, END)
         self.contsAdd = 0
