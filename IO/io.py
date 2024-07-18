@@ -96,19 +96,19 @@ class IO:
         button_pane = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
         button_pane.place(x=742, y=270)
         button_dia = tk.Button(button_pane, text="Agulhas do Dia", font=("Helvetica", 18),
-                               bg="#A580CA", command= "aad")
+                               bg="#A580CA", command= self.popDayGrafico)
         button_dia.place(x = 4, y= 4, width=200)
         
         button_graficoPizza = tk.Button(button_pane, text="Grafico pizza",font=("Helvetica", 18),
-                                        bg="#A580CA",command= "add")
+                                        bg="#A580CA",command= self.popComparacaoGrafico)
         button_graficoPizza.place(x= 207 , y= 4, width=200)
         
         button_graficoMes = tk.Button(button_pane, text="Grafico do mês",font=("Helvetica", 18),
-                                        bg="#A580CA",command= "add")
+                                        bg="#A580CA",command= self.monthlyGraph)
         button_graficoMes.place(x= 207 , y= 54, width=200)
         
         button_comparaMes = tk.Button(button_pane, text="Comparar o Mês",font=("Helvetica", 18),
-                                        bg="#A580CA",command= "add")
+                                        bg="#A580CA",command= self.popComparacaoGrafico)
         button_comparaMes.place(x= 4 , y= 54, width=200)
               
     
@@ -195,7 +195,7 @@ class IO:
     def popValueError(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Valor invalido")
+        messagebox = tk.Label(master= masterPoP, text= "Valor invalido", font=("Helvetica", 14))
         messagebox.pack(padx= 40, pady= 40)   
         self.agulhaEntry.delete(0, END)
         self.dayEntry.delete(0, END)
@@ -206,7 +206,7 @@ class IO:
     def popAgulhaErrada(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Agulha invalida")
+        messagebox = tk.Label(master= masterPoP, text= "Agulha invalida", font=("Helvetica", 14))
         messagebox.pack(padx= 40, pady= 40)   
         self.agulhaEntry.delete(0, END)
         self.contsAdd = 0
@@ -214,7 +214,7 @@ class IO:
     def popDay(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Dia errado")
+        messagebox = tk.Label(master= masterPoP, text= "Dia errado", font=("Helvetica", 14))
         messagebox.pack(padx= 40, pady= 40)   
         self.dayEntry.delete(0, END)
         self.contsAdd = 0
@@ -222,14 +222,14 @@ class IO:
     def popFinuras(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Finura Errada")
+        messagebox = tk.Label(master= masterPoP, text= "Finura Errada", font=("Helvetica", 14))
         messagebox.pack(padx=40, pady=40)   
         self.clearLIstEntrys()
         
     def popMonth(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Mês INVALIDO")
+        messagebox = tk.Label(master= masterPoP, text= "Mês INVALIDO", font=("Helvetica", 14))
         messagebox.pack(padx=40, pady=40)   
         self.monthEntry.delete(0, END)
         self.contsAdd = 0
@@ -277,6 +277,60 @@ class IO:
         self.finuraEntry.delete(0, END)
         self.agulhaEntry.delete(0, END)
         self.contsAdd = 0
+        
+    def popDayGrafico(self):
+        popDia = Tk()
+        popDia.geometry("300x200")
+        popDia.config(background="#4A1985") 
+        messagebox = tk.Label(master= popDia, text= "Digite o dia:",
+                            font=("Helvetica", 14), bg="#4A1985")
+        messagebox.pack(padx= 2, pady= 20) 
+        
+        combo_setor = ttk.Combobox(popDia, values=["Raschell", "Jacquard", "ketten"],
+                                   font=("Helvetica", 14), background= "#A580CA")
+        combo_setor.place(x=105, y= 115, width=87, height=25)
+        combo_setor.set("Setor")
+        
+        self.diaGraficoEntry1 = tk.Entry(master= popDia)     
+        self.diaGraficoEntry1.pack(padx= 6, pady= 2)
+    
+        
+    def popComparacaoGrafico(self):
+        popComparacao = Tk()
+        popComparacao.geometry("300x200")
+        popComparacao.config(background="#4A1985")
+        messagebox = tk.Label(master= popComparacao, text= "Digite os Mês:",
+                            font=("Helvetica", 14), bg="#4A1985")
+        messagebox.pack(padx= 2, pady= 20) 
+        
+        combo_setor = ttk.Combobox(popComparacao, values=["Raschell", "Jacquard", "ketten"],
+                                   font=("Helvetica", 14), background= "#A580CA")
+        combo_setor.place(x=105, y= 52, width=87, height=25)
+        combo_setor.set("Setor")
+        
+        self.comparacaoMonth1 = tk.Entry(master= popComparacao)     
+        self.comparacaoMonth1.pack(padx= 6, pady= 20)
+        
+        self.comparacaoMonth2 = tk.Entry(master= popComparacao)     
+        self.comparacaoMonth2.pack(padx= 6, pady= 1)
+        
+    def monthlyGraph(self):
+        monthLyGraph = Tk()
+        monthLyGraph.geometry("900x400")
+        monthLyGraph.config(background="#4A1985")
+        
+        combo_setor = ttk.Combobox(monthLyGraph, values=["Raschell", "Jacquard", "ketten"],
+                                   font=("Helvetica", 14), background= "#A580CA")
+        combo_setor.place(x=2, y= 10, width=87, height=25)
+        combo_setor.set("Setor")
+        
+        messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
+                            font=("Helvetica", 14), bg="#4A1985")
+        messagebox.place(x = 94, y = 10)
+        
+        self.monthGraficEntry = tk.Entry(master= monthLyGraph)     
+        self.monthGraficEntry.place(x= 147, y =14, width="42")
+        
         
     def ioMainLoop(self):
         self.windows.mainloop()
