@@ -18,6 +18,7 @@ class IO:
         self.windows.config(background="#080121")
         self.frame1()
         self.buttonPainel()
+        self.frameButton2()
         self.canvasImage()
         self.firma()
         
@@ -74,15 +75,14 @@ class IO:
 
         combo_turno = ttk.Combobox(self.anchorPane, values=["TA", "TB", "TC"],
                                    font=("Helvetica", 14), background= "#A580CA", foreground="#A580CA")
-        combo_turno.place(x=142, y=92, width=87, height=25)
-        
+        combo_turno.place(x=142, y=92, width=87, height=25)  
         combo_turno.set("Turno")      
         self.comboTurno()
         self.comboxSetor()
-                   
+                          
     def canvasImage(self): 
-        image_frame = Canvas(self.windows, width=660, height=420, background="#080121")
-        image_frame.place(x=742, y=360)
+        image_frame = Canvas(self.windows, width=406, height=400, background="#080121")
+        image_frame.place(x=742, y=378)
         self.logo_img = PhotoImage(file= self.randomImagem())
         image_frame.create_image(100, 100, image = self.logo_img)
         
@@ -91,6 +91,26 @@ class IO:
         randInt = rng.randint(1, 5)
         path = f"IO\image\ess{randInt}.png"
         return path
+            
+    def frameButton2(self):
+        button_pane = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
+        button_pane.place(x=742, y=270)
+        button_dia = tk.Button(button_pane, text="Agulhas do Dia", font=("Helvetica", 18),
+                               bg="#A580CA", command= "aad")
+        button_dia.place(x = 4, y= 4, width=200)
+        
+        button_graficoPizza = tk.Button(button_pane, text="Grafico pizza",font=("Helvetica", 18),
+                                        bg="#A580CA",command= "add")
+        button_graficoPizza.place(x= 207 , y= 4, width=200)
+        
+        button_graficoMes = tk.Button(button_pane, text="Grafico do mês",font=("Helvetica", 18),
+                                        bg="#A580CA",command= "add")
+        button_graficoMes.place(x= 207 , y= 54, width=200)
+        
+        button_comparaMes = tk.Button(button_pane, text="Comparar o Mês",font=("Helvetica", 18),
+                                        bg="#A580CA",command= "add")
+        button_comparaMes.place(x= 4 , y= 54, width=200)
+              
     
     def buttonPainel(self):
         button_pane = tk.Frame(self.windows, width=334, height=114, background="#4A1985")
@@ -98,15 +118,15 @@ class IO:
 
         button_add = tk.Button(button_pane, text="Adicionar", font=("Helvetica", 18),
                                bg="#A580CA", command= self.popADD)
-        button_add.place(x=120, y=14, width=109)
+        button_add.place(x=109, y=7, width=130)
 
         button_skip_turn = tk.Button(button_pane, text="Pular turno", font=("Helvetica", 18),
                                      bg="#A580CA", command= self.passTurnFunc)
-        button_skip_turn.place(x=6, y=67)
+        button_skip_turn.place(x=6, y=58)
 
         button_add_more = tk.Button(button_pane, text="Adicionar + ", font=("Helvetica", 18),
                                     bg="#A580CA",command= self.clearLIstEntrys)
-        button_add_more.place(x=193, y=67)
+        button_add_more.place(x=179, y=58)
      
     def comboxSetor(self):
         combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
@@ -149,8 +169,7 @@ class IO:
                 return False
         except  ValueError :
             pass
-        
-        
+               
     def dayNotnumber(self):
         dayStr = self.dayEntry.get()
         try:
@@ -191,8 +210,7 @@ class IO:
         messagebox.pack(padx= 40, pady= 40)   
         self.agulhaEntry.delete(0, END)
         self.contsAdd = 0
-    
-            
+               
     def popDay(self):
         masterPoP = Tk()
         masterPoP.geometry("300x200")
