@@ -3,7 +3,8 @@ from enums.enumsMonth import EnumsMonthDays
 from enums.enumsMonthNameStr import EnumsMonthNameStr
 from enums.enumsFinuras import EnumsFinuras
 from typing import Dict
-import collections, functools, operator
+import collections, functools, operator, random
+
 
 
 RASCHELLIST = [3975, 4575, 4475, 4565]
@@ -121,3 +122,12 @@ class Products():
                 aggregated[key] += value
         self.listSumNedlleDict = [{'{}'.format(key): value} for key, value in aggregated.items()]
         return self.listSumNedlleDict
+    
+    def randImage(self):
+        rng = random.Random()
+        randInt = rng.randint(1, 5)
+        path = f"IO\image\ess{randInt}.png"
+        return path
+    
+    def addAgulhasDayMongo(self, dict : dict) ->Dict:
+        self.productService.addDayAgulhaBrokeMongoDB(dict)

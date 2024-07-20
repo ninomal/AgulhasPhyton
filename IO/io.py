@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+import matplotlib
 from products.Products import Products
-from PIL import Image
-import random
+
+
 
 class IO:
     def __init__(self):
@@ -12,6 +13,7 @@ class IO:
         self.contsAdd = 0
         self.products = Products("01", "07")
         self.listData = []
+        self.dayList = []
         self.windows = Tk()
         self.windows.geometry("1156x834")
         self.windows.title("Diario")
@@ -87,9 +89,7 @@ class IO:
         image_frame.create_image(100, 100, image = self.logo_img)
         
     def randomImagem(self):
-        rng = random.Random()
-        randInt = rng.randint(1, 5)
-        path = f"IO\image\ess{randInt}.png"
+        path = self.products.randImage()
         return path
             
     def frameButton2(self):
@@ -117,16 +117,16 @@ class IO:
         button_pane.place(x=55, y=352)
 
         button_add = tk.Button(button_pane, text="Adicionar", font=("Helvetica", 18),
-                               bg="#A580CA", command= self.popADD)
-        button_add.place(x=109, y=7, width=130)
+                               bg="#A580CA", command= self.addDayMongo)
+        button_add.place(x=179, y= 58, width=149)
 
         button_skip_turn = tk.Button(button_pane, text="Pular turno", font=("Helvetica", 18),
                                      bg="#A580CA", command= self.passTurnFunc)
         button_skip_turn.place(x=6, y=58)
 
         button_add_more = tk.Button(button_pane, text="Adicionar + ", font=("Helvetica", 18),
-                                    bg="#A580CA",command= self.clearLIstEntrys)
-        button_add_more.place(x=179, y=58)
+                                    bg="#A580CA",command= self.popADD)
+        button_add_more.place(x=179, y=7)
      
     def comboxSetor(self):
         combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
@@ -264,12 +264,16 @@ class IO:
                 agulhas = int(self.agulhaEntry.get())
                 turn = self.combo_turno.get()
                 self.addFunc(dia, mes, turn, finura, agulhas)
+                self.clearLIstEntrys()
         except ValueError:
             self.popValueError()
                   
     def addFunc(self, dia, mes, turn, finura , agulha):
-        dataList = [dia, mes, turn, finura, agulha]
+        dataList = [dia, mes, turn, {finura : agulha}]
         list(map(lambda data: self.listData.append(data), dataList))
+        self.products.addAgulhasinDictList(turn, finura, agulha)
+        self.products.finuraCodeDay(finura, agulha)
+        self.dayList = self.listData
         return self.listData
        
     def clearLIstEntrys(self):
@@ -291,6 +295,10 @@ class IO:
         combo_setor.place(x=105, y= 115, width=87, height=25)
         combo_setor.set("Setor")
         
+        button_ok = tk.Button(popDia, text="Iniciar",font=("Helvetica", 18),
+                                        bg="#A580CA",command= "beta")
+        button_ok.place(x= 105 , y= 155, width= 88, height= 35)
+        
         self.diaGraficoEntry1 = tk.Entry(master= popDia)     
         self.diaGraficoEntry1.pack(padx= 6, pady= 2)
     
@@ -303,16 +311,21 @@ class IO:
                             font=("Helvetica", 14), bg="#4A1985")
         messagebox.pack(padx= 2, pady= 20) 
         
-        combo_setor = ttk.Combobox(popComparacao, values=["Raschell", "Jacquard", "ketten"],
+        comboSetor = ttk.Combobox(popComparacao, values=["Raschell", "Jacquard", "ketten"],
                                    font=("Helvetica", 14), background= "#A580CA")
-        combo_setor.place(x=105, y= 52, width=87, height=25)
-        combo_setor.set("Setor")
+        comboSetor.place(x=105, y= 52, width=87, height=25)
+        comboSetor.set("Setor")
         
         self.comparacaoMonth1 = tk.Entry(master= popComparacao)     
         self.comparacaoMonth1.pack(padx= 6, pady= 20)
         
         self.comparacaoMonth2 = tk.Entry(master= popComparacao)     
         self.comparacaoMonth2.pack(padx= 6, pady= 1)
+        
+        button_ok = tk.Button(popComparacao, text="Iniciar",font=("Helvetica", 18),
+                                        bg="#A580CA",command= "beta")
+        button_ok.place(x= 105 , y= 155, width= 88, height= 35)
+        
         
     def monthlyGraph(self):
         monthLyGraph = Tk()
@@ -326,12 +339,18 @@ class IO:
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
                             font=("Helvetica", 14), bg="#4A1985")
-        messagebox.place(x = 94, y = 10)
+        messagebox.place(x = 94, y = 7)
         
         self.monthGraficEntry = tk.Entry(master= monthLyGraph)     
-        self.monthGraficEntry.place(x= 147, y =14, width="42")
+        self.monthGraficEntry.place(x= 147, y =10, width="42", height="23")
         
+        button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
+                                        bg="#A580CA",command= "beta")
+        button_ok.place(x= 200 , y= 10, width= 88, height= 25)
         
+    def addDayMongo(self):
+        self.products.addDay(self.comboxSetor())
+                    
     def ioMainLoop(self):
         self.windows.mainloop()
     

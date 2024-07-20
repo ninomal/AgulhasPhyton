@@ -59,7 +59,8 @@ class EnumsFinuras:
             return False
                 
     def finurasCodeReturn(self, finuras):
-        if finuras in FINURAS3975:
+        finurasStr = str(finuras)
+        if (finurasStr.upper()) in FINURAS3975:
             return "3975"
         elif finuras == "F18PL":
             return "4575"
