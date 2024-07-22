@@ -1,2 +1,1 @@
-ucts.finuraCodeDay(finuras, agulhasBroken)
-                products.sumDay()
+ products.productService.addDayAgulhaBrokeMongoDB(result)

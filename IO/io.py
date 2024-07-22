@@ -129,18 +129,17 @@ class IO:
         button_add_more.place(x=179, y=7)
      
     def comboxSetor(self):
-        combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
+        self.combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
                                    font=("Helvetica", 14))
-        combo_setor.place(x=21, y=92, width=87, height=25)
-        combo_setor.set("Raschell")
-        return combo_setor
+        self.combo_setor.place(x=21, y=92, width=87, height=25)
+        self.combo_setor.set("Raschell")
 
     def comboTurno(self):
         self.combo_turno = ttk.Combobox(self.anchorPane, values=["TA", "TB", "TC"],
                                    font=("Helvetica", 14))
         self.combo_turno.place(x=142, y=92, width=87, height=25)
         self.combo_turno.set("TA")
-        return self.combo_turno
+        
                
     def passTurnFunc(self):
         self.conts += 1
@@ -268,14 +267,6 @@ class IO:
         except ValueError:
             self.popValueError()
                   
-    def addFunc(self, dia, mes, turn, finura , agulha):
-        dataList = [dia, mes, turn, {finura : agulha}]
-        list(map(lambda data: self.listData.append(data), dataList))
-        self.products.addAgulhasinDictList(turn, finura, agulha)
-        self.products.finuraCodeDay(finura, agulha)
-        self.dayList = self.listData
-        return self.listData
-       
     def clearLIstEntrys(self):
         self.listData = []
         self.finuraEntry.delete(0, END)
@@ -347,10 +338,20 @@ class IO:
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
                                         bg="#A580CA",command= "beta")
         button_ok.place(x= 200 , y= 10, width= 88, height= 25)
-        
+    
+    def addFunc(self, dia, mes, turn, finura , agulha):
+        dataList = [{finura : agulha}]
+        list(map(lambda data: self.listData.append(data), dataList))
+        self.products.addAgulhasinDictList(turn, finura, self.listData)
+        self.products.finuraCodeDay(finura, agulha)
+          
     def addDayMongo(self):
-        self.products.addDay(self.comboxSetor())
-                    
+        self.products.sumDay()
+        brokenDay = self.products.addDay(self.combo_setor.get())
+        print(brokenDay)
+        self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
+        self.clearLIstEntrys()
+                        
     def ioMainLoop(self):
         self.windows.mainloop()
     
