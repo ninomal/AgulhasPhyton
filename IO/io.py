@@ -139,8 +139,7 @@ class IO:
                                    font=("Helvetica", 14))
         self.combo_turno.place(x=142, y=92, width=87, height=25)
         self.combo_turno.set("TA")
-        
-               
+                  
     def passTurnFunc(self):
         self.conts += 1
         self.clearLIstEntrys()
@@ -173,7 +172,7 @@ class IO:
         dayStr = self.dayEntry.get()
         try:
             day = int(dayStr)
-            if type(day) != int or day >=32 or day == None:
+            if type(day) != int or day >=32 or day == "" or day == 0 or day == None:
                 return True
             else:
                 return False
@@ -193,8 +192,11 @@ class IO:
             
     def popValueError(self):
         masterPoP = Tk()
-        masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Valor invalido", font=("Helvetica", 14))
+        masterPoP.geometry("500x300")
+        masterPoP.config(bg="#A580CA")
+        messagebox = tk.Label(master= masterPoP,
+                              text= "Valor invalido",
+                              font=("Helvetica", 27))
         messagebox.pack(padx= 40, pady= 40)   
         self.agulhaEntry.delete(0, END)
         self.dayEntry.delete(0, END)
@@ -204,35 +206,79 @@ class IO:
             
     def popAgulhaErrada(self):
         masterPoP = Tk()
-        masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Agulha invalida", font=("Helvetica", 14))
+        masterPoP.geometry("500x300")
+        masterPoP.config(bg="#A580CA")
+        messagebox = tk.Label(master= masterPoP,
+                              text= "Agulha invalida", 
+                              font=("Helvetica", 27),
+                              background="#A580CA")
         messagebox.pack(padx= 40, pady= 40)   
         self.agulhaEntry.delete(0, END)
         self.contsAdd = 0
                
     def popDay(self):
         masterPoP = Tk()
-        masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Dia errado", font=("Helvetica", 14))
+        masterPoP.geometry("500x300")
+        masterPoP.config(bg="#A580CA")
+        messagebox = tk.Label(master= masterPoP,
+                              text= "Dia errado",
+                              font=("Helvetica", 27),
+                              background="#A580CA")
         messagebox.pack(padx= 40, pady= 40)   
         self.dayEntry.delete(0, END)
         self.contsAdd = 0
     
     def popFinuras(self):
         masterPoP = Tk()
-        masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Finura Errada", font=("Helvetica", 14))
+        masterPoP.geometry("500x300")
+        masterPoP.config(bg="#A580CA")
+        messagebox = tk.Label(master= masterPoP,
+                              text= "Finura Errada",
+                              font=("Helvetica", 27),
+                              background="#A580CA")
         messagebox.pack(padx=40, pady=40)   
         self.clearLIstEntrys()
         
     def popMonth(self):
         masterPoP = Tk()
-        masterPoP.geometry("300x200")
-        messagebox = tk.Label(master= masterPoP, text= "Mês INVALIDO", font=("Helvetica", 14))
+        masterPoP.geometry("500x300")
+        messagebox = tk.Label(master= masterPoP,
+                              text= "Mês INVALIDO",
+                              font=("Helvetica", 27),
+                              background="#A580CA")
         messagebox.pack(padx=40, pady=40)   
         self.monthEntry.delete(0, END)
         self.contsAdd = 0
-    
+        
+    def popMissClick(self):
+        masterPoP = Tk()
+        masterPoP.geometry("500x300")
+        masterPoP.config(background="#A580CA")
+        if self.combo_turno.get() == 'TA':
+            messagebox = tk.Label(master= masterPoP,
+                                text= "Erro faltam os turnos TB E TC",
+                                wraplength=450,  # Wrap text after 450 pixels,
+                                justify="center",
+                                font=("Helvetica", 27),
+                                width="500",
+                                background="#A580CA")
+            messagebox.pack(padx=40, pady=40)   
+        elif self.combo_turno.get() == 'TB':
+            messagebox = tk.Label(master= masterPoP,
+                                text= "Erro falta o turno TC",
+                                justify="center",
+                                font=("Helvetica", 27),
+                                background="#A580CA")
+            messagebox.pack(padx=40, pady=40)
+        else:
+            messagebox = tk.Label(master= masterPoP,
+                                text= "Turno C Não Adicionado",
+                                justify="center",
+                                font=("Helvetica", 27),
+                                background="#A580CA")
+            messagebox.pack(padx=40, pady=40)  
+           
+        
     def popEraserError(self):
         messagebox.showwarning(title="Erro",
                 message= "Clicar em Adicionar mais ou Passar o turno")
@@ -292,8 +338,7 @@ class IO:
         
         self.diaGraficoEntry1 = tk.Entry(master= popDia)     
         self.diaGraficoEntry1.pack(padx= 6, pady= 2)
-    
-        
+         
     def popComparacaoGrafico(self):
         popComparacao = Tk()
         popComparacao.geometry("300x200")
@@ -316,7 +361,6 @@ class IO:
         button_ok = tk.Button(popComparacao, text="Iniciar",font=("Helvetica", 18),
                                         bg="#A580CA",command= "beta")
         button_ok.place(x= 105 , y= 155, width= 88, height= 35)
-        
         
     def monthlyGraph(self):
         monthLyGraph = Tk()
@@ -346,11 +390,15 @@ class IO:
         self.products.finuraCodeDay(finura, agulha)
           
     def addDayMongo(self):
-        self.products.sumDay()
-        brokenDay = self.products.addDay(self.combo_setor.get())
-        print(brokenDay)
-        self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
-        self.clearLIstEntrys()
+        if self.combo_turno.get() != 'TC':
+            self.popMissClick()
+        elif self.finuraEntry.get() == "":
+            self.popMissClick()
+        else:
+            self.products.sumDay()
+            brokenDay = self.products.addDay(self.combo_setor.get())
+            self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
+            self.clearLIstEntrys()
                         
     def ioMainLoop(self):
         self.windows.mainloop()
