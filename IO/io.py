@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-import matplotlib
 from products.Products import Products
-
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import time
+from functools import cache
 
 
 class IO:
@@ -23,7 +25,7 @@ class IO:
         self.frameButton2()
         self.canvasImage()
         self.firma()
-        
+        self.plot_window = None
         self.clearLIstEntrys()
         
     def firma(self):
@@ -270,14 +272,6 @@ class IO:
                                 font=("Helvetica", 27),
                                 background="#A580CA")
             messagebox.pack(padx=40, pady=40)
-        else:
-            messagebox = tk.Label(master= masterPoP,
-                                text= "Turno C Não Adicionado",
-                                justify="center",
-                                font=("Helvetica", 27),
-                                background="#A580CA")
-            messagebox.pack(padx=40, pady=40)  
-           
         
     def popEraserError(self):
         messagebox.showwarning(title="Erro",
@@ -319,7 +313,7 @@ class IO:
         self.agulhaEntry.delete(0, END)
         self.contsAdd = 0
         
-    def popDayGrafico(self):
+    def dayPopButton(self):
         popDia = Tk()
         popDia.geometry("300x200")
         popDia.config(background="#4A1985") 
@@ -333,7 +327,7 @@ class IO:
         combo_setor.set("Setor")
         
         button_ok = tk.Button(popDia, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= "beta")
+                                        bg="#A580CA",command= self.popDayGrafico)
         button_ok.place(x= 105 , y= 155, width= 88, height= 35)
         
         self.diaGraficoEntry1 = tk.Entry(master= popDia)     
@@ -388,18 +382,66 @@ class IO:
         list(map(lambda data: self.listData.append(data), dataList))
         self.products.addAgulhasinDictList(turn, finura, self.listData)
         self.products.finuraCodeDay(finura, agulha)
+        
           
     def addDayMongo(self):
         if self.combo_turno.get() != 'TC':
-            self.popMissClick()
-        elif self.finuraEntry.get() == "":
             self.popMissClick()
         else:
             self.products.sumDay()
             brokenDay = self.products.addDay(self.combo_setor.get())
             self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
             self.clearLIstEntrys()
-                        
+            self.combo_turno.set("TA")
+            
+                    
+    #START MATPLOT INTERATION
+    @cache
+    def popDayGrafico(self):
+        # Check if there's already an open window, close it
+        if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
+            self.plot_window.destroy()
+
+        # Create a new top-level window
+        self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
+        self.plot_window.title("PoP Day Graphics")
+        self.plot_window.config(background="#A580CA")
+        self.plot_window.geometry("1000x500")
+
+        # Create a figure and axis
+        fig, ax = plt.subplots(figsize=(12, 6)) 
+
+        # Generate data for the bar graph
+        x = self.products.monthGraphics(7)
+        y = self.products.monthGraphics(6)
+
+        # Plot the bar graph
+        ax.bar(x, y)
+        ax.set_xlabel('Dia')
+        ax.set_ylabel('Agulhas')
+        ax.set_title('Agulhas quebradas')
+        plt.xticks(rotation=45)
+        
+        # Embed the plot in the Tkinter window
+        canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        
+        # Schedule the window to close after 15 seconds
+        self.close_after_id = self.plot_window.after(15000, self.closedPlt)
+        self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
+        self.plot_window.mainloop()
+        
+    def closedPlt(self):
+        # Cancel the scheduled after() event if it exists
+        if self.close_after_id is not None:
+            self.plot_window.after_cancel(self.close_after_id)
+            self.close_after_id = None
+        # Destroy the Tkinter window if it exists
+        if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
+            self.plot_window.destroy()
+            self.plot_window = None
+                                                  
     def ioMainLoop(self):
         self.windows.mainloop()
     

@@ -51,15 +51,7 @@ class Products():
         finuraGet = self.productService.getFinuras()
         total = self.productService.getTotalofDay()   
         return (f"O dia ",day,"\n A finura ", finuraGet," quebrou o total de: ", total)
-          
-    def selectMonthgrafics(self, month):
-        #select month to se grafics IO
-        pass
-    
-    def monthComparation(self, month1, month2):
-        #select the month for comparation IO
-        pass
-    
+ 
     def addDayMongoDB(self, setor):
         dayMongo = self.addDay( setor)
         return dayMongo
@@ -131,3 +123,16 @@ class Products():
     
     def addAgulhasDayMongo(self, dict : dict) ->Dict:
         self.productService.addDayAgulhaBrokeMongoDB(dict)
+        
+             
+    def selectMonthgrafics(self, month):
+        #select month to se grafics IO
+        pass
+    
+    def monthComparation(self, month1, month2):
+        #select the month for comparation IO
+        pass
+    
+    def monthGraphics(self, month):
+        monthResult = self.enumsMonthDays.colectMonths(month)
+        return monthResult
