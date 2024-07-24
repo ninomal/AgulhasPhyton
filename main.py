@@ -8,8 +8,13 @@ def main():
    
     io.ioMainLoop()
     """
-    api = Api() 
     products = Products("01", "07")
+    documents = products.getDocumentFind({"07": "01"})
+    for data in documents:
+        print(data)
+    """
+    """
+    api = Api() 
     #remove
     today = 0
     enumsToday = Enumstoday()

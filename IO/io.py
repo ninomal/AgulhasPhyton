@@ -13,7 +13,7 @@ class IO:
     def __init__(self):
         self.conts = 0
         self.contsAdd = 0
-        self.products = Products("01", "07")
+        self.products = Products()
         self.listData = []
         self.dayList = []
         self.windows = Tk()
@@ -389,12 +389,14 @@ class IO:
             self.popMissClick()
         else:
             self.products.sumDay()
-            brokenDay = self.products.addDay(self.combo_setor.get())
+            brokenDay = self.products.addDay(str(self.monthEntry.get()),
+                                             int(self.dayEntry.get()),
+                                             self.combo_setor.get())
+            print(brokenDay)
             self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
             self.clearLIstEntrys()
             self.combo_turno.set("TA")
-            
-                    
+                             
     #START MATPLOT INTERATION
     @cache
     def popDayGrafico(self):

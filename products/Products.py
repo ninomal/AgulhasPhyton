@@ -12,29 +12,23 @@ JAQUARDLIST = [4496, 2760]
 KETEN = [2660]
 
 class Products():
-    def __init__(self, month, day) :
-        self.day = str(day)
-        self.month = str(month)
+    def __init__(self) :
         self.monthTotalDict = {}
         self.productService = ProductsService()
         self.enumsMonthDays = EnumsMonthDays()
         self.enumsMonthNameStr = EnumsMonthNameStr()
-        self.monthStr = self.enumsMonthNameStr.colectMonthsName(month)
-        self.monthDays = self.enumsMonthDays.colectMonths(month)
         self.enumsFinuras = EnumsFinuras()
         self.listNeedlesBrokenDayTA = [] 
         self.listNeedlesBrokenDayTB = []  
         self.listNeedlesBrokenDayTC = [] 
         self.listSumNedlleDict = []
         self.NEDLLESCODESUM = RASCHELLIST + JAQUARDLIST + KETEN
+        self.year = "2024"
         
-        
+    #need remake
     def monthTotal(self, month):   
         #finuraGet = self.productService.getFinuras()
         total = self.productService.getTotalofDay()
-        monthName = self.enumsMonthNameStr.colectMonthsName(month)
-        monthDays = self.enumsMonthDays.colectMonths(month)
-        self.monthTotalDict["Month"] = monthName
         for finuras in RASCHELLIST:
             #take total in mongodb
             self.monthTotalDict["Raschell"] = {finuras : total} 
@@ -56,8 +50,9 @@ class Products():
         dayMongo = self.addDay( setor)
         return dayMongo
   
-    def addDay(self,  setor)->Dict:
-        dictDay ={self.day : self.month, setor :{"TA": self.listNeedlesBrokenDayTA,
+    def addDay(self, month, day, setor)->Dict:
+        dictDay= {self.year:month, setor : day, "Agulhas":
+                                    {"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
                                      "TC": self.listNeedlesBrokenDayTC,
                                      "total": self.listSumNedlleDict}}
@@ -123,16 +118,24 @@ class Products():
     
     def addAgulhasDayMongo(self, dict : dict) ->Dict:
         self.productService.addDayAgulhaBrokeMongoDB(dict)
-        
-             
+                  
     def selectMonthgrafics(self, month):
-        #select month to se grafics IO
-        pass
+        monthDays = self.enumsMonthDays(month)
+        return month
     
     def monthComparation(self, month1, month2):
-        #select the month for comparation IO
-        pass
+        month1Days = self.enumsMonthDays(month1)  
+        month2Days = self.enumsMonthDays(month2)
+        monthListComp = [month1Days, month2Days]
+        return monthListComp
     
     def monthGraphics(self, month):
         monthResult = self.enumsMonthDays.colectMonths(month)
         return monthResult
+    
+    def getDocumentFind(self, name):
+        document = self.productService.getDocumentFind(name)
+        return document
+    
+    def getDaySetor(self, month , setor, day):
+        self.productService.getDay(month , setor, day)

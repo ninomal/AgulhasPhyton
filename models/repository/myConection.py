@@ -7,7 +7,7 @@ class MyConection:
         self.__collection = colection
     
     def getDay(self, day: Dict):
-        dayResult = self.__collection.find(day)  
+        dayResult = self.__collection.find_one(day)  
         return dayResult
         
     def insert_document(self, document: Dict) -> Dict:

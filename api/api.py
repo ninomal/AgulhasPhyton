@@ -7,19 +7,17 @@ class Api():
        self.mongoDB = DBconection()                           
        self.mongodbConection = MyConection(self.mongoDB,self.mongoDB.getColection())
        
-    def getDay(self, day):
-        self.mongodbConection.getDay(day)
+    def getDay(self, month , setor, day):
+        daySlect = {{"2024":month}, {setor:day}}
+        self.mongodbConection.getDay(daySlect)
     
-    def getTotalofDay(self, name):
-        totalDay = self.mongodbConection.findINcolection(name)
-        return totalDay
+    def getDocumentFind(self, name):
+        documentionFind = self.mongodbConection.findINcolection(name)
+        return documentionFind
                 
     def addDayAgulhaMongoDB(self, data):    
         self.mongodbConection.insert_document(data)
-    
-    def deleteTurn(self, turn):
-        self.mongodbConection.deleteTurn(turn)
-    
+        
     def deleteDay(self, day):
         self.mongodbConection.deleteDay(day)
         

@@ -8,12 +8,12 @@ class ProductsService:
     def addDayAgulhaBrokeMongoDB(self, algulhas):
         self.api.addDayAgulhaMongoDB(algulhas)
               
-    def getDay(self, day):
-        self.api.getDay(day)
+    def getDay(self, month , setor, day):
+        self.api.getDay(month , setor, day)
     
-    def getTotalofDay(self, name):
-        totalDay = self.api.getTotalofDay(name)
-        return totalDay
+    def getDocumentFind(self, name):
+        document = self.api.getDocumentFind(name)
+        return document
     
     def deleteTurn(self, turn):
         self.api.deleteTurn(turn) 
