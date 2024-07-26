@@ -385,7 +385,7 @@ class IO:
     def addFunc(self, turn, finura , agulha):
         dataList = [{finura : agulha}]
         list(map(lambda data: self.listData.append(data), dataList))
-        self.products.addAgulhasinDictList(turn, finura, self.listData)
+        self.products.addAgulhasinDictList(turn, self.listData)
         self.products.sumList(finura, agulha)
            
     def addDayMongo(self):
@@ -393,11 +393,10 @@ class IO:
             self.popMissClick()
         else:
             self.products.sumDay()
+            setorStr = self.combo_setor.get()
             brokenDay = self.products.addDay(str(self.monthEntry.get()),
                                              int(self.dayEntry.get()),
-                                             self.combo_setor.get())
-            print(self.products.sumDay())
-            print(brokenDay)
+                                             setorStr.upper())
             self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
             self.clearLIstEntrys()
             self.combo_turno.set("TA")

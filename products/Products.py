@@ -56,23 +56,23 @@ class Products():
                                     {"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
                                      "TC": self.listNeedlesBrokenDayTC,
-                                     "TOTAL": self.listSumDayResult[0]}}
+                                     "TOTAL": self.listSumDayResult}}
         return dictDay
              
     def convertFinurasInCodeBar(self, finuras, agulhas):
         finurasDict = {finuras: agulhas}
         return finurasDict
         
-    def addAgulhasinDictList(self, turno, finuras, agulhasData ):
+    def addAgulhasinDictList(self, turno, agulhasData ):
         match(turno):
             case "TA":
-                self.listNeedlesBrokenDayTA.append({finuras : agulhasData})
+                self.listNeedlesBrokenDayTA.append(agulhasData)
                 return self.listNeedlesBrokenDayTA
             case "TB":
-                self.listNeedlesBrokenDayTB.append({finuras : agulhasData})
+                self.listNeedlesBrokenDayTB.append(agulhasData)
                 return self.listNeedlesBrokenDayTB
             case "TC":
-                self.listNeedlesBrokenDayTC.append({finuras : agulhasData})
+                self.listNeedlesBrokenDayTC.append(agulhasData)
                 return self.listNeedlesBrokenDayTC
             
     def clearList(self):
@@ -98,7 +98,6 @@ class Products():
     #convert code and nedlle in dict list
     def sumList(self, finura, agulha):
         finuraCode = self.enumsFinuras.finurasCodeReturn(finura) 
-        print(finuraCode)
         result_dict = {finuraCode: agulha}
         self.listSumNedlleDict.append(result_dict)
         return self.listSumNedlleDict
@@ -114,7 +113,7 @@ class Products():
                   
     def selectMonthgrafics(self, month):
         monthDays = self.enumsMonthDays(month)
-        return month
+        return monthDays
     
     def monthComparation(self, month1, month2):
         month1Days = self.enumsMonthDays(month1)  
