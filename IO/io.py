@@ -44,27 +44,23 @@ class IO:
         label_day1 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21),
                               bg="#4A1985")
         label_day1.place(x=25, y=45, width=53, height=25)
-        
-        label_day2 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21)
-                              ,bg="#4A1985")
-        label_day2.place(x=22, y=141, width=53, height=25)
-        
+           
         label_finura = tk.Label(self.anchorPane, text="Finura:", font=("Helvetica", 21),
                                 bg="#4A1985")
         label_finura.place(x=20, y=182, width=90, height=31)
         
-        self.label_agulha = tk.Label(self.anchorPane, text="Agulha:", font=("Helvetica", 21),
-                                bg="#4A1985")
+        self.label_agulha = tk.Label(self.anchorPane, text="Agulha:",
+                                     font=("Helvetica", 21), bg="#4A1985")
         self.label_agulha.place(x=19, y=225, width=95, height=31)
 
         self.monthEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.monthEntry.place(x=89, y=17, width=45, height=25)
 
-        dayInit = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        dayInit.place(x=89, y=48, width=45, height=25)
-
         self.dayEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        self.dayEntry.place(x=120, y=144, width=81, height=26)
+        self.dayEntry.place(x=89, y=48, width=45, height=25)
+
+        #self.dayEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
+        #self.dayEntry.place(x=120, y=144, width=81, height=26)
 
         self.finuraEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.finuraEntry.place(x=120, y=185, width=81, height=26)
@@ -72,13 +68,15 @@ class IO:
         self.agulhaEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.agulhaEntry.place(x=120, y=228, width=81, height=26)
         
-        combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
-                                   font=("Helvetica", 14), background= "#A580CA", foreground="#A580CA")
+        combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell",
+                                    "Jacquard", "ketten"], font=("Helvetica", 14),
+                                   background= "#A580CA", foreground="#A580CA")
         combo_setor.place(x=21, y=92, width=87, height=25)
         combo_setor.set("Setor")
 
         combo_turno = ttk.Combobox(self.anchorPane, values=["TA", "TB", "TC"],
-                                   font=("Helvetica", 14), background= "#A580CA", foreground="#A580CA")
+                                   font=("Helvetica", 14), background= "#A580CA",
+                                   foreground="#A580CA")
         combo_turno.place(x=142, y=92, width=87, height=25)  
         combo_turno.set("Turno")      
         self.comboTurno()
@@ -97,20 +95,24 @@ class IO:
     def frameButton2(self):
         button_pane = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
         button_pane.place(x=742, y=270)
-        button_dia = tk.Button(button_pane, text="Agulhas do Dia", font=("Helvetica", 18),
-                               bg="#A580CA", command= self.popDayGrafico)
+        button_dia = tk.Button(button_pane, text="Agulhas do Dia",
+                               font=("Helvetica", 18),bg="#A580CA",
+                               command= self.popDayGrafico)
         button_dia.place(x = 4, y= 4, width=200)
         
-        button_graficoPizza = tk.Button(button_pane, text="Grafico pizza",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.popComparacaoGrafico)
+        button_graficoPizza = tk.Button(button_pane, text="Grafico pizza",
+                                        font=("Helvetica", 18),bg="#A580CA",
+                                        command= self.popComparacaoGrafico)
         button_graficoPizza.place(x= 207 , y= 4, width=200)
         
-        button_graficoMes = tk.Button(button_pane, text="Grafico do mês",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.monthlyGraph)
+        button_graficoMes = tk.Button(button_pane, text="Grafico do mês"
+                                      ,font=("Helvetica", 18),
+                                      bg="#A580CA",command= self.monthlyGraph)
         button_graficoMes.place(x= 207 , y= 54, width=200)
         
-        button_comparaMes = tk.Button(button_pane, text="Comparar o Mês",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.popComparacaoGrafico)
+        button_comparaMes = tk.Button(button_pane, text="Comparar o Mês",
+                                      font=("Helvetica", 18),bg="#A580CA",
+                                      command= self.popComparacaoGrafico)
         button_comparaMes.place(x= 4 , y= 54, width=200)
               
     
@@ -122,16 +124,19 @@ class IO:
                                bg="#A580CA", command= self.addDayMongo)
         button_add.place(x=179, y= 58, width=149)
 
-        button_skip_turn = tk.Button(button_pane, text="Pular turno", font=("Helvetica", 18),
+        button_skip_turn = tk.Button(button_pane, text="Pular turno",
+                                     font=("Helvetica", 18),
                                      bg="#A580CA", command= self.passTurnFunc)
         button_skip_turn.place(x=6, y=58)
 
-        button_add_more = tk.Button(button_pane, text="Adicionar + ", font=("Helvetica", 18),
+        button_add_more = tk.Button(button_pane, text="Adicionar + ",
+                                    font=("Helvetica", 18),
                                     bg="#A580CA",command= self.popADD)
         button_add_more.place(x=179, y=7)
      
     def comboxSetor(self):
-        self.combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell", "Jacquard", "ketten"],
+        self.combo_setor = ttk.Combobox(self.anchorPane, values=["Raschell",
+                                        "Jacquard", "ketten"],
                                    font=("Helvetica", 14))
         self.combo_setor.place(x=21, y=92, width=87, height=25)
         self.combo_setor.set("Raschell")
@@ -302,7 +307,7 @@ class IO:
                 finura = self.finuraEntry.get()
                 agulhas = int(self.agulhaEntry.get())
                 turn = self.combo_turno.get()
-                self.addFunc(dia, mes, turn, finura, agulhas)
+                self.addFunc(turn, finura, agulhas)
                 self.clearLIstEntrys()
         except ValueError:
             self.popValueError()
@@ -377,13 +382,12 @@ class IO:
                                         bg="#A580CA",command= "beta")
         button_ok.place(x= 200 , y= 10, width= 88, height= 25)
     
-    def addFunc(self, dia, mes, turn, finura , agulha):
+    def addFunc(self, turn, finura , agulha):
         dataList = [{finura : agulha}]
         list(map(lambda data: self.listData.append(data), dataList))
         self.products.addAgulhasinDictList(turn, finura, self.listData)
-        self.products.finuraCodeDay(finura, agulha)
-        
-          
+        self.products.sumList(finura, agulha)
+           
     def addDayMongo(self):
         if self.combo_turno.get() != 'TC':
             self.popMissClick()
@@ -392,6 +396,7 @@ class IO:
             brokenDay = self.products.addDay(str(self.monthEntry.get()),
                                              int(self.dayEntry.get()),
                                              self.combo_setor.get())
+            print(self.products.sumDay())
             print(brokenDay)
             self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
             self.clearLIstEntrys()

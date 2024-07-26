@@ -1,6 +1,6 @@
 FINURAS = {"F9","F18" ,"F14" ,"F12" ,"F18PL" ,"F24PL"
         ,"F1869" ,"F1469" ,"F969" ,"F7" ,"F1232","F932","F24KETTEN"}
-
+FINURASCODE = {"3975", "4565", "4575", "4475", "4496", "2760", "2670"}
 FINURAS3975 = {"F9","F18" ,"F14" ,"F12"} 
 FINURAS4496 = {"F1469" ,"F969" ,"F7" }
 FINURAS2660 = {"F1232","F932"}
@@ -10,6 +10,7 @@ FINURA24RAS = "F24PL"
 
 class EnumsFinuras:
     def __init__(self):
+        self.FINURASCODE = FINURASCODE
         self.FINURAS = FINURAS
         self.FINURAS3975 = FINURAS3975
         self.FINURAS4496 = FINURAS4496
@@ -18,7 +19,6 @@ class EnumsFinuras:
         self.FINURA24KET = "F24KET"
         self.FINURA24RAS = "F24PL"
         
-    
     def finurasEnumsSelect(self, finuras):
         finurasStr = str(finuras)
         finurasUperr = finurasStr.upper()
@@ -60,17 +60,20 @@ class EnumsFinuras:
                 
     def finurasCodeReturn(self, finuras):
         finurasStr = str(finuras)
-        if (finurasStr.upper()) in FINURAS3975:
+        finurasUpper = finurasStr.upper()
+        if finurasUpper in FINURAS3975:
             return "3975"
-        elif finuras == "F18PL":
+        elif finurasUpper == "F1869":
+            return "4475"
+        elif finurasUpper == "F18PL":
             return "4575"
-        elif finuras == "F24PL":
+        elif finurasUpper == "F24PL":
             return "4565"
-        elif finuras in FINURAS4496:
+        elif finurasUpper in FINURAS4496:
             return "4496"
-        elif finuras in FINURAS2660:
+        elif finurasUpper in FINURAS2660:
                 return "2660"
-        elif finuras == "F24KET":
+        elif finurasUpper == "F24KET":
             return "2670"
         else :
             return "ERROR"

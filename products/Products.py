@@ -24,6 +24,7 @@ class Products():
         self.listSumNedlleDict = []
         self.NEDLLESCODESUM = RASCHELLIST + JAQUARDLIST + KETEN
         self.year = "2024"
+        self.listSumDayResult = []
         
     #need remake
     def monthTotal(self, month):   
@@ -51,11 +52,11 @@ class Products():
         return dayMongo
   
     def addDay(self, month, day, setor)->Dict:
-        dictDay= {self.year:month, setor : day, "Agulhas":
+        dictDay= {self.year:month, setor : day, "AGULHAS":
                                     {"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
                                      "TC": self.listNeedlesBrokenDayTC,
-                                     "total": self.listSumNedlleDict}}
+                                     "TOTAL": self.listSumDayResult[0]}}
         return dictDay
              
     def convertFinurasInCodeBar(self, finuras, agulhas):
@@ -79,37 +80,29 @@ class Products():
         self.listNeedlesBrokenDayTB = []
         self.listNeedlesBrokenDayTC = []
         self.listSumNedlleDict = []
+        self.listSumDayResult = []
         
-    def finuraCodeDay(self, finura, agulha):  
-        finurasCode = self.enumsFinuras.finurasCodeReturn(finura)
-        match finurasCode:
-            case "3975":
-                self.listSumNedlleDict.append({"3975": agulha })
-            case"4575":
-                self.listSumNedlleDict.append({"4575": agulha })
-            case "4496":
-                self.listSumNedlleDict.append({"4496" : agulha})
-            case "2660":
-                self.listSumNedlleDict.append({"2660" : agulha})
-            case "2670":
-                self.listSumNedlleDict.append({"2670" : agulha})
-            case "4565":
-                self.listSumNedlleDict.append({"4565" : agulha})
-            case _:
-                return "ERROR"
-            
     def finuraCheck(self, finuras):
         return self.enumsFinuras.checkFinurasEnums(finuras)
-            
+    
     def sumDay(self):
-        aggregated = collections.defaultdict(int)
-        # Aggregate the values for each key using reduce and lambda function
+        totalSum = collections.defaultdict(int)
         for nedlleList in self.listSumNedlleDict:
             for key, value in nedlleList.items():
-                aggregated[key] += value
-        self.listSumNedlleDict = [{'{}'.format(key): value} for key, value in aggregated.items()]
-        return self.listSumNedlleDict
+                totalSum[key] += value
+        self.listSumNedlleDict = [{'{}'.format(key): value}
+                                for key, value in totalSum.items()]
+        self.listSumDayResult.append(dict(totalSum))
+        return self.listSumDayResult
     
+    #convert code and nedlle in dict list
+    def sumList(self, finura, agulha):
+        finuraCode = self.enumsFinuras.finurasCodeReturn(finura) 
+        print(finuraCode)
+        result_dict = {finuraCode: agulha}
+        self.listSumNedlleDict.append(result_dict)
+        return self.listSumNedlleDict
+   
     def randImage(self):
         rng = random.Random()
         randInt = rng.randint(1, 5)
