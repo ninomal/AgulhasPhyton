@@ -44,6 +44,10 @@ class IO:
         label_day1 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21),
                               bg="#4A1985")
         label_day1.place(x=25, y=45, width=53, height=25)
+        
+        #label_day2 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21)
+                              #,bg="#4A1985")
+        #label_day2.place(x=22, y=141, width=53, height=25)
            
         label_finura = tk.Label(self.anchorPane, text="Finura:", font=("Helvetica", 21),
                                 bg="#4A1985")
@@ -400,39 +404,30 @@ class IO:
             self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
             self.clearLIstEntrys()
             self.combo_turno.set("TA")
-                             
+                                                   
     #START MATPLOT INTERATION
     @cache
     def popDayGrafico(self):
         # Check if there's already an open window, close it
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
-
         # Create a new top-level window
         self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
         self.plot_window.title("PoP Day Graphics")
         self.plot_window.config(background="#A580CA")
         self.plot_window.geometry("1000x500")
-
-        # Create a figure and axis
         fig, ax = plt.subplots(figsize=(12, 6)) 
-
-        # Generate data for the bar graph
         x = self.products.monthGraphics(7)
         y = self.products.monthGraphics(6)
-
-        # Plot the bar graph
         ax.bar(x, y)
         ax.set_xlabel('Dia')
         ax.set_ylabel('Agulhas')
         ax.set_title('Agulhas quebradas')
-        plt.xticks(rotation=45)
-        
+        plt.xticks(rotation=45)    
         # Embed the plot in the Tkinter window
         canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)    
         # Schedule the window to close after 15 seconds
         self.close_after_id = self.plot_window.after(15000, self.closedPlt)
         self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
@@ -447,6 +442,48 @@ class IO:
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
             self.plot_window = None
+    
+    #print result dynamics with label in frame                            
+    def popDayResult(self, data ):
+        graphicDay = Tk()
+        graphicDay.geometry("900x400")
+        graphicDay.config(background="#871188")
+        
+        dataSlice = data[0]
+        messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
+                                    font=("Helvetica", 30), bg="#871188")
+        messageboxTotalTATOP.pack(padx= 0, pady = 2)
+        for key, values in dataSlice.items():
+            messageboxTA = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                    font=("Helvetica", 30), bg="#871188")
+            messageboxTA.pack(padx= 0, pady = 2)
+            
+        dataSlice = data[1] 
+        messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TA:",
+                                    font=("Helvetica", 30), bg="#871188")
+        messageboxTotalTBTOP.pack(padx= 5, pady = 2)
+        for key, values in dataSlice.items():
+            messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                    font=("Helvetica", 30), bg="#871188")
+            messageboxTB.pack(padx= 5, pady = 2)
+            
+        dataSlice = data[2]
+        messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TA:",
+                                    font=("Helvetica", 30), bg="#871188")
+        messageboxTotalTCTOP.pack(padx= 0, pady = 2)
+        for key, values in dataSlice.items():
+            messageboxTC = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                    font=("Helvetica", 30), bg="#871188")
+            messageboxTC.pack(padx= 0, pady = 2) 
+              
+        dataSlice = data[3]
+        messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
+                                    font=("Helvetica", 30), bg="#871188")
+        messageboxTotalTop.pack(padx= 10, pady = 10)
+        for key, values in dataSlice.items():
+            messageboxTotal = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                    font=("Helvetica", 30), bg="#871188")
+            messageboxTotal.pack(padx= 10, pady = 10)
                                                   
     def ioMainLoop(self):
         self.windows.mainloop()
