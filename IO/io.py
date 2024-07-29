@@ -445,6 +445,7 @@ class IO:
     
     #print result dynamics with label in frame                            
     def popDayResult(self, data ):
+        valueY = 2
         graphicDay = Tk()
         graphicDay.geometry("900x400")
         graphicDay.config(background="#871188")
@@ -452,39 +453,48 @@ class IO:
         dataSlice = data[0]
         messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
                                     font=("Helvetica", 30), bg="#871188")
-        messageboxTotalTATOP.pack(padx= 0, pady = 2)
+        messageboxTotalTATOP.place(x=40, y =valueY)
         for key, values in dataSlice.items():
+            valueY += 53
             messageboxTA = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#871188")
-            messageboxTA.pack(padx= 0, pady = 2)
-            
+            messageboxTA.place(x=4, y =valueY)
+        
         dataSlice = data[1] 
-        messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TA:",
+        valueY = 2
+        messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
                                     font=("Helvetica", 30), bg="#871188")
-        messageboxTotalTBTOP.pack(padx= 5, pady = 2)
+        messageboxTotalTBTOP.place(x= 240, y = valueY)
+        print(valueY)
         for key, values in dataSlice.items():
+            valueY += 53
             messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#871188")
-            messageboxTB.pack(padx= 5, pady = 2)
-            
+            messageboxTB.place(x=240, y=valueY)
+        
         dataSlice = data[2]
+        valueY = 2
         messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TA:",
                                     font=("Helvetica", 30), bg="#871188")
-        messageboxTotalTCTOP.pack(padx= 0, pady = 2)
+        messageboxTotalTCTOP.place(x=440, y=valueY)
         for key, values in dataSlice.items():
+            valueY += 53
             messageboxTC = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#871188")
-            messageboxTC.pack(padx= 0, pady = 2) 
+            messageboxTC.place(x=440, y=valueY)
               
         dataSlice = data[3]
+        valueY = 2
         messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
                                     font=("Helvetica", 30), bg="#871188")
-        messageboxTotalTop.pack(padx= 10, pady = 10)
+        messageboxTotalTop.place(x=650, y= valueY)
         for key, values in dataSlice.items():
+            valueY += 53
             messageboxTotal = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#871188")
-            messageboxTotal.pack(padx= 10, pady = 10)
-                                                  
+            messageboxTotal.place(x=650, y=valueY)
+        
+                                                
     def ioMainLoop(self):
         self.windows.mainloop()
     
