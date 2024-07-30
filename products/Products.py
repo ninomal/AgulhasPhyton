@@ -25,6 +25,9 @@ class Products():
         self.NEDLLESCODESUM = RASCHELLIST + JAQUARDLIST + KETEN
         self.year = "2024"
         self.listSumDayResult = []
+        self.listOfGetDocumentsDay = []
+        self.dictData = {}
+        
         
     #need remake
     def monthTotal(self, month):   
@@ -129,5 +132,35 @@ class Products():
         document = self.productService.getDocumentFind(name)
         return document
     
+    def popDayProducts(self):
+        document = self.getDocumentFind({"2024": "7", "RASCHELL": 29})
+        agulhas = document.get('AGULHAS', {})
+        # Extract and print TA exemple here
+        #ta_keys = [list(item.keys())[0] for sublist in ta for item in sublist]
+        #ta_values = [item[list(item.keys())[0]] for sublist in ta for item in sublist]
+        #print("TA:", ta_values)
+        #TA
+        ta = agulhas.get('TA', [])
+        ta_dicts = [{key: value} for sublist in ta for item in sublist for key, value in item.items()]
+        print(ta_dicts)
+        self.listOfGetDocumentsDay.append(ta_dicts) 
+        self.dictData =# fix thiss
+        print("aqui")
+        print(self.dictData)
+        #TB
+        tb = agulhas.get('TB', [])
+        tb_dicts = [{key: value} for sublist in tb for item in sublist for key, value in item.items()]
+        self.listOfGetDocumentsDay.append(tb_dicts)  
+        #TC
+        tc = agulhas.get('TC', [])
+        tc_dicts = [{key: value} for sublist in tc for item in sublist for key, value in item.items()]
+        self.listOfGetDocumentsDay.append(tc_dicts)  
+        #TOTAL
+        total = agulhas.get('TOTAL', [])
+        total_dicts = [{key: value} for d in total for key, value in d.items()]
+        self.listOfGetDocumentsDay.append(total_dicts)  
+        print( self.listOfGetDocumentsDay)
+        return self.listOfGetDocumentsDay
+        
     def getDaySetor(self, month , setor, day):
         self.productService.getDay(month , setor, day)

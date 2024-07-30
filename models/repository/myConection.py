@@ -14,7 +14,7 @@ class MyConection:
         self.__collection.insert_one(document)
                
     def findINcolection(self, name):
-        findColection = self.__collection.find(name)
+        findColection = self.__collection.find_one(name)
         return findColection
     
     def deleteTurn(self, turn : Dict):

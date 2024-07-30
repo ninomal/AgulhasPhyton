@@ -97,9 +97,16 @@ class IO:
         return path
             
     def frameButton2(self):
+        button_ESCA = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
+        button_ESCA.place(x=742, y=220)
+        buttonDay = tk.Button(button_ESCA, text="Agulhas do Dia",
+                               font=("Helvetica", 18),bg="#A580CA",
+                               command= self.popDayProducts)
+        buttonDay.place(x = 4, y= 3, width=200)
+        
         button_pane = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
         button_pane.place(x=742, y=270)
-        button_dia = tk.Button(button_pane, text="Agulhas do Dia",
+        button_dia = tk.Button(button_pane, text="Dia Grafico",
                                font=("Helvetica", 18),bg="#A580CA",
                                command= self.popDayGrafico)
         button_dia.place(x = 4, y= 4, width=200)
@@ -443,14 +450,19 @@ class IO:
             self.plot_window.destroy()
             self.plot_window = None
     
+    #triger of popDayResult 
+    def popDayProducts(self):
+        dictData = self.products.popDayProducts()
+        self.popDayResult(dictData)
+        
     #print result dynamics with label in frame                            
-    def popDayResult(self, data ):
+    def popDayResult(self, data):
         valueY = 2
         graphicDay = Tk()
         graphicDay.geometry("900x400")
         graphicDay.config(background="#871188")
         
-        dataSlice = data[0]
+        dataSlice = data[0][0]
         messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
                                     font=("Helvetica", 30), bg="#871188")
         messageboxTotalTATOP.place(x=40, y =valueY)
@@ -460,7 +472,7 @@ class IO:
                                     font=("Helvetica", 30), bg="#871188")
             messageboxTA.place(x=4, y =valueY)
         
-        dataSlice = data[1] 
+        dataSlice = data[1]
         valueY = 2
         messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
                                     font=("Helvetica", 30), bg="#871188")
@@ -472,7 +484,7 @@ class IO:
                                     font=("Helvetica", 30), bg="#871188")
             messageboxTB.place(x=240, y=valueY)
         
-        dataSlice = data[2]
+        dataSlice = data[2][0]
         valueY = 2
         messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TA:",
                                     font=("Helvetica", 30), bg="#871188")
@@ -483,7 +495,7 @@ class IO:
                                     font=("Helvetica", 30), bg="#871188")
             messageboxTC.place(x=440, y=valueY)
               
-        dataSlice = data[3]
+        dataSlice = data[3][0]
         valueY = 2
         messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
                                     font=("Helvetica", 30), bg="#871188")
