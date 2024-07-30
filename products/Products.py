@@ -26,9 +26,8 @@ class Products():
         self.year = "2024"
         self.listSumDayResult = []
         self.listOfGetDocumentsDay = []
-        self.dictData = {}
         
-        
+   
     #need remake
     def monthTotal(self, month):   
         #finuraGet = self.productService.getFinuras()
@@ -133,6 +132,7 @@ class Products():
         return document
     
     def popDayProducts(self):
+        dictVar = {}
         document = self.getDocumentFind({"2024": "7", "RASCHELL": 29})
         agulhas = document.get('AGULHAS', {})
         # Extract and print TA exemple here
@@ -142,23 +142,27 @@ class Products():
         #TA
         ta = agulhas.get('TA', [])
         ta_dicts = [{key: value} for sublist in ta for item in sublist for key, value in item.items()]
-        print(ta_dicts)
-        self.listOfGetDocumentsDay.append(ta_dicts) 
-        self.dictData =# fix thiss
-        print("aqui")
-        print(self.dictData)
+        for intens in ta_dicts:
+            dictVar.update(intens)
+        self.listOfGetDocumentsDay.append(dictVar)    
         #TB
+        dictVar = {}
         tb = agulhas.get('TB', [])
         tb_dicts = [{key: value} for sublist in tb for item in sublist for key, value in item.items()]
-        self.listOfGetDocumentsDay.append(tb_dicts)  
+        list(map(lambda intens: dictVar.update(intens), tb_dicts))
+        self.listOfGetDocumentsDay.append(dictVar)     
         #TC
+        dictVar = {}
         tc = agulhas.get('TC', [])
         tc_dicts = [{key: value} for sublist in tc for item in sublist for key, value in item.items()]
-        self.listOfGetDocumentsDay.append(tc_dicts)  
+        list(map(lambda intens: dictVar.update(intens), tc_dicts))
+        self.listOfGetDocumentsDay.append(dictVar)  
         #TOTAL
+        dictVar = {}
         total = agulhas.get('TOTAL', [])
         total_dicts = [{key: value} for d in total for key, value in d.items()]
-        self.listOfGetDocumentsDay.append(total_dicts)  
+        list(map(lambda intens: dictVar.update(intens), total_dicts))
+        self.listOfGetDocumentsDay.append(dictVar)   
         print( self.listOfGetDocumentsDay)
         return self.listOfGetDocumentsDay
         

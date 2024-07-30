@@ -462,7 +462,7 @@ class IO:
         graphicDay.geometry("900x400")
         graphicDay.config(background="#871188")
         
-        dataSlice = data[0][0]
+        dataSlice = data[0]
         messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
                                     font=("Helvetica", 30), bg="#871188")
         messageboxTotalTATOP.place(x=40, y =valueY)
@@ -484,7 +484,7 @@ class IO:
                                     font=("Helvetica", 30), bg="#871188")
             messageboxTB.place(x=240, y=valueY)
         
-        dataSlice = data[2][0]
+        dataSlice = data[2]
         valueY = 2
         messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TA:",
                                     font=("Helvetica", 30), bg="#871188")
@@ -495,7 +495,7 @@ class IO:
                                     font=("Helvetica", 30), bg="#871188")
             messageboxTC.place(x=440, y=valueY)
               
-        dataSlice = data[3][0]
+        dataSlice = data[3]
         valueY = 2
         messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
                                     font=("Helvetica", 30), bg="#871188")
