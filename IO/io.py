@@ -410,6 +410,7 @@ class IO:
                                              setorStr.upper())
             self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
             self.clearLIstEntrys()
+            self.products.clearList()
             self.combo_turno.set("TA")
                                                    
     #START MATPLOT INTERATION
@@ -452,9 +453,30 @@ class IO:
     
     #triger of popDayResult 
     def popDayProducts(self):
-        dictData = self.products.popDayProducts()
-        self.popDayResult(dictData)
+        graphicDaySetor = Tk()
+        graphicDaySetor.geometry("200x200")
+        graphicDaySetor.config(background="#871188")
         
+        messagebox = tk.Label(master= graphicDaySetor, text= "Selecione o Setor:",
+                            font=("Helvetica", 14), bg="#871188")
+        messagebox.place(x= 18, y= 20)
+        
+        self.combo_setorDay = ttk.Combobox(master= graphicDaySetor,
+                                    values=["RASCHELL", "JACQUARD", "KETTEN"],
+                                   font=("Helvetica", 14), background= "#A580CA")
+        self.combo_setorDay.place(x= 20, y= 75, width=140, height=25)
+        self.combo_setorDay.set("Setor")
+        
+        buttonOk = tk.Button(graphicDaySetor, text="OK",
+                                    font=("Helvetica", 14),
+                                    command= self.popDayProductsSetor)
+        buttonOk.place(x=20, y=120)
+    
+    #triger for popDayProducs       
+    def popDayProductsSetor(self):       
+        dictData = self.products.popDayProducts(self.combo_setorDay.get())
+        self.popDayResult(dictData)
+          
     #print result dynamics with label in frame                            
     def popDayResult(self, data):
         valueY = 2
@@ -477,7 +499,6 @@ class IO:
         messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
                                     font=("Helvetica", 30), bg="#871188")
         messageboxTotalTBTOP.place(x= 240, y = valueY)
-        print(valueY)
         for key, values in dataSlice.items():
             valueY += 53
             messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",

@@ -83,6 +83,7 @@ class Products():
         self.listNeedlesBrokenDayTC = []
         self.listSumNedlleDict = []
         self.listSumDayResult = []
+        self.listOfGetDocumentsDay = []
         
     def finuraCheck(self, finuras):
         return self.enumsFinuras.checkFinurasEnums(finuras)
@@ -131,15 +132,11 @@ class Products():
         document = self.productService.getDocumentFind(name)
         return document
     
-    def popDayProducts(self):
-        dictVar = {}
-        document = self.getDocumentFind({"2024": "7", "RASCHELL": 29})
-        agulhas = document.get('AGULHAS', {})
-        # Extract and print TA exemple here
-        #ta_keys = [list(item.keys())[0] for sublist in ta for item in sublist]
-        #ta_values = [item[list(item.keys())[0]] for sublist in ta for item in sublist]
-        #print("TA:", ta_values)
+    def popDayProducts(self, setor):
         #TA
+        dictVar = {}
+        document = self.getDocumentFind({"2024": "7", f"{setor}": 30})
+        agulhas = document.get('AGULHAS', {})
         ta = agulhas.get('TA', [])
         ta_dicts = [{key: value} for sublist in ta for item in sublist for key, value in item.items()]
         for intens in ta_dicts:
@@ -163,7 +160,6 @@ class Products():
         total_dicts = [{key: value} for d in total for key, value in d.items()]
         list(map(lambda intens: dictVar.update(intens), total_dicts))
         self.listOfGetDocumentsDay.append(dictVar)   
-        print( self.listOfGetDocumentsDay)
         return self.listOfGetDocumentsDay
         
     def getDaySetor(self, month , setor, day):
