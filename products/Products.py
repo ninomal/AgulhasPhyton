@@ -26,24 +26,19 @@ class Products():
         self.year = "2024"
         self.listSumDayResult = []
         self.listOfGetDocumentsDay = []
-        
-   
-    #need remake
-    def monthTotal(self, month):   
-        #finuraGet = self.productService.getFinuras()
-        total = self.productService.getTotalofDay()
-        for finuras in RASCHELLIST:
-            #take total in mongodb
-            self.monthTotalDict["Raschell"] = {finuras : total} 
-        for finuras in JAQUARDLIST:
-            #take total in mongodb
-            self.monthTotalDict["Jacquard"] = {finuras : total} 
-        for finuras in KETEN:
-            #take total in mongodb
-            self.monthTotalDict["Keten"] = {finuras : total}       
-        return  self.monthTotalDict
-        #cross the id and colect finuras in month
+        self.listSumMonthResult = []
     
+    def monthTotalSum(self, data): 
+        totalSum = collections.defaultdict(int)
+        for nedlleList in data:
+            for key, value in nedlleList:
+                totalSum[key] += value
+        self.listSumNedlleDict = [{'{}'.format(key): value}
+                                for key, value in totalSum.items()]
+        self.listSumMonthResult.append(dict(totalSum))
+        return self.listSumMonthResult
+            
+    #Check
     def totalDay(self, finuraInput, day):
         finuraGet = self.productService.getFinuras()
         total = self.productService.getTotalofDay()   
