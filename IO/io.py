@@ -374,24 +374,27 @@ class IO:
         
     def monthlyGraph(self):
         monthLyGraph = Tk()
-        monthLyGraph.geometry("900x400")
+        monthLyGraph.geometry("200x200")
         monthLyGraph.config(background="#4A1985")
         
-        combo_setor = ttk.Combobox(monthLyGraph, values=["Raschell", "Jacquard", "ketten"],
+        self.comboSetorMonth = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
                                    font=("Helvetica", 14), background= "#A580CA")
-        combo_setor.place(x=2, y= 10, width=87, height=25)
-        combo_setor.set("Setor")
+        self.comboSetorMonth.place(x=10, y=30, width=140, height=25)
+        self.comboSetorMonth.set("RASCHELL")
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
-                            font=("Helvetica", 14), bg="#4A1985")
-        messagebox.place(x = 94, y = 7)
+                            font=("Helvetica", 18), bg="#4A1985")
+        messagebox.place(x=10, y=80)
         
         self.monthGraficEntry = tk.Entry(master= monthLyGraph)     
-        self.monthGraficEntry.place(x= 147, y =10, width="42", height="23")
+        self.monthGraficEntry.place(x=75, y= 85, width="42", height="23")
         
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= "beta")
-        button_ok.place(x= 200 , y= 10, width= 88, height= 25)
+                                        bg="#A580CA",command= self.monthGraphicData)
+        button_ok.place(x= 10 , y= 140, width= 95, height= 25)
+        
+    def monthGraphicData(self):
+        self.products.dataGraphMonth(self.comboSetorMonth.get(),self.monthGraficEntry.get())
     
     def addFunc(self, turn, finura , agulha):
         dataList = [{finura : agulha}]
@@ -465,7 +468,7 @@ class IO:
                                     values=["RASCHELL", "JACQUARD", "KETTEN"],
                                    font=("Helvetica", 14), background= "#A580CA")
         self.combo_setorDay.place(x= 20, y= 75, width=140, height=25)
-        self.combo_setorDay.set("Setor")
+        self.combo_setorDay.set("RASCHELL")
         
         buttonOk = tk.Button(graphicDaySetor, text="OK",
                                     font=("Helvetica", 14),

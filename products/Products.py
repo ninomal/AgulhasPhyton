@@ -162,5 +162,25 @@ class Products():
         self.listOfGetDocumentsDay.append(dictVar)   
         return self.listOfGetDocumentsDay
         
-    def getDaySetor(self, month , setor, day):
-        self.productService.getDay(month , setor, day)
+    def dataGraphMonth(self, setor, month):
+        mes = self.enumsMonthDays.colectMonths(int(month))
+        for days in range(mes):
+            try:
+                document = self.getDocumentFind({"2024": f"{month}", f"{setor}": days})
+                agulhas = document.get('AGULHAS', {})
+                
+                dictVar = {}
+                total = agulhas.get('TOTAL', [])
+                total_dicts = [{key: value} for d in total for key, value in d.items()]
+                list(map(lambda intens: dictVar.update(intens), total_dicts))
+                self.listOfGetDocumentsDay.append(dictVar)
+                print(self.listOfGetDocumentsDay)
+            except AttributeError:
+                continue
+                
+        return self.listOfGetDocumentsDay
+        
+        
+     
+        
+    
