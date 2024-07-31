@@ -95,36 +95,40 @@ class IO:
     def randomImagem(self):
         path = self.products.randImage()
         return path
-            
+                                     
     def frameButton2(self):
-        button_ESCA = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
-        button_ESCA.place(x=742, y=220)
-        buttonDay = tk.Button(button_ESCA, text="Agulhas do Dia",
-                               font=("Helvetica", 18),bg="#A580CA",
-                               command= self.popDayProducts)
-        buttonDay.place(x = 4, y= 3, width=200)
+        button_pane = tk.Frame(self.windows, width=410, height=155, background="#4A1985")
+        button_pane.place(x=742, y=221)
         
-        button_pane = tk.Frame(self.windows, width=410, height=104, background="#4A1985")
-        button_pane.place(x=742, y=270)
         button_dia = tk.Button(button_pane, text="Dia Grafico",
                                font=("Helvetica", 18),bg="#A580CA",
                                command= self.popDayGrafico)
         button_dia.place(x = 4, y= 4, width=200)
         
+        buttonDay = tk.Button(button_pane, text="Agulhas do Dia",
+                               font=("Helvetica", 18),bg="#A580CA",
+                               command= self.popDayProducts)
+        buttonDay.place(x=207, y=4, width=200)
+        
+        buttonMonth = tk.Button(button_pane, text="Agulhas do Mês",
+                               font=("Helvetica", 18),bg="#A580CA",
+                               command= self.monthGraphicPoP)
+        buttonMonth.place(x=207, y= 54, width=200)    
+        
         button_graficoPizza = tk.Button(button_pane, text="Grafico pizza",
                                         font=("Helvetica", 18),bg="#A580CA",
                                         command= self.popComparacaoGrafico)
-        button_graficoPizza.place(x= 207 , y= 4, width=200)
+        button_graficoPizza.place(x=4, y= 54, width=200)
         
         button_graficoMes = tk.Button(button_pane, text="Grafico do mês"
                                       ,font=("Helvetica", 18),
                                       bg="#A580CA",command= self.monthlyGraph)
-        button_graficoMes.place(x= 207 , y= 54, width=200)
+        button_graficoMes.place(x= 4 , y= 104, width=200)
         
         button_comparaMes = tk.Button(button_pane, text="Comparar o Mês",
                                       font=("Helvetica", 18),bg="#A580CA",
                                       command= self.popComparacaoGrafico)
-        button_comparaMes.place(x= 4 , y= 54, width=200)
+        button_comparaMes.place(x= 207 , y= 104, width=200)
               
     
     def buttonPainel(self):
@@ -394,7 +398,25 @@ class IO:
         button_ok.place(x= 10 , y= 140, width= 95, height= 25)
         
     def monthGraphicData(self):
-        self.products.dataGraphMonth(self.comboSetorMonth.get(),self.monthGraficEntry.get())
+        return self.products.dataGraphMonth(self.comboSetorMonth.get(),
+                                        self.monthGraficEntry.get())
+    
+    def monthGraphicPoP(self):
+        graphicMonth = Tk()
+        graphicMonth.geometry("200x200")
+        graphicMonth.config(background="#871188")
+        valueY = 2
+        data = self.monthGraphicData()
+        
+        messageboxTotalTop = tk.Label(master= graphicMonth, text= "TOTAL:",
+                                    font=("Helvetica", 30), bg="#A580CA")
+        messageboxTotalTop.place(x=30, y= valueY)
+        for key, values in data.items():
+            valueY += 53
+            messageboxTotal = tk.Label(master= graphicMonth, text= f"{key} : {values}",
+                                    font=("Helvetica", 30), bg="#A580CA")
+            messageboxTotal.place(x=30, y=valueY)
+        
     
     def addFunc(self, turn, finura , agulha):
         dataList = [{finura : agulha}]
@@ -458,10 +480,10 @@ class IO:
     def popDayProducts(self):
         graphicDaySetor = Tk()
         graphicDaySetor.geometry("200x200")
-        graphicDaySetor.config(background="#871188")
+        graphicDaySetor.config(background="#A580CA")
         
         messagebox = tk.Label(master= graphicDaySetor, text= "Selecione o Setor:",
-                            font=("Helvetica", 14), bg="#871188")
+                            font=("Helvetica", 14), bg="#A580CA")
         messagebox.place(x= 18, y= 20)
         
         self.combo_setorDay = ttk.Combobox(master= graphicDaySetor,
@@ -479,58 +501,58 @@ class IO:
     def popDayProductsSetor(self):       
         dictData = self.products.popDayProducts(self.combo_setorDay.get())
         self.popDayResult(dictData)
-          
+               
     #print result dynamics with label in frame                            
     def popDayResult(self, data):
         valueY = 2
         graphicDay = Tk()
         graphicDay.geometry("900x400")
-        graphicDay.config(background="#871188")
+        graphicDay.config(background="#A580CA")
         
+        #TA
         dataSlice = data[0]
         messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA8")
         messageboxTotalTATOP.place(x=40, y =valueY)
         for key, values in dataSlice.items():
             valueY += 53
             messageboxTA = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA")
             messageboxTA.place(x=4, y =valueY)
-        
+        #TB
         dataSlice = data[1]
         valueY = 2
         messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA")
         messageboxTotalTBTOP.place(x= 240, y = valueY)
         for key, values in dataSlice.items():
             valueY += 53
             messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA")
             messageboxTB.place(x=240, y=valueY)
-        
+        #TC
         dataSlice = data[2]
         valueY = 2
-        messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TA:",
-                                    font=("Helvetica", 30), bg="#871188")
+        messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TC:",
+                                    font=("Helvetica", 30), bg="#A580CA")
         messageboxTotalTCTOP.place(x=440, y=valueY)
         for key, values in dataSlice.items():
             valueY += 53
             messageboxTC = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA")
             messageboxTC.place(x=440, y=valueY)
-              
+        #TOTAL      
         dataSlice = data[3]
         valueY = 2
         messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA")
         messageboxTotalTop.place(x=650, y= valueY)
         for key, values in dataSlice.items():
             valueY += 53
             messageboxTotal = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#871188")
+                                    font=("Helvetica", 30), bg="#A580CA")
             messageboxTotal.place(x=650, y=valueY)
-        
-                                                
+                                                                 
     def ioMainLoop(self):
         self.windows.mainloop()
     
