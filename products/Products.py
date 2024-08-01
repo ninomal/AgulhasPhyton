@@ -31,10 +31,9 @@ class Products():
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
         for nedlleList in data:
-            for key, value in nedlleList:
+            for key, value in nedlleList.items():
                 totalSum[key] += value
-        self.listSumNedlleDict = [{'{}'.format(key): value}
-                                for key, value in totalSum.items()]
+        [{'{}'.format(key): value}for key, value in totalSum.items()]
         self.listSumMonthResult.append(dict(totalSum))
         return self.listSumMonthResult
             
@@ -79,6 +78,7 @@ class Products():
         self.listSumNedlleDict = []
         self.listSumDayResult = []
         self.listOfGetDocumentsDay = []
+        self.listSumMonthResult = []
         
     def finuraCheck(self, finuras):
         return self.enumsFinuras.checkFinurasEnums(finuras)
@@ -127,6 +127,7 @@ class Products():
         document = self.productService.getDocumentFind(name)
         return document
     
+    #need upgrade
     def popDayProducts(self, setor):
         #TA
         dictVar = {}
@@ -169,10 +170,8 @@ class Products():
                 total_dicts = [{key: value} for d in total for key, value in d.items()]
                 list(map(lambda intens: dictVar.update(intens), total_dicts))
                 self.listOfGetDocumentsDay.append(dictVar)
-                print(self.listOfGetDocumentsDay)
             except AttributeError:
-                continue
-                
+                continue        
         return self.listOfGetDocumentsDay
         
         

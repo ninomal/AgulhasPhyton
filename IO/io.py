@@ -398,28 +398,37 @@ class IO:
         button_ok.place(x= 10 , y= 140, width= 95, height= 25)
       
     def monthTotalDisplay(self):
-        valueY = 2
+        valueY = 58
         data = self.products.dataGraphMonth(self.comboSetorMonth.get(),
                                         self.monthGraficEntry.get())
-        dataMonthSum = self.products.monthTotalSum(data)
-        
+        dataMonthSum = self.products.monthTotalSum(data)[0]
         monthLyGraph = Tk()
         monthLyGraph.geometry("900x400")
-        monthLyGraph.config(background="#4A1985")
+        monthLyGraph.config(background="#A580CA")
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
-                            font=("Helvetica", 18), bg="#4A1985")
-        messagebox.place(x=10, y=80)
+                            font=("Helvetica", 25), bg="#A580CA")
+        messagebox.place(x=17, y=10)
+        
+        messageboxMonth = tk.Label(master= monthLyGraph, 
+                                text= f"{self.monthGraficEntry.get()}",
+                            font=("Helvetica", 25), bg="#A580CA")
+        messageboxMonth.place(x=95, y=10)
+        
+        messageboxSetor = tk.Label(master= monthLyGraph, 
+                                text= f"{self.comboSetorMonth.get()}",
+                            font=("Helvetica", 25), bg="#A580CA")
+        messageboxSetor.place(x=200, y=10)
         
         messageboxTotalTop = tk.Label(master= monthLyGraph, text= "TOTAL:",
                                     font=("Helvetica", 30), bg="#A580CA")
-        messageboxTotalTop.place(x=650, y= valueY)
+        messageboxTotalTop.place(x= 15 , y= 60)
         
         for key, values in dataMonthSum.items():
             valueY += 53
             messageboxTotal = tk.Label(master= monthLyGraph, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#A580CA")
-            messageboxTotal.place(x=650, y=valueY)
+            messageboxTotal.place(x= 15, y=valueY)
             #adicionar por dia divisao
         
     def monthlyGraph(self):
