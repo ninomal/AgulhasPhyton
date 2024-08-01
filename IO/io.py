@@ -117,7 +117,7 @@ class IO:
         
         button_graficoPizza = tk.Button(button_pane, text="Grafico pizza",
                                         font=("Helvetica", 18),bg="#A580CA",
-                                        command= self.popComparacaoGrafico)
+                                        command= self.graficoPizzaPoP)
         button_graficoPizza.place(x=4, y= 54, width=200)
         
         button_graficoMes = tk.Button(button_pane, text="Grafico do mês"
@@ -379,27 +379,30 @@ class IO:
     def monthTotalPoP(self):
         monthLyGraph = Tk()
         monthLyGraph.geometry("200x200")
-        monthLyGraph.config(background="#4A1985")
+        monthLyGraph.config(background="#9F5FFF")
         
-        self.comboSetorMonth = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
-                                   font=("Helvetica", 14), background= "#A580CA")
-        self.comboSetorMonth.place(x=10, y=30, width=140, height=25)
-        self.comboSetorMonth.set("RASCHELL")
+        self.comboSetorMonth1 = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
+                                   font=("Helvetica", 14), background= "#9F5FFF")
+        self.comboSetorMonth1.place(x=10, y=30, width=140, height=25)
+        self.comboSetorMonth1.set("RASCHELL")
+        
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
-                            font=("Helvetica", 18), bg="#4A1985")
+                            font=("Helvetica", 18), bg="#9F5FFF")
         messagebox.place(x=10, y=80)
         
         self.monthGraficEntry = tk.Entry(master= monthLyGraph)     
         self.monthGraficEntry.place(x=75, y= 85, width="42", height="23")
         
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.monthTotalDisplay)
+                                        bg="#9F5FFF",command= self.monthTotalDisplay)
         button_ok.place(x= 10 , y= 140, width= 95, height= 25)
       
     def monthTotalDisplay(self):
         valueY = 58
-        data = self.products.dataGraphMonth(self.comboSetorMonth.get(),
+        dataMonthSum = []
+        data = []
+        data = self.products.dataGraphMonth(self.comboSetorMonth1.get(),
                                         self.monthGraficEntry.get())
         dataMonthSum = self.products.monthTotalSum(data)[0]
         monthLyGraph = Tk()
@@ -416,7 +419,7 @@ class IO:
         messageboxMonth.place(x=95, y=10)
         
         messageboxSetor = tk.Label(master= monthLyGraph, 
-                                text= f"{self.comboSetorMonth.get()}",
+                                text= f"{self.comboSetorMonth1.get()}",
                             font=("Helvetica", 25), bg="#A580CA")
         messageboxSetor.place(x=200, y=10)
         
@@ -431,15 +434,16 @@ class IO:
             messageboxTotal.place(x= 15, y=valueY)
             #adicionar por dia divisao
         
+        
     def monthlyGraph(self):
         monthLyGraph = Tk()
         monthLyGraph.geometry("200x200")
         monthLyGraph.config(background="#4A1985")
         
-        self.comboSetorMonth = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
+        self.comboSetorMonth2 = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
                                    font=("Helvetica", 14), background= "#A580CA")
-        self.comboSetorMonth.place(x=10, y=30, width=140, height=25)
-        self.comboSetorMonth.set("RASCHELL")
+        self.comboSetorMonth2.place(x=10, y=30, width=140, height=25)
+        self.comboSetorMonth2.set("RASCHELL")
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
                             font=("Helvetica", 18), bg="#4A1985")
@@ -453,10 +457,14 @@ class IO:
         button_ok.place(x= 10 , y= 140, width= 95, height= 25)
         
     def monthGraphicData(self):
+        self.products.clearList()
+        self.comboSetorMonth =""
+        self.monthGraficEntry = ""
         return self.products.dataGraphMonth(self.comboSetorMonth.get(),
                                         self.monthGraficEntry.get())
     
     def monthGraphicPoP(self):
+        self.products.clearList()
         graphicMonth = Tk()
         graphicMonth.geometry("200x200")
         graphicMonth.config(background="#871188")
@@ -471,6 +479,7 @@ class IO:
             messageboxTotal = tk.Label(master= graphicMonth, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#A580CA")
             messageboxTotal.place(x=30, y=valueY)
+        
         
     def addFunc(self, turn, finura , agulha):
         dataList = [{finura : agulha}]
@@ -552,9 +561,13 @@ class IO:
         buttonOk.place(x=20, y=120)
     
     #triger for popDayProducs       
-    def popDayProductsSetor(self):       
-        dictData = self.products.popDayProducts(self.combo_setorDay.get())
-        self.popDayResult(dictData)
+    def popDayProductsSetor(self):
+        try:    
+            dictData = self.products.popDayProducts(self.dayEntry.get(),
+                                                self.combo_setorDay.get())
+            self.popDayResult(dictData)
+        except AttributeError:
+            self.popDay()
                
     #print result dynamics with label in frame                            
     def popDayResult(self, data):
@@ -606,7 +619,43 @@ class IO:
             messageboxTotal = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                     font=("Helvetica", 30), bg="#A580CA")
             messageboxTotal.place(x=650, y=valueY)
-                                                                 
+                               
+    def graficoPizzaPoP(self):
+        popGraficoPizza = Tk()
+        popGraficoPizza.geometry("300x200")
+        popGraficoPizza.config(background="#4A1985")
+    
+        comboSetor = ttk.Combobox(popGraficoPizza, values=["Raschell", "Jacquard", "ketten"],
+                                   font=("Helvetica", 14), background= "#A580CA")
+        comboSetor.place(x=105, y= 20, width=87, height=25)
+        comboSetor.set("Setor")
+        
+        messageboxMes = tk.Label(master= popGraficoPizza, text= "Digite os Mês:",
+                            font=("Helvetica", 14), bg="#4A1985")
+        messageboxMes.place(x= 2, y= 20) 
+        
+        self.comparacaoDay = tk.Entry(master= popGraficoPizza)     
+        self.comparacaoDay.place(x= 56, y= 20)
+        
+        messageboxDia = tk.Label(master= popGraficoPizza, text= "Digite os Mês:",
+                            font=("Helvetica", 14), bg="#4A1985")
+        messageboxDia.place(x= 2, y= 20) 
+        
+        self.comparacaoMonth = tk.Entry(master= popGraficoPizza)     
+        self.comparacaoMonth.place(x= 56, y= 1)
+        
+        buttonIniciarDia = tk.Button(popGraficoPizza, text="Iniciar Dia",
+                                    font=("Helvetica", 18),
+                                    bg="#A580CA",command= "beta")
+        buttonIniciarDia.place(x= 125 , y= 155, width= 88, height= 35)
+        
+        buttonIniciarMes = tk.Button(popGraficoPizza, text="Iniciar Mês",
+                                    font=("Helvetica", 18),
+                                    bg="#A580CA",command= "beta")
+        buttonIniciarMes.place(x= 20 , y= 155, width= 88, height= 35)                   
+                               
+                               
+                                                  
     def ioMainLoop(self):
         self.windows.mainloop()
     

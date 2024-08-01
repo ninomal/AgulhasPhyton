@@ -79,6 +79,7 @@ class Products():
         self.listSumDayResult = []
         self.listOfGetDocumentsDay = []
         self.listSumMonthResult = []
+        self.listOfGetDocumentsDay = []
         
     def finuraCheck(self, finuras):
         return self.enumsFinuras.checkFinurasEnums(finuras)
@@ -128,10 +129,11 @@ class Products():
         return document
     
     #need upgrade
-    def popDayProducts(self, setor):
+    def popDayProducts(self,day, setor):
+        self.clearList()
         #TA
         dictVar = {}
-        document = self.getDocumentFind({"2024": "7", f"{setor}": 30})
+        document = self.getDocumentFind({"2024": day, f"{setor}": 30})
         agulhas = document.get('AGULHAS', {})
         ta = agulhas.get('TA', [])
         ta_dicts = [{key: value} for sublist in ta for item in sublist for key, value in item.items()]
@@ -159,6 +161,7 @@ class Products():
         return self.listOfGetDocumentsDay
         
     def dataGraphMonth(self, setor, month):
+        self.clearList()
         mes = self.enumsMonthDays.colectMonths(int(month))
         for days in range(mes):
             try:
