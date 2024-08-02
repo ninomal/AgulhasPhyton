@@ -5,7 +5,7 @@ from tkinter import ttk
 from products.Products import Products
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import time
+import numpy as np
 from functools import cache
 
 
@@ -512,23 +512,47 @@ class IO:
         self.plot_window.title("PoP Day Graphics")
         self.plot_window.config(background="#A580CA")
         self.plot_window.geometry("1000x500")
-        fig, ax = plt.subplots(figsize=(12, 6)) 
-        x = self.products.monthGraphics(7)
-        y = self.products.monthGraphics(6)
-        ax.bar(x, y)
-        ax.set_xlabel('Dia')
-        ax.set_ylabel('Agulhas')
-        ax.set_title('Agulhas quebradas')
-        plt.xticks(rotation=45)    
-        # Embed the plot in the Tkinter window
-        canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)    
-        # Schedule the window to close after 15 seconds
-        self.close_after_id = self.plot_window.after(15000, self.closedPlt)
-        self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
-        self.plot_window.mainloop()
-        
+        try: 
+            categories = np.arange(1, 32)
+            y = np.arange(10, 10 * len(categories) + 10, 10)
+            testey = [1, 4 , 5 , 10 , 8 , 14, 15, 10 , 5 , 4 , 5 , 6 , 7 , 8 , 9 ,10,
+                      1, 4 , 5 , 10 , 8 , 14, 15, 10 , 5 , 4 , 5 , 6 , 7 , 8 , 9 ]
+            
+             # Random values for illustration
+            values2 = np.random.randint(1, 50, size=len(categories))  # Random values for illustration
+            values3 = np.random.randint(1, 100, size=len(categories))  # Additional values
+            values4 = np.random.randint(1, 100, size=len(categories))  # Additional values
+            
+            fig, ax = plt.subplots(figsize=(50, 6))
+
+
+            x = np.arange(len(categories))
+            width = 0.2
+            #ax.bar(x, testey, width= 0.4)
+            plt.bar(x - 1.5* width, testey, width, label='Value 1', color='b')
+            plt.bar(x - 0.5* width, values2, width, label='Value 2', color='r')
+            plt.bar(x + 0.5* width, values3, width, label='Value 3', color='g')
+            plt.bar(x + 1.5* width, values4, width, label='Value 4', color='y')
+            ax.set_xlabel('Dia')
+            ax.set_ylabel('Agulhas')
+            ax.set_title('Agulhas quebradas')
+            plt.xticks(x, categories)  
+            plt.xlim(0, len(categories) - 1)  
+            plt.xticks(x)
+            plt.yticks(y)
+
+            # Embed the plot in the Tkinter window
+            canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    
+            # Schedule the window to close after 15 seconds
+            self.close_after_id = self.plot_window.after(150000, self.closedPlt)
+            self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
+            self.plot_window.mainloop()
+        except ValueError:
+            self.popValueError()
+            
     def closedPlt(self):
         # Cancel the scheduled after() event if it exists
         if self.close_after_id is not None:
