@@ -12,3 +12,14 @@ class Enumstoday:
                 return "TC"
             case _:
                 return "turn ERROR"
+            
+    def getEnumsSetorNames(self, turn):
+        match turn:
+            case 0:
+                return "RASCHELL"
+            case 1:
+                return "JACQUARD"
+            case 2:
+                return "KETTEN"
+            case _:
+                return "turn ERROR"

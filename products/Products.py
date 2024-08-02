@@ -128,7 +128,7 @@ class Products():
         document = self.productService.getDocumentFind(name)
         return document
     
-    #need upgrade
+   
     def popDayProducts(self,day, setor):
         self.clearList()
         #TA
