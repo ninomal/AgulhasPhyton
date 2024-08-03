@@ -704,14 +704,22 @@ class IO:
         buttonOk.place(x=20, y=120)
     
     def popDayGrafico(self):
-        valueFinura = []
+        valueAgulha = []
+        finuraKey = []
+          
         for setor in range(3):
             dictData = self.products.popDayProducts(self.dayEntry.get(),
                                         Enumstoday.getEnumsSetorNames(self, setor))
-            for dictList in dictData:  
+            #add dict in list of value
+            for dictList in dictData:
                 for keys , value in dictList.items():
-                    valueFinura.append(value)
-        
+                    valueAgulha.append(value)
+                    finuraKey.append(keys)
+            #add space
+            for space in range(3):
+                valueAgulha.append(0)
+                finuraKey.append("")
+         
         # Check if there's already an open window, close it
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
@@ -721,23 +729,22 @@ class IO:
         self.plot_window.config(background="#A580CA")
         self.plot_window.geometry("1000x500")
         try: 
-            categories = np.arange(1, (len(valueFinura)+1))
-           
+            categories = np.arange(1, (len(valueAgulha)+1))
             fig, ax = plt.subplots(figsize=(50, 6))
-            
-            x = np.arange(len(categories))
 
-            plt.bar(x , valueFinura,  label='Value 1',
-                                            color='b', align='center')
-           
-            ax.set_xlabel('Dia')
+            x = np.arange(len(categories))
+            plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
             ax.set_ylabel('Agulhas')
             ax.set_title('Agulhas quebradas')
-            plt.xticks(x, categories)  
+            plt.xticks(x, labels= finuraKey)  
             plt.xlim(-0.5, len(categories) - 0.5)
             plt.ylim(0, 130) 
-            plt.yticks(np.arange(0, 131, 10))
-            plt.xticks(x)
+            plt.yticks(np.arange(0, 131, 5))
+
+            #Labels setors
+            ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
+            ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
+            ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
             
             # Embed the plot in the Tkinter window
             canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
