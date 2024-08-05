@@ -706,20 +706,32 @@ class IO:
     def popDayGrafico(self):
         valueAgulha = []
         finuraKey = []
+        agulhaTotalRed = []
+        varStack = []
+        varItemsStack = []
           
         for setor in range(3):
             dictData = self.products.popDayProducts(self.dayEntry.get(),
                                         Enumstoday.getEnumsSetorNames(self, setor))
+            varStack.append(dictData[-1]) 
             #add dict in list of value
             for dictList in dictData:
                 for keys , value in dictList.items():
                     valueAgulha.append(value)
                     finuraKey.append(keys)
+                    if dictList != varStack[0]:
+                        agulhaTotalRed.append(0)       
+             #Paint red for total
+            for totalDicts in varStack:
+                varItemsStack.append(totalDicts)
+                for totalKeys, totalValues in totalDicts.items():
+                    agulhaTotalRed.append(totalValues)
             #add space
             for space in range(3):
                 valueAgulha.append(0)
                 finuraKey.append("")
-         
+                agulhaTotalRed.append(0)
+            varStack = []
         # Check if there's already an open window, close it
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
@@ -734,13 +746,19 @@ class IO:
 
             x = np.arange(len(categories))
             plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
-            ax.set_ylabel('Agulhas')
+            ax.set_xlabel('Agulhas')
             ax.set_title('Agulhas quebradas')
             plt.xticks(x, labels= finuraKey)  
             plt.xlim(-0.5, len(categories) - 0.5)
             plt.ylim(0, 130) 
             plt.yticks(np.arange(0, 131, 5))
-
+            
+            #add Red color in total
+            plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
+            ax.set_xlabel('Agulhas')
+            ax.set_title('Agulhas quebradas')
+            plt.xlim(-0.5, len(categories) - 0.5)
+            
             #Labels setors
             ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
             ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
