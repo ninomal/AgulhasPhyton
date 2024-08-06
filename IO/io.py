@@ -387,7 +387,6 @@ class IO:
         self.comboSetorMonth1.place(x=10, y=30, width=140, height=25)
         self.comboSetorMonth1.set("RASCHELL")
         
-        
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
                             font=("Helvetica", 18), bg="#9F5FFF")
         messagebox.place(x=10, y=80)
@@ -441,28 +440,29 @@ class IO:
         monthLyGraph.geometry("200x200")
         monthLyGraph.config(background="#4A1985")
         
-        self.comboSetorMonth2 = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
+        self.comboSetorAllMonth = ttk.Combobox(monthLyGraph,
+                                   values=["RASCHELL", "JACQUARD", "KETTEN"],
                                    font=("Helvetica", 14), background= "#A580CA")
-        self.comboSetorMonth2.place(x=10, y=30, width=140, height=25)
-        self.comboSetorMonth2.set("RASCHELL")
+        self.comboSetorAllMonth.place(x=10, y=30, width=140, height=25)
+        self.comboSetorAllMonth.set("RASCHELL")
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
                             font=("Helvetica", 18), bg="#4A1985")
         messagebox.place(x=10, y=80)
         
-        self.monthGraficEntry = tk.Entry(master= monthLyGraph)     
-        self.monthGraficEntry.place(x=75, y= 85, width="42", height="23")
+        self.allMonthGraficEntry = tk.Entry(master= monthLyGraph)     
+        self.allMonthGraficEntry.place(x=75, y= 85, width="42", height="23")
         
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.monthGraphicData)
+                                        bg="#A580CA",command= self.allMonthGraphic)
         button_ok.place(x= 10 , y= 140, width= 95, height= 25)
         
     def monthGraphicData(self):
         self.products.clearList()
         self.comboSetorMonth =""
         self.monthGraficEntry = ""
-        return self.products.dataGraphMonth(self.comboSetorMonth.get(),
-                                        self.monthGraficEntry.get())
+        return self.products.dataGraphAllMonth(self.comboSetorAllMonth.get(),
+                                        self.allMonthGraficEntry.get())
     
     def monthGraphicPoP(self):
         self.products.clearList()
@@ -594,7 +594,6 @@ class IO:
             dictData = self.products.popDayProducts(self.dayEntry.get(),
                                                 self.combo_setorDay.get())
             self.popDayResult(dictData)
-            print(dictData)
         except AttributeError:
             self.popDay()
                
@@ -755,8 +754,6 @@ class IO:
             
             #add Red color in total
             plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
-            ax.set_xlabel('Agulhas')
-            ax.set_title('Agulhas quebradas')
             plt.xlim(-0.5, len(categories) - 0.5)
             
             #Labels setors
@@ -775,7 +772,67 @@ class IO:
             self.plot_window.mainloop()
         except ValueError:
             self.popValueError()          
-                                                  
+                                        
+    def allMonthGraphic(self):
+        self.products.clearList()
+        self.comboSetorMonth =""
+        self.monthGraficEntry = ""
+        dictData = self.products.dataGraphAllMonth(self.comboSetorAllMonth.get(),
+                                        self.allMonthGraficEntry.get())
+        valueAgulha = []
+            
+        #add dict in list of value
+        for dictList in dictData:
+            for keys , value in dictList.items():
+                valueAgulha.append(value)    
+            #add space
+            for space in range(3):
+                valueAgulha.append(0)
+        
+        # Check if there's already an open window, close it
+        if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
+            self.plot_window.destroy()
+        # Create a new top-level window
+        self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
+        self.plot_window.title("PoP Day Graphics Bar")
+        self.plot_window.config(background="#A580CA")
+        self.plot_window.geometry("1000x500")
+        try: 
+            categories = np.arange(1, (len(valueAgulha)+1))
+            fig, ax = plt.subplots(figsize=(50, 6))
+
+            x = np.arange(len(categories))
+            plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
+            ax.set_xlabel('Agulhas')
+            ax.set_title('Agulhas quebradas')  
+            plt.xlim(-0.5, len(categories) - 0.5)
+            plt.ylim(0, 130) 
+            plt.yticks(np.arange(0, 131, 5))
+            
+            #add Red color in hight total in month beta
+            #plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
+            #plt.xlim(-0.5, len(categories) - 0.5)
+            
+            #Labels setors
+            if self.comboSetorAllMonth.get() == "RASCHELL":
+                ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
+            elif self.comboSetorAllMonth.get() == "JACQUARD":
+                ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
+            else:
+                ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
+            
+            # Embed the plot in the Tkinter window
+            canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+    
+            # Schedule the window to close after 15 seconds
+            self.close_after_id = self.plot_window.after(150000, self.closedPlt)
+            self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
+            self.plot_window.mainloop()
+        except ValueError:
+            self.popValueError()
+                    
     def ioMainLoop(self):
         self.windows.mainloop()
     
