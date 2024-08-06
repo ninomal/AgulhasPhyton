@@ -113,7 +113,7 @@ class Products():
         self.productService.addDayAgulhaBrokeMongoDB(dict)
                   
     def selectMonthgrafics(self, month):
-        monthDays = self.enumsMonthDays(month)
+        monthDays = self.enumsMonthDays.colectMonths(month)
         return monthDays
     
     def monthComparation(self, month1, month2):

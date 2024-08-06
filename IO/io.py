@@ -8,6 +8,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 from functools import cache
 from enums.enumsToday import Enumstoday
+import time
 
 
 class IO:
@@ -454,8 +455,41 @@ class IO:
         self.allMonthGraficEntry.place(x=75, y= 85, width="42", height="23")
         
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
+                                        bg="#A580CA",command= self.popFinurasSelectMonth)
+        button_ok.place(x= 10 , y= 160, width= 95, height= 25)
+    
+    def popFinurasSelectMonth(self):
+        monthLyGraph = Tk()
+        monthLyGraph.geometry("200x200")
+        monthLyGraph.config(background="#4A1985")
+
+        messagebox = tk.Label(master= monthLyGraph, text= "Finura:",
+                            font=("Helvetica", 18), bg="#4A1985")
+        messagebox.place(x=10, y=60)
+         
+        if self.comboSetorAllMonth.get() == "RASCHELL":
+            self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
+                                        values=["3975", "4575","4475", "4565"],
+                                        font=("Helvetica", 14), background= "#A580CA")
+            self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
+            self.comboFinurasAllMonth.set("3975")
+        elif self.comboSetorAllMonth.get() == "JACQUARD":
+            self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
+                                        values=["4496", "2760"],
+                                        font=("Helvetica", 14), background= "#A580CA")
+            self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
+            self.comboFinurasAllMonth.set("4496")
+        else:
+            self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
+                                        values=["2760"],
+                                        font=("Helvetica", 14), background= "#A580CA")
+            self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
+            self.comboFinurasAllMonth.set("2760")
+        
+        button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
                                         bg="#A580CA",command= self.allMonthGraphic)
-        button_ok.place(x= 10 , y= 140, width= 95, height= 25)
+        button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
+        
         
     def monthGraphicData(self):
         self.products.clearList()
@@ -501,6 +535,16 @@ class IO:
             self.clearLIstEntrys()
             self.products.clearList()
             self.combo_turno.set("TA")
+            self.popDiaAdd()
+            
+    def popDiaAdd(self):
+        diaPOP= Tk()
+        diaPOP.geometry("300x300")
+        diaPOP.config(background="#871188")
+        
+        messageboxTotalTop = tk.Label(master= diaPOP, text= "Dia Adicionado",
+                                    font=("Helvetica", 30), bg="#871188", width= 12)
+        messageboxTotalTop.place(x= 7, y = 120)
                                                    
     #START MATPLOT INTERATION
     @cache
@@ -780,7 +824,7 @@ class IO:
         dictData = self.products.dataGraphAllMonth(self.comboSetorAllMonth.get(),
                                         self.allMonthGraficEntry.get())
         valueAgulha = []
-            
+        print(dictData)
         #add dict in list of value
         for dictList in dictData:
             for keys , value in dictList.items():
@@ -788,7 +832,7 @@ class IO:
             #add space
             for space in range(3):
                 valueAgulha.append(0)
-        
+    
         # Check if there's already an open window, close it
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
@@ -797,22 +841,23 @@ class IO:
         self.plot_window.title("PoP Day Graphics Bar")
         self.plot_window.config(background="#A580CA")
         self.plot_window.geometry("1000x500")
-        try: 
+        try:  
             categories = np.arange(1, (len(valueAgulha)+1))
             fig, ax = plt.subplots(figsize=(50, 6))
-
+            
             x = np.arange(len(categories))
-            plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
+            plt.bar(x, valueAgulha,  label='Value 1', color='b', align='center')
             ax.set_xlabel('Agulhas')
             ax.set_title('Agulhas quebradas')  
             plt.xlim(-0.5, len(categories) - 0.5)
             plt.ylim(0, 130) 
+            plt.xticks(x)
             plt.yticks(np.arange(0, 131, 5))
             
             #add Red color in hight total in month beta
             #plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
             #plt.xlim(-0.5, len(categories) - 0.5)
-            
+            """
             #Labels setors
             if self.comboSetorAllMonth.get() == "RASCHELL":
                 ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
@@ -820,7 +865,7 @@ class IO:
                 ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
             else:
                 ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
-            
+            """
             # Embed the plot in the Tkinter window
             canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
             canvas.draw()
