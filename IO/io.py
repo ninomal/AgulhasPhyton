@@ -8,7 +8,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 from functools import cache
 from enums.enumsToday import Enumstoday
-import time
 
 
 class IO:
@@ -495,7 +494,7 @@ class IO:
         self.products.clearList()
         self.comboSetorMonth =""
         self.monthGraficEntry = ""
-        return self.products.dataGraphAllMonth(self.comboSetorAllMonth.get(),
+        return self.products.dataGraphAllMonthTotal(self.comboSetorAllMonth.get(),
                                         self.allMonthGraficEntry.get())
     
     def monthGraphicPoP(self):
@@ -547,60 +546,6 @@ class IO:
         messageboxTotalTop.place(x= 7, y = 120)
                                                    
     #START MATPLOT INTERATION
-    @cache
-    def popMonthGrafico(self):
-        # Check if there's already an open window, close it
-        if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
-            self.plot_window.destroy()
-        # Create a new top-level window
-        self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
-        self.plot_window.title("PoP Day Graphics")
-        self.plot_window.config(background="#A580CA")
-        self.plot_window.geometry("1000x500")
-        try: 
-            categories = np.arange(1, 32)
-            y = np.arange(10, 10 * len(categories) + 10, 10)
-            testey = [1, 4 , 5 , 10 , 8 , 14, 15, 10 , 5 , 4 , 5 , 6 , 7 , 8 , 9 ,10,
-                      1, 4 , 5 , 10 , 8 , 14, 15, 10 , 5 , 4 , 5 , 6 , 7 , 8 , 9 ]
-            
-             # Random values for illustration
-            values2 = np.random.randint(1, 50, size=len(categories))  # Random values for illustration
-            values3 = np.random.randint(1, 100, size=len(categories))  # Additional values
-            values4 = np.random.randint(1, 100, size=len(categories))  # Additional values
-            
-            fig, ax = plt.subplots(figsize=(50, 6))
-            
-            x = np.arange(len(categories))
-            width = 0.2
-            plt.bar(x - 1.5* width, testey, width, label='Value 1',
-                                            color='b', align='center')
-            plt.bar(x - 0.5* width, values2, width, label='Value 2',
-                                            color='r', align='center')
-            plt.bar(x + 0.5* width, values3, width, label='Value 3',
-                                            color='g', align='center')
-            plt.bar(x + 1.5* width, values4, width, label='Value 4',
-                                            color='y', align='center')
-            ax.set_xlabel('Dia')
-            ax.set_ylabel('Agulhas')
-            ax.set_title('Agulhas quebradas')
-            plt.xticks(x, categories)  
-            plt.xlim(-0.5, len(categories) - 0.5)
-            plt.ylim(0, 130) 
-            plt.yticks(np.arange(0, 131, 10))
-            plt.xticks(x)
-            
-            # Embed the plot in the Tkinter window
-            canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
-            canvas.draw()
-            canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-    
-            # Schedule the window to close after 15 seconds
-            self.close_after_id = self.plot_window.after(150000, self.closedPlt)
-            self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
-            self.plot_window.mainloop()
-        except ValueError:
-            self.popValueError()
-            
     def closedPlt(self):
         # Cancel the scheduled after() event if it exists
         if self.close_after_id is not None:
@@ -725,26 +670,6 @@ class IO:
                                     font=("Helvetica", 18),
                                     bg="#A580CA",command= "beta")
         buttonIniciarMes.place(x= 20 , y= 155, width= 88, height= 35)                   
-                               
-    def popMonthSelection(self):
-        graphicDaySelect = Tk()
-        graphicDaySelect.geometry("200x200")
-        graphicDaySelect.config(background="#9F5FFF")
-        
-        messagebox = tk.Label(master= graphicDaySelect, text= "Selecione o Setor:",
-                            font=("Helvetica", 14), bg="#9F5FFF")
-        messagebox.place(x= 18, y= 20)
-        
-        self.combo_selectDay = ttk.Combobox(master= graphicDaySelect,
-                                    values=["RASCHELL", "JACQUARD", "KETTEN"],
-                                   font=("Helvetica", 14), background= "#9F5FFF")
-        self.combo_selectDay.place(x= 20, y= 75, width=140, height=25)
-        self.combo_selectDay.set("RASCHELL")
-        
-        buttonOk = tk.Button(master= graphicDaySelect, text="OK",
-                                    font=("Helvetica", 14),
-                                    command= self.popMonthGrafico)
-        buttonOk.place(x=20, y=120)
     
     def popDayGrafico(self):
         valueAgulha = []
@@ -822,17 +747,16 @@ class IO:
         self.comboSetorMonth =""
         self.monthGraficEntry = ""
         dictData = self.products.dataGraphAllMonth(self.comboSetorAllMonth.get(),
-                                        self.allMonthGraficEntry.get())
+                                        self.allMonthGraficEntry.get(),
+                                        self.comboFinurasAllMonth.get())
         valueAgulha = []
-        print(dictData)
         #add dict in list of value
-        for dictList in dictData:
-            for keys , value in dictList.items():
-                valueAgulha.append(value)    
-            #add space
-            for space in range(3):
-                valueAgulha.append(0)
-    
+        for dictSlice in dictData:
+            for dictList in dictSlice:
+                for keys , value in dictList.items():
+                    valueAgulha.append(value)    
+                    
+        print(valueAgulha)
         # Check if there's already an open window, close it
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
@@ -847,7 +771,8 @@ class IO:
             
             x = np.arange(len(categories))
             plt.bar(x, valueAgulha,  label='Value 1', color='b', align='center')
-            ax.set_xlabel('Agulhas')
+            ax.set_xlabel('Dias')
+            ax.set_ylabel('Agulhas')
             ax.set_title('Agulhas quebradas')  
             plt.xlim(-0.5, len(categories) - 0.5)
             plt.ylim(0, 130) 
@@ -857,15 +782,12 @@ class IO:
             #add Red color in hight total in month beta
             #plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
             #plt.xlim(-0.5, len(categories) - 0.5)
-            """
-            #Labels setors
-            if self.comboSetorAllMonth.get() == "RASCHELL":
-                ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
-            elif self.comboSetorAllMonth.get() == "JACQUARD":
-                ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
-            else:
-                ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
-            """
+           
+            #Labels setors 
+            ax.text(18, 20+ 40.0,
+            f"{self.comboSetorAllMonth.get()} Codigo: {self.comboFinurasAllMonth.get()}"
+                                               ,ha='center', color='red', fontsize=21)
+            
             # Embed the plot in the Tkinter window
             canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
             canvas.draw()

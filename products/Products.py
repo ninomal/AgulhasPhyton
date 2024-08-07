@@ -180,21 +180,36 @@ class Products():
         return self.listOfGetDocumentsDay
     
     #need add days clear add adiocinar pop
-    def dataGraphAllMonth(self, setor, month):
+    def dataGraphAllMonthTotal(self, setor, month):
         self.clearList()
         mes = self.enumsMonthDays.colectMonths(int(month))
         for days in range(mes):
             try:
                 document = self.getDocumentFind({"2024": f"{month}", f"{setor}": days})
                 agulhas = document.get('AGULHAS', {})
-                total = agulhas.get('TOTAL', [])
-                
+                total = agulhas.get('TOTAL', []) 
                 list(map(lambda x: self.listMonthTotalResult.append(x), total))
                 #Monthdicts = [{key: value} for d in total for key, value in d.items()]
-              
             except AttributeError:
                 continue   
         return self.listMonthTotalResult
-     
+    
+    #select finura and get total all month
+    def dataGraphAllMonth(self, setor, month, finura):
+        self.clearList()
+        mes = self.enumsMonthDays.colectMonths(int(month))
+        days = 1
+        for days in range(mes):
+            try:
+                document = self.getDocumentFind({"2024": f"{month}", f"{setor}": days})
+                agulhas = document.get('AGULHAS', {})
+                total = agulhas.get('TOTAL', []) 
+                
+                self.listMonthTotalResult.extend([[values for values in total if 
+                                                  finura in values]])
+            except AttributeError: 
+                self.listMonthTotalResult.append([{"None": 0}])
+        print(self.listMonthTotalResult)
+        return self.listMonthTotalResult
         
     
