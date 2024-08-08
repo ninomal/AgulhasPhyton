@@ -49,7 +49,7 @@ class Products():
         return dayMongo
   
     def addDay(self, month, day, setor)->Dict:
-        dictDay= {self.year:month, setor : day, "AGULHAS":
+        dictDay= {self.year: month, setor : day, "AGULHAS":
                                     {"TA": self.listNeedlesBrokenDayTA,
                                      "TB": self.listNeedlesBrokenDayTB, 
                                      "TC": self.listNeedlesBrokenDayTC,
@@ -82,6 +82,7 @@ class Products():
         self.listSumMonthResult = []
         self.listOfGetDocumentsDay = []
         self.listMonthTotalResult = []
+        
         
     def finuraCheck(self, finuras):
         return self.enumsFinuras.checkFinurasEnums(finuras)
@@ -129,38 +130,41 @@ class Products():
     def getDocumentFind(self, name):
         document = self.productService.getDocumentFind(name)
         return document
-    
-   
-    def popDayProducts(self,day, setor):
+      
+    def popDayProducts(self, month, setor, day):
         self.clearList()
         #TA
         dictVar = {}
-        document = self.getDocumentFind({"2024": day, f"{setor}": 30})
-        agulhas = document.get('AGULHAS', {})
-        ta = agulhas.get('TA', [])
-        ta_dicts = [{key: value} for sublist in ta for item in sublist for key, value in item.items()]
-        for intens in ta_dicts:
-            dictVar.update(intens)
-        self.listOfGetDocumentsDay.append(dictVar)    
-        #TB
-        dictVar = {}
-        tb = agulhas.get('TB', [])
-        tb_dicts = [{key: value} for sublist in tb for item in sublist for key, value in item.items()]
-        list(map(lambda intens: dictVar.update(intens), tb_dicts))
-        self.listOfGetDocumentsDay.append(dictVar)     
-        #TC
-        dictVar = {}
-        tc = agulhas.get('TC', [])
-        tc_dicts = [{key: value} for sublist in tc for item in sublist for key, value in item.items()]
-        list(map(lambda intens: dictVar.update(intens), tc_dicts))
-        self.listOfGetDocumentsDay.append(dictVar)  
-        #TOTAL
-        dictVar = {}
-        total = agulhas.get('TOTAL', [])
-        total_dicts = [{key: value} for d in total for key, value in d.items()]
-        list(map(lambda intens: dictVar.update(intens), total_dicts))
-        self.listOfGetDocumentsDay.append(dictVar)   
-        return self.listOfGetDocumentsDay
+        try:
+            document = self.getDocumentFind({"2024": month, f"{setor}": day})
+            agulhas = document.get('AGULHAS', {})
+            ta = agulhas.get('TA', [])
+            ta_dicts = [{key: value} for sublist in ta for item in sublist for key, value in item.items()]
+            for intens in ta_dicts:
+                dictVar.update(intens)
+            self.listOfGetDocumentsDay.append(dictVar)    
+            #TB
+            dictVar = {}
+            tb = agulhas.get('TB', [])
+            tb_dicts = [{key: value} for sublist in tb for item in sublist for key, value in item.items()]
+            list(map(lambda intens: dictVar.update(intens), tb_dicts))
+            self.listOfGetDocumentsDay.append(dictVar)     
+            #TC
+            dictVar = {}
+            tc = agulhas.get('TC', [])
+            tc_dicts = [{key: value} for sublist in tc for item in sublist for key, value in item.items()]
+            list(map(lambda intens: dictVar.update(intens), tc_dicts))
+            self.listOfGetDocumentsDay.append(dictVar)  
+            #TOTAL
+            dictVar = {}
+            total = agulhas.get('TOTAL', [])
+            total_dicts = [{key: value} for d in total for key, value in d.items()]
+            list(map(lambda intens: dictVar.update(intens), total_dicts))
+            self.listOfGetDocumentsDay.append(dictVar)   
+            return self.listOfGetDocumentsDay
+        except AttributeError:
+            self.listOfGetDocumentsDay.append({"Nao teve quebra": 0})
+            return self.listOfGetDocumentsDay
         
     def dataGraphMonth(self, setor, month):
         self.clearList()
@@ -198,18 +202,17 @@ class Products():
     def dataGraphAllMonth(self, setor, month, finura):
         self.clearList()
         mes = self.enumsMonthDays.colectMonths(int(month))
-        days = 1
-        for days in range(mes):
+        for days in range(1 ,mes):
             try:
                 document = self.getDocumentFind({"2024": f"{month}", f"{setor}": days})
                 agulhas = document.get('AGULHAS', {})
                 total = agulhas.get('TOTAL', []) 
-                
-                self.listMonthTotalResult.extend([[values for values in total if 
-                                                  finura in values]])
+                for dictList in total:
+                    for key , value in dictList.items():
+                        if key == finura:
+                            self.listMonthTotalResult.append([{key: value}])
             except AttributeError: 
                 self.listMonthTotalResult.append([{"None": 0}])
-        print(self.listMonthTotalResult)
         return self.listMonthTotalResult
         
     

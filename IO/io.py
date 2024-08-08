@@ -579,9 +579,10 @@ class IO:
     
     #triger for popDayProducs       
     def popDayProductsSetor(self):
-        try:    
-            dictData = self.products.popDayProducts(self.dayEntry.get(),
-                                                self.combo_setorDay.get())
+        try:                               
+            day = int(self.dayEntry.get())
+            dictData= self.products.popDayProducts(self.monthEntry.get(), 
+                                                   self.combo_setorDay.get(), day)
             self.popDayResult(dictData)
         except AttributeError:
             self.popDay()
@@ -677,10 +678,11 @@ class IO:
         agulhaTotalRed = []
         varStack = []
         varItemsStack = []
-          
-        for setor in range(3):
-            dictData = self.products.popDayProducts(self.dayEntry.get(),
-                                        Enumstoday.getEnumsSetorNames(self, setor))
+        day = int(self.dayEntry.get())
+        month = self.monthEntry.get()
+        for setor in range(3):    
+            dictData = self.products.popDayProducts(month,
+                            Enumstoday.getEnumsSetorNames(self, setor), day)
             varStack.append(dictData[-1]) 
             #add dict in list of value
             for dictList in dictData:
@@ -769,12 +771,12 @@ class IO:
             categories = np.arange(1, (len(valueAgulha)+1))
             fig, ax = plt.subplots(figsize=(50, 6))
             
-            x = np.arange(len(categories))
+            x = np.arange(1, (len(categories)+1))
             plt.bar(x, valueAgulha,  label='Value 1', color='b', align='center')
             ax.set_xlabel('Dias')
             ax.set_ylabel('Agulhas')
             ax.set_title('Agulhas quebradas')  
-            plt.xlim(-0.5, len(categories) - 0.5)
+            plt.xlim(-0.2, (len(categories)+1) - 0.1)
             plt.ylim(0, 130) 
             plt.xticks(x)
             plt.yticks(np.arange(0, 131, 5))
