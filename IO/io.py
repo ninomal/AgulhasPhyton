@@ -5,6 +5,7 @@ from tkinter import ttk
 from products.Products import Products
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 import numpy as np
 from functools import cache
 from enums.enumsToday import Enumstoday
@@ -639,38 +640,38 @@ class IO:
             messageboxTotal.place(x=650, y=valueY)
                                
     def graficoPizzaPoP(self):
-        popGraficoPizza = Tk()
-        popGraficoPizza.geometry("300x200")
-        popGraficoPizza.config(background="#4A1985")
-    
-        comboSetor = ttk.Combobox(popGraficoPizza, values=["Raschell", "Jacquard", "ketten"],
-                                   font=("Helvetica", 14), background= "#A580CA")
-        comboSetor.place(x=105, y= 20, width=87, height=25)
-        comboSetor.set("Setor")
+        pizzaGraf = Tk()
+        pizzaGraf.title("Grafico pizza")
+        pizzaGraf.geometry("240x220")
+        pizzaGraf.config(background="#9F5FFF")
         
-        messageboxMes = tk.Label(master= popGraficoPizza, text= "Digite os Mês:",
-                            font=("Helvetica", 14), bg="#4A1985")
-        messageboxMes.place(x= 2, y= 20) 
+        self.comboSetorPizza = ttk.Combobox(pizzaGraf, 
+                                   values=["RASCHELL", "JACQUARD", "KETTEN"],
+                                   font=("Helvetica", 14), background= "#9F5FFF")
+        self.comboSetorPizza.place(x=10, y=30, width=140, height=25)
+        self.comboSetorPizza.set("RASCHELL")
         
-        self.comparacaoDay = tk.Entry(master= popGraficoPizza)     
-        self.comparacaoDay.place(x= 56, y= 20)
+        messagebox = tk.Label(master= pizzaGraf, text= "Mês:",
+                            font=("Helvetica", 18), bg="#9F5FFF")
+        messagebox.place(x=10, y=80)
         
-        messageboxDia = tk.Label(master= popGraficoPizza, text= "Digite os Mês:",
-                            font=("Helvetica", 14), bg="#4A1985")
-        messageboxDia.place(x= 2, y= 20) 
+        self.pizzaGraficEntry = tk.Entry(master= pizzaGraf)     
+        self.pizzaGraficEntry.place(x=65, y= 85, width="42", height="23")
         
-        self.comparacaoMonth = tk.Entry(master= popGraficoPizza)     
-        self.comparacaoMonth.place(x= 56, y= 1)
+        messageboxDia = tk.Label(master= pizzaGraf, text= "Dia:",
+                            font=("Helvetica", 18), bg="#9F5FFF")
+        messageboxDia.place(x=114, y=80)
         
-        buttonIniciarDia = tk.Button(popGraficoPizza, text="Iniciar Dia",
-                                    font=("Helvetica", 18),
-                                    bg="#A580CA",command= "beta")
-        buttonIniciarDia.place(x= 125 , y= 155, width= 88, height= 35)
+        self.pizzaGraficEntryDay = tk.Entry(master= pizzaGraf)     
+        self.pizzaGraficEntryDay.place(x=163 , y= 85, width="42", height="23")
         
-        buttonIniciarMes = tk.Button(popGraficoPizza, text="Iniciar Mês",
-                                    font=("Helvetica", 18),
-                                    bg="#A580CA",command= "beta")
-        buttonIniciarMes.place(x= 20 , y= 155, width= 88, height= 35)                   
+        buttonMes = tk.Button(pizzaGraf, text="Mês",font=("Helvetica", 18),
+                                        bg="#9F5FFF",command= self.pizzaDisplayMonth)
+        buttonMes.place(x= 10 , y= 140, width= 95, height= 25) 
+        
+        buttonDia = tk.Button(pizzaGraf, text="Dia",font=("Helvetica", 18),
+                                        bg="#9F5FFF",command= self.pizzaDisplayMonth)
+        buttonDia.place(x= 110 , y= 140, width= 95, height= 25)              
     
     def popDayGrafico(self):
         valueAgulha = []
@@ -758,7 +759,6 @@ class IO:
                 for keys , value in dictList.items():
                     valueAgulha.append(value)    
                     
-        print(valueAgulha)
         # Check if there's already an open window, close it
         if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
             self.plot_window.destroy()
@@ -802,6 +802,39 @@ class IO:
         except ValueError:
             self.popValueError()
                     
+    def pizzaDisplayMonth(self):
+        nameList = []
+        valueList = []
+        explodeList = []
+        data = self.products.pizzaDataMonth(self.comboSetorPizza.get(),
+                                            self.pizzaGraficEntry.get())
+        for lists in data:
+            for keys , values in lists.items():
+                nameList.append((keys))
+                valueList.append(values)
+                explodeList.append((0))
+        labels = nameList
+        explode = explodeList  
+        sizes = valueList
+        colorsLen = len(nameList)
+        colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0"
+                     "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2']
+        colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
+        
+       # Create a Figure and a Pie Chart
+        root = tk.Tk()
+        root.title("Pie Chart Example")
+        fig = Figure(figsize=(10, 10), dpi=100)
+        ax = fig.add_subplot(111)
+        ax.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%10.1f%%',  startangle=140, )
+        ax.axis('equal')
+        ax.set_title('Pizza grafico do mês', pad= 25.0)
+       
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
     def ioMainLoop(self):
         self.windows.mainloop()
     

@@ -183,7 +183,6 @@ class Products():
                 continue        
         return self.listOfGetDocumentsDay
     
-    #need add days clear add adiocinar pop
     def dataGraphAllMonthTotal(self, setor, month):
         self.clearList()
         mes = self.enumsMonthDays.colectMonths(int(month))
@@ -215,4 +214,7 @@ class Products():
                 self.listMonthTotalResult.append([{"None": 0}])
         return self.listMonthTotalResult
         
-    
+    def pizzaDataMonth(self, setor, month):
+        data = self.dataGraphMonth(setor, month)
+        dataMonthSum = self.monthTotalSum(data)  
+        return dataMonthSum
