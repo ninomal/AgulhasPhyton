@@ -357,26 +357,33 @@ class IO:
          
     def popComparacaoGrafico(self):
         popComparacao = Tk()
-        popComparacao.geometry("300x200")
-        popComparacao.config(background="#4A1985")
-        messagebox = tk.Label(master= popComparacao, text= "Digite os Mês:",
-                            font=("Helvetica", 14), bg="#4A1985")
-        messagebox.pack(padx= 2, pady= 20) 
+        popComparacao.geometry("250x180")
+        popComparacao.config(background="#9F5FFF")
+   
+        self.compSetor = ttk.Combobox(master= popComparacao, 
+                                   values=["RASCHELL", "JACQUARD", "KETTEN"],
+                                   font=("Helvetica", 14), background= "#9F5FFF")
+        self.compSetor.place(x=10, y=30, width=140, height=25)
+        self.compSetor.set("RASCHELL")
         
-        comboSetor = ttk.Combobox(popComparacao, values=["Raschell", "Jacquard", "ketten"],
-                                   font=("Helvetica", 14), background= "#A580CA")
-        comboSetor.place(x=105, y= 52, width=87, height=25)
-        comboSetor.set("Setor")
+        messageboxMes1 = tk.Label(master= popComparacao, text= "Mês 1:",
+                            font=("Helvetica", 18), bg="#9F5FFF")
+        messageboxMes1.place(x=9, y=80)
         
-        self.comparacaoMonth1 = tk.Entry(master= popComparacao)     
-        self.comparacaoMonth1.pack(padx= 6, pady= 20)
+        self.compMonthEntry1 = tk.Entry(master= popComparacao)     
+        self.compMonthEntry1.place(x=87, y= 85, width="42", height="23")
         
-        self.comparacaoMonth2 = tk.Entry(master= popComparacao)     
-        self.comparacaoMonth2.pack(padx= 6, pady= 1)
+        messageboxMes2 = tk.Label(master= popComparacao, text= "mês 2:",
+                            font=("Helvetica", 18), bg="#9F5FFF")
+        messageboxMes2.place(x=122, y=80)
         
-        button_ok = tk.Button(popComparacao, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= "beta")
-        button_ok.place(x= 105 , y= 155, width= 88, height= 35)
+        self.pizzaGraficEntryMonth2 = tk.Entry(master= popComparacao)     
+        self.pizzaGraficEntryMonth2.place(x=198 , y= 85, width="42", height="23")
+        
+        buttonMes = tk.Button(popComparacao, text="Inciar",font=("Helvetica", 18),
+                                        bg="#9F5FFF",command= self.popCompSelect)
+        buttonMes.place(x= 10 , y= 140, width= 95, height= 25) 
+        
         
     def monthTotalPoP(self):
         monthLyGraph = Tk()
@@ -861,7 +868,7 @@ class IO:
         fig = Figure(figsize=(10, 10), dpi=100)
         ax = fig.add_subplot(111)
         ax.pie(sizes, explode=explode, labels=labels, colors=colors,
-            autopct='%10.1f%%',  startangle=140, )
+            autopct='%1.1f%%',  startangle=140, )
         ax.axis('equal')
         ax.set_title('Quebra do Dia', pad= 25.0)
        
@@ -869,6 +876,38 @@ class IO:
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
+    def popCompSelect(self):
+        popCompRoot = Tk()
+        popCompRoot.geometry("200x200")
+        popCompRoot.config(background="#4A1985")
+
+        messagebox = tk.Label(master= popCompRoot, text= "Finura:",
+                            font=("Helvetica", 18), bg="#4A1985")
+        messagebox.place(x=10, y=60)
+         
+        if self.compSetor.get() == "RASCHELL":
+            self.comboCompFinuras = ttk.Combobox(popCompRoot,
+                                        values=["3975", "4575","4475", "4565"],
+                                        font=("Helvetica", 14), background= "#A580CA")
+            self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
+            self.comboCompFinuras.set("3975")
+        elif self.compSetor.get() == "JACQUARD":
+            self.comboCompFinuras = ttk.Combobox(popCompRoot,
+                                        values=["4496", "2760"],
+                                        font=("Helvetica", 14), background= "#A580CA")
+            self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
+            self.comboCompFinuras.set("4496")
+        else:
+            self.comboCompFinuras = ttk.Combobox(popCompRoot,
+                                        values=["2760"],
+                                        font=("Helvetica", 14), background= "#A580CA")
+            self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
+            self.comboCompFinuras.set("2760")
+        
+        button_ok = tk.Button(popCompRoot, text="Iniciar",font=("Helvetica", 18),
+                                        bg="#A580CA",command= self.allMonthGraphic)
+        button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
+    
     def ioMainLoop(self):
         self.windows.mainloop()
     
