@@ -38,12 +38,6 @@ class Products():
         self.listSumMonthResult.append(dict(totalSum))
         return self.listSumMonthResult
             
-    #Check
-    def totalDay(self, finuraInput, day):
-        finuraGet = self.productService.getFinuras()
-        total = self.productService.getTotalofDay()   
-        return (f"O dia ",day,"\n A finura ", finuraGet," quebrou o total de: ", total)
- 
     def addDayMongoDB(self, setor):
         dayMongo = self.addDay( setor)
         return dayMongo
@@ -218,3 +212,7 @@ class Products():
         data = self.dataGraphMonth(setor, month)
         dataMonthSum = self.monthTotalSum(data)  
         return dataMonthSum
+    
+    def pizzaDataDay(self, month, setor, day):
+        data = self.popDayProducts(month, setor , day)
+        return data

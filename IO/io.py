@@ -655,8 +655,8 @@ class IO:
                             font=("Helvetica", 18), bg="#9F5FFF")
         messagebox.place(x=10, y=80)
         
-        self.pizzaGraficEntry = tk.Entry(master= pizzaGraf)     
-        self.pizzaGraficEntry.place(x=65, y= 85, width="42", height="23")
+        self.pizzaGraficEntryMonth = tk.Entry(master= pizzaGraf)     
+        self.pizzaGraficEntryMonth.place(x=65, y= 85, width="42", height="23")
         
         messageboxDia = tk.Label(master= pizzaGraf, text= "Dia:",
                             font=("Helvetica", 18), bg="#9F5FFF")
@@ -670,7 +670,7 @@ class IO:
         buttonMes.place(x= 10 , y= 140, width= 95, height= 25) 
         
         buttonDia = tk.Button(pizzaGraf, text="Dia",font=("Helvetica", 18),
-                                        bg="#9F5FFF",command= self.pizzaDisplayMonth)
+                                        bg="#9F5FFF",command= self.pizzaDisplayDay)
         buttonDia.place(x= 110 , y= 140, width= 95, height= 25)              
     
     def popDayGrafico(self):
@@ -807,7 +807,7 @@ class IO:
         valueList = []
         explodeList = []
         data = self.products.pizzaDataMonth(self.comboSetorPizza.get(),
-                                            self.pizzaGraficEntry.get())
+                                            self.pizzaGraficEntryMonth.get())
         for lists in data:
             for keys , values in lists.items():
                 nameList.append((keys))
@@ -835,6 +835,40 @@ class IO:
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
+    def pizzaDisplayDay(self):
+        nameList = []
+        valueList = []
+        explodeList = []
+        data = self.products.pizzaDataDay(self.pizzaGraficEntryMonth.get(),
+                                        self.comboSetorPizza.get(),
+                                        int(self.pizzaGraficEntryDay.get()))
+        for lists in data:
+            for keys , values in lists.items():
+                nameList.append((keys))
+                valueList.append(values)
+                explodeList.append((0))
+        labels = nameList
+        explode = explodeList  
+        sizes = valueList
+        colorsLen = len(nameList)
+        colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0", "#9B5BA0",
+                     "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2', "#A66FC4 ", "#B39CDE"]
+        colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
+        
+       # Create a Figure and a Pie Chart
+        root = tk.Tk()
+        root.title("Pie Chart Example")
+        fig = Figure(figsize=(10, 10), dpi=100)
+        ax = fig.add_subplot(111)
+        ax.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%10.1f%%',  startangle=140, )
+        ax.axis('equal')
+        ax.set_title('Quebra do Dia', pad= 25.0)
+       
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        
     def ioMainLoop(self):
         self.windows.mainloop()
     
