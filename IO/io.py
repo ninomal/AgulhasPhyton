@@ -377,8 +377,8 @@ class IO:
                             font=("Helvetica", 18), bg="#9F5FFF")
         messageboxMes2.place(x=122, y=80)
         
-        self.pizzaGraficEntryMonth2 = tk.Entry(master= popComparacao)     
-        self.pizzaGraficEntryMonth2.place(x=198 , y= 85, width="42", height="23")
+        self.compMonthEntry2 = tk.Entry(master= popComparacao)     
+        self.compMonthEntry2.place(x=198 , y= 85, width="42", height="23")
         
         buttonMes = tk.Button(popComparacao, text="Inciar",font=("Helvetica", 18),
                                         bg="#9F5FFF",command= self.popCompSelect)
@@ -389,6 +389,7 @@ class IO:
         monthLyGraph = Tk()
         monthLyGraph.geometry("200x200")
         monthLyGraph.config(background="#9F5FFF")
+        monthLyGraph.title("Grafico do mes")
         
         self.comboSetorMonth1 = ttk.Combobox(monthLyGraph, values=["RASCHELL", "JACQUARD", "KETTEN"],
                                    font=("Helvetica", 14), background= "#9F5FFF")
@@ -446,55 +447,55 @@ class IO:
     def monthlyGraph(self):
         monthLyGraph = Tk()
         monthLyGraph.geometry("200x200")
-        monthLyGraph.config(background="#4A1985")
+        monthLyGraph.config(background="#9F5FFF")
         
         self.comboSetorAllMonth = ttk.Combobox(monthLyGraph,
                                    values=["RASCHELL", "JACQUARD", "KETTEN"],
-                                   font=("Helvetica", 14), background= "#A580CA")
+                                   font=("Helvetica", 14), background= "#9F5FFF")
         self.comboSetorAllMonth.place(x=10, y=30, width=140, height=25)
         self.comboSetorAllMonth.set("RASCHELL")
         
         messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
-                            font=("Helvetica", 18), bg="#4A1985")
+                            font=("Helvetica", 18), bg="#9F5FFF")
         messagebox.place(x=10, y=80)
         
         self.allMonthGraficEntry = tk.Entry(master= monthLyGraph)     
         self.allMonthGraficEntry.place(x=75, y= 85, width="42", height="23")
         
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.popFinurasSelectMonth)
+                                        bg="#9F5FFF",command= self.popFinurasSelectMonth)
         button_ok.place(x= 10 , y= 160, width= 95, height= 25)
     
     def popFinurasSelectMonth(self):
         monthLyGraph = Tk()
         monthLyGraph.geometry("200x200")
-        monthLyGraph.config(background="#4A1985")
+        monthLyGraph.config(background="##9F5FFF")
 
         messagebox = tk.Label(master= monthLyGraph, text= "Finura:",
-                            font=("Helvetica", 18), bg="#4A1985")
+                            font=("Helvetica", 18), bg="#9F5FFF")
         messagebox.place(x=10, y=60)
          
         if self.comboSetorAllMonth.get() == "RASCHELL":
             self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
                                         values=["3975", "4575","4475", "4565"],
-                                        font=("Helvetica", 14), background= "#A580CA")
+                                        font=("Helvetica", 14), background= "#9F5FFF")
             self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
             self.comboFinurasAllMonth.set("3975")
         elif self.comboSetorAllMonth.get() == "JACQUARD":
             self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
                                         values=["4496", "2760"],
-                                        font=("Helvetica", 14), background= "#A580CA")
+                                        font=("Helvetica", 14), background= "#9F5FFF")
             self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
             self.comboFinurasAllMonth.set("4496")
         else:
             self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
                                         values=["2760"],
-                                        font=("Helvetica", 14), background= "#A580CA")
+                                        font=("Helvetica", 14), background= "#9F5FFF")
             self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
             self.comboFinurasAllMonth.set("2760")
         
         button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.allMonthGraphic)
+                                        bg="#9F5FFF",command= self.allMonthGraphic)
         button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
         
         
@@ -509,7 +510,7 @@ class IO:
         self.products.clearList()
         graphicMonth = Tk()
         graphicMonth.geometry("200x200")
-        graphicMonth.config(background="#871188")
+        graphicMonth.config(background="#9F5FFF")
         valueY = 2
         data = self.monthGraphicData()
         
@@ -879,34 +880,78 @@ class IO:
     def popCompSelect(self):
         popCompRoot = Tk()
         popCompRoot.geometry("200x200")
-        popCompRoot.config(background="#4A1985")
+        popCompRoot.config(background="#9F5FFF")
+        popCompRoot.title("Finuras select")
 
         messagebox = tk.Label(master= popCompRoot, text= "Finura:",
-                            font=("Helvetica", 18), bg="#4A1985")
+                            font=("Helvetica", 18), bg="#9F5FFF")
         messagebox.place(x=10, y=60)
          
         if self.compSetor.get() == "RASCHELL":
             self.comboCompFinuras = ttk.Combobox(popCompRoot,
                                         values=["3975", "4575","4475", "4565"],
-                                        font=("Helvetica", 14), background= "#A580CA")
+                                        font=("Helvetica", 14), background= "#9F5FFF")
             self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
             self.comboCompFinuras.set("3975")
         elif self.compSetor.get() == "JACQUARD":
             self.comboCompFinuras = ttk.Combobox(popCompRoot,
                                         values=["4496", "2760"],
-                                        font=("Helvetica", 14), background= "#A580CA")
+                                        font=("Helvetica", 14), background= "#9F5FFF")
             self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
             self.comboCompFinuras.set("4496")
         else:
             self.comboCompFinuras = ttk.Combobox(popCompRoot,
                                         values=["2760"],
-                                        font=("Helvetica", 14), background= "#A580CA")
+                                        font=("Helvetica", 14), background= "#9F5FFF")
             self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
             self.comboCompFinuras.set("2760")
         
         button_ok = tk.Button(popCompRoot, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#A580CA",command= self.allMonthGraphic)
+                                        bg="#9F5FFF",command= self.popCompDisplay)
         button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
+        
+    def popCompDisplay(self):
+        nameList = []
+        valueList = []
+        explodeList = []
+        data1 = self.products.pizzaDataComp(self.compMonthEntry1.get(),
+                                            self.compSetor.get(),
+                                            self.comboCompFinuras.get())
+        
+        data2 = self.products.pizzaDataComp(self.compMonthEntry2.get(),
+                                            self.compSetor.get(),
+                                            self.comboCompFinuras.get())
+        
+        #add dict list in list
+        valueList1 = list(data1[0][0].values())
+        valueList2 = list(data2[0][0].values())
+        nameList.append((data1[1]))
+        nameList.append((data2[1]))
+        valueList.append(valueList1[0])
+        valueList.append(valueList2[0])
+       
+        labels = nameList
+        sizes = valueList
+        explode = [0, 0] 
+        colorsLen = len(nameList)
+        colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0"
+                     "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2']
+        colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
+        
+       # Create a Figure and a Pie Chart
+        root = tk.Tk()
+        root.title("Pie Chart Example")
+        fig = Figure(figsize=(10, 10), dpi=100)
+        ax = fig.add_subplot(111)
+        ax.pie(sizes, explode=explode, labels=labels, colors=colors,
+            autopct='%10.1f%%',  startangle=140, )
+        ax.axis('equal')
+        ax.set_title('Pizza grafico do mês', pad= 25.0)
+       
+        canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        
     
     def ioMainLoop(self):
         self.windows.mainloop()

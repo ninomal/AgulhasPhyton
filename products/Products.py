@@ -1,6 +1,5 @@
 from productsService.productsService import ProductsService
 from enums.enumsMonth import EnumsMonthDays
-from enums.enumsMonthNameStr import EnumsMonthNameStr
 from enums.enumsFinuras import EnumsFinuras
 from typing import Dict
 import collections, functools, operator, random
@@ -16,7 +15,6 @@ class Products():
         self.monthTotalDict = {}
         self.productService = ProductsService()
         self.enumsMonthDays = EnumsMonthDays()
-        self.enumsMonthNameStr = EnumsMonthNameStr()
         self.enumsFinuras = EnumsFinuras()
         self.listNeedlesBrokenDayTA = [] 
         self.listNeedlesBrokenDayTB = []  
@@ -76,8 +74,7 @@ class Products():
         self.listSumMonthResult = []
         self.listOfGetDocumentsDay = []
         self.listMonthTotalResult = []
-        
-        
+            
     def finuraCheck(self, finuras):
         return self.enumsFinuras.checkFinurasEnums(finuras)
     
@@ -110,13 +107,7 @@ class Products():
     def selectMonthgrafics(self, month):
         monthDays = self.enumsMonthDays.colectMonths(month)
         return monthDays
-    
-    def monthComparation(self, month1, month2):
-        month1Days = self.enumsMonthDays(month1)  
-        month2Days = self.enumsMonthDays(month2)
-        monthListComp = [month1Days, month2Days]
-        return monthListComp
-    
+     
     def monthGraphics(self, month):
         monthResult = self.enumsMonthDays.colectMonths(month)
         return monthResult
@@ -216,3 +207,23 @@ class Products():
     def pizzaDataDay(self, month, setor, day):
         data = self.popDayProducts(month, setor , day)
         return data
+    
+    def pizzaDataComp(self, month, setor, finura):
+        self.clearList()
+        mes = self.enumsMonthDays.colectMonths(int(month))
+        mesName = self.enumsMonthDays.colectMonthsName(int(month))
+        for days in range(1 ,mes):
+            try:
+                totalSum = collections.defaultdict(int)
+                document = self.getDocumentFind({"2024": f"{month}", f"{setor}": days})
+                agulhas = document.get('AGULHAS', {})
+                total = agulhas.get('TOTAL', []) 
+                for dictList in total:
+                    for key , value in dictList.items():
+                        if key == finura:
+                           totalSum[finura]+= value 
+                self.listMonthTotalResult.append([totalSum])
+                self.listMonthTotalResult.append(mesName)
+            except AttributeError: 
+                continue
+        return self.listMonthTotalResult
