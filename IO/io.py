@@ -173,16 +173,14 @@ class IO:
             self.combo_turno.set("TC")
             self.conts = 0
                      
-    def finurasCheck(self):
-        finura = self.finuraEntry.get()
+    def finurasCheck(self, finura):
         asw = self.products.finuraCheck(finura)
         if not asw:
             self.popFinuras()
         else:
-            return asw
+            return True
         
-    def monthNotNumber(self):
-        monthStr = self.monthEntry.get()
+    def monthNotNumber(self, monthStr):
         try:
             month = int(monthStr)
             if type(month) != int or month >=13 or month == None:
@@ -192,8 +190,7 @@ class IO:
         except  ValueError :
             pass
                
-    def dayNotnumber(self):
-        dayStr = self.dayEntry.get()
+    def dayNotnumber(self, dayStr):
         try:
             day = int(dayStr)
             if type(day) != int or day >=32 or day == "" or day == 0 or day == None:
@@ -203,8 +200,7 @@ class IO:
         except  ValueError :
             pass
               
-    def agulhaNotNumber(self):
-        agulhaStr = self.agulhaEntry.get()
+    def agulhaNotNumber(self, agulhaStr):
         try:
             agulha = int(agulhaStr)
             if type(agulha) != int or agulha == None:
@@ -299,18 +295,24 @@ class IO:
         messagebox.showwarning(title="Erro",
                 message= "Clicar em Adicionar mais ou Passar o turno")
                                
+    def popExeception(self,finura="f14", month ="1", day=1, agulha = 1 ):
+        if self.monthNotNumber(month):
+            self.popMonth()
+        elif self.dayNotnumber(day):
+            self.popDay()
+        elif self.agulhaNotNumber(agulha):
+            self.popAgulhaErrada()
+        self.finurasCheck(finura)
+     
     def popADD(self):
         self.contsAdd +=1
-        finuras = self.finurasCheck()
+        excp =self.popExeception( self.finuraEntry.get(),
+                            month= self.monthEntry.get(),
+                            day= self.dayEntry.get(),
+                            agulha= self.agulhaEntry.get())
         if self.contsAdd > 1:
-            self.popEraserError()
-        elif self.monthNotNumber():
-            self.popMonth()
-        elif self.dayNotnumber():
-            self.popDay()
-        elif self.agulhaNotNumber():
-            self.popAgulhaErrada()
-        elif finuras :
+            self.popEraserError()          
+        elif self.finurasCheck(self.finuraEntry.get()) and  (excp != True): 
             ask  = messagebox.askyesno("Confirmação", 
                                     message= "Confirmar os dados")
             self.askTrue(ask)
@@ -469,7 +471,7 @@ class IO:
     def popFinurasSelectMonth(self):
         monthLyGraph = Tk()
         monthLyGraph.geometry("200x200")
-        monthLyGraph.config(background="##9F5FFF")
+        monthLyGraph.config(background="#9F5FFF")
 
         messagebox = tk.Label(master= monthLyGraph, text= "Finura:",
                             font=("Helvetica", 18), bg="#9F5FFF")
