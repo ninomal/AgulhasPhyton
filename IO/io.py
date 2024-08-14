@@ -29,6 +29,9 @@ class IO:
         self.firma()
         self.plot_window = None
         self.clearLIstEntrys()
+        self.day = 1
+        self.month = "1"
+        self.GraficsOpen = False
         
     def firma(self):
         label_footer = tk.Label(self.windows, text="Radical dreamers aw rpg ltda", 
@@ -183,22 +186,22 @@ class IO:
     def monthNotNumber(self, monthStr):
         try:
             month = int(monthStr)
-            if type(month) != int or month >=13 or month == None:
+            if type(month) != int or month >=13 or month == None or month == 0:
                 return True
             else:
                 return False
         except  ValueError :
-            pass
+            self.popMonth()
                
     def dayNotnumber(self, dayStr):
         try:
             day = int(dayStr)
-            if type(day) != int or day >=32 or day == "" or day == 0 or day == None:
+            if type(day)!= int or day >=32 or day == "" or day == 0 or day == None :
                 return True
             else:
                 return False
         except  ValueError :
-            pass
+            self.popDay()
               
     def agulhaNotNumber(self, agulhaStr):
         try:
@@ -262,6 +265,7 @@ class IO:
     def popMonth(self):
         masterPoP = Tk()
         masterPoP.geometry("500x300")
+        masterPoP.config(background= "#A580CA")
         messagebox = tk.Label(master= masterPoP,
                               text= "Mês INVALIDO",
                               font=("Helvetica", 27),
@@ -296,13 +300,15 @@ class IO:
                 message= "Clicar em Adicionar mais ou Passar o turno")
                                
     def popExeception(self,finura="f14", month ="1", day=1, agulha = 1 ):
+        self.GraficsOpen = False
         if self.monthNotNumber(month):
             self.popMonth()
         elif self.dayNotnumber(day):
             self.popDay()
         elif self.agulhaNotNumber(agulha):
             self.popAgulhaErrada()
-        self.finurasCheck(finura)
+        if self.finurasCheck(finura):
+            return True
      
     def popADD(self):
         self.contsAdd +=1
@@ -413,38 +419,42 @@ class IO:
         valueY = 58
         dataMonthSum = []
         data = []
-        data = self.products.dataGraphMonth(self.comboSetorMonth1.get(),
-                                        self.monthGraficEntry.get())
-        dataMonthSum = self.products.monthTotalSum(data)[0]
-        monthLyGraph = Tk()
-        monthLyGraph.geometry("900x400")
-        monthLyGraph.config(background="#A580CA")
-        
-        messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
-                            font=("Helvetica", 25), bg="#A580CA")
-        messagebox.place(x=17, y=10)
-        
-        messageboxMonth = tk.Label(master= monthLyGraph, 
-                                text= f"{self.monthGraficEntry.get()}",
-                            font=("Helvetica", 25), bg="#A580CA")
-        messageboxMonth.place(x=95, y=10)
-        
-        messageboxSetor = tk.Label(master= monthLyGraph, 
-                                text= f"{self.comboSetorMonth1.get()}",
-                            font=("Helvetica", 25), bg="#A580CA")
-        messageboxSetor.place(x=200, y=10)
-        
-        messageboxTotalTop = tk.Label(master= monthLyGraph, text= "TOTAL:",
-                                    font=("Helvetica", 30), bg="#A580CA")
-        messageboxTotalTop.place(x= 15 , y= 60)
-        
-        for key, values in dataMonthSum.items():
-            valueY += 53
-            messageboxTotal = tk.Label(master= monthLyGraph, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#A580CA")
-            messageboxTotal.place(x= 15, y=valueY)
-            #adicionar por dia divisao
-        
+        ask = self.monthNotNumber(self.monthGraficEntry.get())
+        if ask:
+            self.popMonth()
+        elif not ask == None:
+            data = self.products.dataGraphMonth(self.comboSetorMonth1.get(),
+                                            self.monthGraficEntry.get())
+            dataMonthSum = self.products.monthTotalSum(data)[0]
+            monthLyGraph = Tk()
+            monthLyGraph.geometry("900x400")
+            monthLyGraph.config(background="#A580CA")
+            
+            messagebox = tk.Label(master= monthLyGraph, text= "Mês:",
+                                font=("Helvetica", 25), bg="#A580CA")
+            messagebox.place(x=17, y=10)
+            
+            messageboxMonth = tk.Label(master= monthLyGraph, 
+                                    text= f"{self.monthGraficEntry.get()}",
+                                font=("Helvetica", 25), bg="#A580CA")
+            messageboxMonth.place(x=95, y=10)
+            
+            messageboxSetor = tk.Label(master= monthLyGraph, 
+                                    text= f"{self.comboSetorMonth1.get()}",
+                                font=("Helvetica", 25), bg="#A580CA")
+            messageboxSetor.place(x=200, y=10)
+            
+            messageboxTotalTop = tk.Label(master= monthLyGraph, text= "TOTAL:",
+                                        font=("Helvetica", 30), bg="#A580CA")
+            messageboxTotalTop.place(x= 15 , y= 60)
+            
+            for key, values in dataMonthSum.items():
+                valueY += 53
+                messageboxTotal = tk.Label(master= monthLyGraph, text= f"{key} : {values}",
+                                        font=("Helvetica", 30), bg="#A580CA")
+                messageboxTotal.place(x= 15, y=valueY)
+                #adicionar por dia divisao
+            
         
     def monthlyGraph(self):
         monthLyGraph = Tk()
@@ -469,36 +479,40 @@ class IO:
         button_ok.place(x= 10 , y= 160, width= 95, height= 25)
     
     def popFinurasSelectMonth(self):
-        monthLyGraph = Tk()
-        monthLyGraph.geometry("200x200")
-        monthLyGraph.config(background="#9F5FFF")
+        ask = self.monthNotNumber(self.allMonthGraficEntry.get())
+        if ask:
+            self.popMonth()
+        elif not ask == None:
+            monthLyGraph = Tk()
+            monthLyGraph.geometry("200x200")
+            monthLyGraph.config(background="#9F5FFF")
 
-        messagebox = tk.Label(master= monthLyGraph, text= "Finura:",
-                            font=("Helvetica", 18), bg="#9F5FFF")
-        messagebox.place(x=10, y=60)
-         
-        if self.comboSetorAllMonth.get() == "RASCHELL":
-            self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
-                                        values=["3975", "4575","4475", "4565"],
-                                        font=("Helvetica", 14), background= "#9F5FFF")
-            self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
-            self.comboFinurasAllMonth.set("3975")
-        elif self.comboSetorAllMonth.get() == "JACQUARD":
-            self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
-                                        values=["4496", "2760"],
-                                        font=("Helvetica", 14), background= "#9F5FFF")
-            self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
-            self.comboFinurasAllMonth.set("4496")
-        else:
-            self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
-                                        values=["2760"],
-                                        font=("Helvetica", 14), background= "#9F5FFF")
-            self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
-            self.comboFinurasAllMonth.set("2760")
-        
-        button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#9F5FFF",command= self.allMonthGraphic)
-        button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
+            messagebox = tk.Label(master= monthLyGraph, text= "Finura:",
+                                font=("Helvetica", 18), bg="#9F5FFF")
+            messagebox.place(x=10, y=60)
+            
+            if self.comboSetorAllMonth.get() == "RASCHELL":
+                self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
+                                            values=["3975", "4575","4475", "4565"],
+                                            font=("Helvetica", 14), background= "#9F5FFF")
+                self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
+                self.comboFinurasAllMonth.set("3975")
+            elif self.comboSetorAllMonth.get() == "JACQUARD":
+                self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
+                                            values=["4496", "2760"],
+                                            font=("Helvetica", 14), background= "#9F5FFF")
+                self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
+                self.comboFinurasAllMonth.set("4496")
+            else:
+                self.comboFinurasAllMonth = ttk.Combobox(monthLyGraph,
+                                            values=["2760"],
+                                            font=("Helvetica", 14), background= "#9F5FFF")
+                self.comboFinurasAllMonth.place(x=10, y=100, width=140, height=25)
+                self.comboFinurasAllMonth.set("2760")
+            
+            button_ok = tk.Button(monthLyGraph, text="Iniciar",font=("Helvetica", 18),
+                                            bg="#9F5FFF",command= self.allMonthGraphic)
+            button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
         
         
     def monthGraphicData(self):
@@ -590,11 +604,14 @@ class IO:
     
     #triger for popDayProducs       
     def popDayProductsSetor(self):
-        try:                               
-            day = int(self.dayEntry.get())
-            dictData= self.products.popDayProducts(self.monthEntry.get(), 
-                                                   self.combo_setorDay.get(), day)
-            self.popDayResult(dictData)
+        try:
+            ask = self.popExeception(month=self.monthEntry.get(),
+                                     day= self.dayEntry.get())
+            if not ask:                           
+                day = int(self.dayEntry.get())
+                dictData= self.products.popDayProducts(self.monthEntry.get(), 
+                                                    self.combo_setorDay.get(), day)
+                self.popDayResult(dictData)
         except AttributeError:
             self.popDay()
                
@@ -689,71 +706,79 @@ class IO:
         agulhaTotalRed = []
         varStack = []
         varItemsStack = []
-        day = int(self.dayEntry.get())
-        month = self.monthEntry.get()
-        for setor in range(3):    
-            dictData = self.products.popDayProducts(month,
-                            Enumstoday.getEnumsSetorNames(self, setor), day)
-            varStack.append(dictData[-1]) 
-            #add dict in list of value
-            for dictList in dictData:
-                for keys , value in dictList.items():
-                    valueAgulha.append(value)
-                    finuraKey.append(keys)
-                    if dictList != varStack[0]:
-                        agulhaTotalRed.append(0)       
-             #Paint red for total
-            for totalDicts in varStack:
-                varItemsStack.append(totalDicts)
-                for totalKeys, totalValues in totalDicts.items():
-                    agulhaTotalRed.append(totalValues)
-            #add space
-            for space in range(3):
-                valueAgulha.append(0)
-                finuraKey.append("")
-                agulhaTotalRed.append(0)
-            varStack = []
-        # Check if there's already an open window, close it
-        if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
-            self.plot_window.destroy()
-        # Create a new top-level window
-        self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
-        self.plot_window.title("PoP Day Graphics Bar")
-        self.plot_window.config(background="#A580CA")
-        self.plot_window.geometry("1000x500")
-        try: 
-            categories = np.arange(1, (len(valueAgulha)+1))
-            fig, ax = plt.subplots(figsize=(50, 6))
+        try:
+            ask = self.popExeception(day= self.dayEntry.get(),
+                    month=self.monthEntry.get())
+            if not ask:
+                self.GraficsOpen = True
+                self.day = int(self.dayEntry.get())
+                self.month = self.monthEntry.get()
+        except:
+            ValueError
+        if self.GraficsOpen:
+            for setor in range(3):    
+                dictData = self.products.popDayProducts(self.month,
+                                Enumstoday.getEnumsSetorNames(self, setor), self.day)
+                varStack.append(dictData[-1]) 
+                #add dict in list of value
+                for dictList in dictData:
+                    for keys , value in dictList.items():
+                        valueAgulha.append(value)
+                        finuraKey.append(keys)
+                        if dictList != varStack[0]:
+                            agulhaTotalRed.append(0)       
+                #Paint red for total
+                for totalDicts in varStack:
+                    varItemsStack.append(totalDicts)
+                    for totalKeys, totalValues in totalDicts.items():
+                        agulhaTotalRed.append(totalValues)
+                #add space
+                for space in range(3):
+                    valueAgulha.append(0)
+                    finuraKey.append("")
+                    agulhaTotalRed.append(0)
+                varStack = []
+            # Check if there's already an open window, close it
+            if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
+                self.plot_window.destroy()
+            # Create a new top-level window
+            self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
+            self.plot_window.title("PoP Day Graphics Bar")
+            self.plot_window.config(background="#A580CA")
+            self.plot_window.geometry("1000x500")
+            try: 
+                categories = np.arange(1, (len(valueAgulha)+1))
+                fig, ax = plt.subplots(figsize=(50, 6))
 
-            x = np.arange(len(categories))
-            plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
-            ax.set_xlabel('Agulhas')
-            ax.set_title('Agulhas quebradas')
-            plt.xticks(x, labels= finuraKey)  
-            plt.xlim(-0.5, len(categories) - 0.5)
-            plt.ylim(0, 130) 
-            plt.yticks(np.arange(0, 131, 5))
-            
-            #add Red color in total
-            plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
-            plt.xlim(-0.5, len(categories) - 0.5)
-            
-            #Labels setors
-            ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
-            ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
-            ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
-            
-            # Embed the plot in the Tkinter window
-            canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
-            canvas.draw()
-            canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-    
-            # Schedule the window to close after 15 seconds
-            self.close_after_id = self.plot_window.after(150000, self.closedPlt)
-            self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
-            self.plot_window.mainloop()
-        except ValueError:
-            self.popValueError()          
+                x = np.arange(len(categories))
+                plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
+                ax.set_xlabel('Agulhas')
+                ax.set_title('Agulhas quebradas')
+                plt.xticks(x, labels= finuraKey)  
+                plt.xlim(-0.5, len(categories) - 0.5)
+                plt.ylim(0, 130) 
+                plt.yticks(np.arange(0, 131, 5))
+                
+                #add Red color in total
+                plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
+                plt.xlim(-0.5, len(categories) - 0.5)
+                
+                #Labels setors
+                ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
+                ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
+                ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
+                
+                # Embed the plot in the Tkinter window
+                canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
+                canvas.draw()
+                canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        
+                # Schedule the window to close after 15 seconds
+                self.close_after_id = self.plot_window.after(150000, self.closedPlt)
+                self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
+                self.plot_window.mainloop()
+            except ValueError:
+                self.popValueError()          
                                         
     def allMonthGraphic(self):
         self.products.clearList()
@@ -816,68 +841,79 @@ class IO:
         nameList = []
         valueList = []
         explodeList = []
-        data = self.products.pizzaDataMonth(self.comboSetorPizza.get(),
-                                            self.pizzaGraficEntryMonth.get())
-        for lists in data:
-            for keys , values in lists.items():
-                nameList.append((keys))
-                valueList.append(values)
-                explodeList.append((0))
-        labels = nameList
-        explode = explodeList  
-        sizes = valueList
-        colorsLen = len(nameList)
-        colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0"
-                     "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2']
-        colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
-        
-       # Create a Figure and a Pie Chart
-        root = tk.Tk()
-        root.title("Pie Chart Example")
-        fig = Figure(figsize=(10, 10), dpi=100)
-        ax = fig.add_subplot(111)
-        ax.pie(sizes, explode=explode, labels=labels, colors=colors,
-            autopct='%10.1f%%',  startangle=140, )
-        ax.axis('equal')
-        ax.set_title('Pizza grafico do mês', pad= 25.0)
-       
-        canvas = FigureCanvasTkAgg(fig, master=root)
-        canvas.draw()
-        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        askMonth = self.monthNotNumber(self.pizzaGraficEntryMonth.get())
+        if askMonth:
+            self.popMonth()
+        elif not askMonth == None:
+            data = self.products.pizzaDataMonth(self.comboSetorPizza.get(),
+                                                self.pizzaGraficEntryMonth.get())
+            for lists in data:
+                for keys , values in lists.items():
+                    nameList.append((keys))
+                    valueList.append(values)
+                    explodeList.append((0))
+            labels = nameList
+            explode = explodeList  
+            sizes = valueList
+            colorsLen = len(nameList)
+            colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0"
+                            "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2']
+            colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
+                
+            # Create a Figure and a Pie Chart
+            root = tk.Tk()
+            root.title("Pie Chart Example")
+            fig = Figure(figsize=(10, 10), dpi=100)
+            ax = fig.add_subplot(111)
+            ax.pie(sizes, explode=explode, labels=labels, colors=colors,
+                    autopct='%10.1f%%',  startangle=140, )
+            ax.axis('equal')
+            ax.set_title('Pizza grafico do mês', pad= 25.0)
+            
+            canvas = FigureCanvasTkAgg(fig, master=root)
+            canvas.draw()
+            canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
     def pizzaDisplayDay(self):
         nameList = []
         valueList = []
         explodeList = []
-        data = self.products.pizzaDataDay(self.pizzaGraficEntryMonth.get(),
-                                        self.comboSetorPizza.get(),
-                                        int(self.pizzaGraficEntryDay.get()))
-        for lists in data:
-            for keys , values in lists.items():
-                nameList.append((keys))
-                valueList.append(values)
-                explodeList.append((0))
-        labels = nameList
-        explode = explodeList  
-        sizes = valueList
-        colorsLen = len(nameList)
-        colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0", "#9B5BA0",
-                     "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2', "#A66FC4 ", "#B39CDE"]
-        colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
+        askMonth = self.monthNotNumber(self.pizzaGraficEntryMonth.get())
+        askDay = self.dayNotnumber(self.pizzaGraficEntryDay.get())
+        if askMonth:
+            self.popMonth()
+        elif askDay:
+            self.popDay()
+        elif not askMonth == None and not askDay == None:
+            data = self.products.pizzaDataDay(self.pizzaGraficEntryMonth.get(),
+                                            self.comboSetorPizza.get(),
+                                            int(self.pizzaGraficEntryDay.get()))
+            for lists in data:
+                for keys , values in lists.items():
+                    nameList.append((keys))
+                    valueList.append(values)
+                    explodeList.append((0))
+            labels = nameList
+            explode = explodeList  
+            sizes = valueList
+            colorsLen = len(nameList)
+            colorList = ['#A580CA','#FF9999', '#66b3ff','#99ff99',"#A77EB0", "#9B5BA0",
+                        "#B89BCC", "#C8A2D6", "#FF99CC", '#FF66B2', "#A66FC4 ", "#B39CDE"]
+            colors = list(filter(lambda x: colorsLen <= len(colorList), colorList ))
+            
+        # Create a Figure and a Pie Chart
+            root = tk.Tk()
+            root.title("Pie Chart Example")
+            fig = Figure(figsize=(10, 10), dpi=100)
+            ax = fig.add_subplot(111)
+            ax.pie(sizes, explode=explode, labels=labels, colors=colors,
+                autopct='%1.1f%%',  startangle=140, )
+            ax.axis('equal')
+            ax.set_title('Quebra do Dia', pad= 25.0)
         
-       # Create a Figure and a Pie Chart
-        root = tk.Tk()
-        root.title("Pie Chart Example")
-        fig = Figure(figsize=(10, 10), dpi=100)
-        ax = fig.add_subplot(111)
-        ax.pie(sizes, explode=explode, labels=labels, colors=colors,
-            autopct='%1.1f%%',  startangle=140, )
-        ax.axis('equal')
-        ax.set_title('Quebra do Dia', pad= 25.0)
-       
-        canvas = FigureCanvasTkAgg(fig, master=root)
-        canvas.draw()
-        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+            canvas = FigureCanvasTkAgg(fig, master=root)
+            canvas.draw()
+            canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
     def popCompSelect(self):
         popCompRoot = Tk()
