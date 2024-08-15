@@ -916,37 +916,40 @@ class IO:
             canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
     def popCompSelect(self):
-        popCompRoot = Tk()
-        popCompRoot.geometry("200x200")
-        popCompRoot.config(background="#9F5FFF")
-        popCompRoot.title("Finuras select")
+        month1 = self.monthNotNumber(self.compMonthEntry1.get())
+        month2 = self.monthNotNumber(self.compMonthEntry2.get())
+        if not month1 and not month2 and not month1 == None and not month2 == None:
+            popCompRoot = Tk()
+            popCompRoot.geometry("200x200")
+            popCompRoot.config(background="#9F5FFF")
+            popCompRoot.title("Finuras select")
 
-        messagebox = tk.Label(master= popCompRoot, text= "Finura:",
-                            font=("Helvetica", 18), bg="#9F5FFF")
-        messagebox.place(x=10, y=60)
-         
-        if self.compSetor.get() == "RASCHELL":
-            self.comboCompFinuras = ttk.Combobox(popCompRoot,
-                                        values=["3975", "4575","4475", "4565"],
-                                        font=("Helvetica", 14), background= "#9F5FFF")
-            self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
-            self.comboCompFinuras.set("3975")
-        elif self.compSetor.get() == "JACQUARD":
-            self.comboCompFinuras = ttk.Combobox(popCompRoot,
-                                        values=["4496", "2760"],
-                                        font=("Helvetica", 14), background= "#9F5FFF")
-            self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
-            self.comboCompFinuras.set("4496")
-        else:
-            self.comboCompFinuras = ttk.Combobox(popCompRoot,
-                                        values=["2760"],
-                                        font=("Helvetica", 14), background= "#9F5FFF")
-            self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
-            self.comboCompFinuras.set("2760")
-        
-        button_ok = tk.Button(popCompRoot, text="Iniciar",font=("Helvetica", 18),
-                                        bg="#9F5FFF",command= self.popCompDisplay)
-        button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
+            messagebox = tk.Label(master= popCompRoot, text= "Finura:",
+                                font=("Helvetica", 18), bg="#9F5FFF")
+            messagebox.place(x=10, y=60)
+            
+            if self.compSetor.get() == "RASCHELL":
+                self.comboCompFinuras = ttk.Combobox(popCompRoot,
+                                            values=["3975", "4575","4475", "4565"],
+                                            font=("Helvetica", 14), background= "#9F5FFF")
+                self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
+                self.comboCompFinuras.set("3975")
+            elif self.compSetor.get() == "JACQUARD":
+                self.comboCompFinuras = ttk.Combobox(popCompRoot,
+                                            values=["4496", "2760"],
+                                            font=("Helvetica", 14), background= "#9F5FFF")
+                self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
+                self.comboCompFinuras.set("4496")
+            else:
+                self.comboCompFinuras = ttk.Combobox(popCompRoot,
+                                            values=["2760"],
+                                            font=("Helvetica", 14), background= "#9F5FFF")
+                self.comboCompFinuras.place(x=10, y=100, width=140, height=25)
+                self.comboCompFinuras.set("2760")
+            
+            button_ok = tk.Button(popCompRoot, text="Iniciar",font=("Helvetica", 18),
+                                            bg="#9F5FFF",command= self.popCompDisplay)
+            button_ok.place(x= 10 , y= 150, width= 95, height= 25)   
         
     def popCompDisplay(self):
         nameList = []
