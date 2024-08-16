@@ -1,6 +1,6 @@
 FINURAS = {"F9","F18" ,"F14" ,"F12" ,"F18PL" ,"F24PL"
         ,"F1869" ,"F1469" ,"F969" ,"F7" ,"F1232","F932","F24KET"}
-FINURASCODE = {"3975", "4565", "4575", "4475", "4496", "2760", "2670"}
+FINURASCODE = {"3975", "4565", "4575", "4475", "4496", "2760", "2660"}
 FINURAS3975 = {"F9","F18" ,"F14" ,"F12"} 
 FINURAS4496 = {"F1469" ,"F969" ,"F7" }
 FINURAS2660 = {"F1232","F932"}
@@ -74,6 +74,6 @@ class EnumsFinuras:
         elif finurasUpper in FINURAS2660:
                 return "2660"
         elif finurasUpper == "F24KET":
-            return "2670"
+            return "2660"
         else :
             return "ERROR"

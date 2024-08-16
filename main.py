@@ -4,11 +4,22 @@ from enums.enumsToday import Enumstoday
 from IO.io import IO
 
 
+
 def main():
-    io = IO()
+
+   
+    file_path = r"C:\Users\User\Desktop\CURSO PYTON\DiarioPython\new_Teste_pandas.xlsx"
+    products = Products()
+    
+    newLine = [{'Dia':5,'F9': 15, "F12": 1, "F14":None, "F24": 2 }]
+    products.addNewLine(file_path, newLine)
+  
+    
+       
+    #io = IO()
    
      
-    io.ioMainLoop()
+    #io.ioMainLoop()
     
     #products = Products()
     #products.popDayProducts()

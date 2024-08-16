@@ -3,7 +3,8 @@ from enums.enumsMonth import EnumsMonthDays
 from enums.enumsFinuras import EnumsFinuras
 from typing import Dict
 import collections, functools, operator, random
-
+import pandas as pd
+from openpyxl import load_workbook
 
 
 RASCHELLIST = [3975, 4575, 4475, 4565]
@@ -26,7 +27,7 @@ class Products():
         self.listOfGetDocumentsDay = []
         self.listSumMonthResult = []
         self.listMonthTotalResult = []
-    
+       
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
         for nedlleList in data:
@@ -227,3 +228,20 @@ class Products():
             except AttributeError: 
                 continue
         return self.listMonthTotalResult
+    
+    
+    def addNewLine(self, path, newLineList):
+        file_path = path
+        try:
+            # Load the existing file into a DataFrame
+            df_existing = pd.read_excel(file_path, engine='openpyxl')
+        except FileNotFoundError:
+            # If the file does not exist, create a new DataFrame with the appropriate columns
+            df_existing = pd.DataFrame(columns=['ID', 'Name', 'Age', 'City'])
+
+        new_row = pd.DataFrame(newLineList)
+        df_updated = pd.concat([df_existing, new_row])
+
+        # Step 3: Save the updated DataFrame to the Excel file (overwrite if it exists)
+        df_updated.to_excel(file_path, index=False, engine='openpyxl')
+
