@@ -7,6 +7,9 @@ FINURAS2660 = {"F1232","F932"}
 FINURAF18PL = "F18PL"
 FINURA24KET = "F24KET"
 FINURA24RAS = "F24PL"
+FINURASXLSXRASCHELL = ["Dia", "F9", "F9PL","F12", "F1269",
+                "F14","F18", "F18PL", "F24PL", "F1869"]
+
 
 class EnumsFinuras:
     def __init__(self):
@@ -77,3 +80,7 @@ class EnumsFinuras:
             return "2660"
         else :
             return "ERROR"
+        
+    def finurasXlsx(self, setor):
+        if setor == "RASCHELL":
+            return FINURASXLSXRASCHELL

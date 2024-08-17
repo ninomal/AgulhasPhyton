@@ -27,6 +27,7 @@ class Products():
         self.listOfGetDocumentsDay = []
         self.listSumMonthResult = []
         self.listMonthTotalResult = []
+        self.listDayXlsx = []
        
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
@@ -229,7 +230,7 @@ class Products():
                 continue
         return self.listMonthTotalResult
     
-    
+    #update for xlsx
     def addNewLine(self, path, newLineList):
         file_path = path
         try:
@@ -245,3 +246,42 @@ class Products():
         # Step 3: Save the updated DataFrame to the Excel file (overwrite if it exists)
         df_updated.to_excel(file_path, index=False, engine='openpyxl')
 
+    def addDayDataXlsx(self,setor,turn, data )-> Dict:
+        day = []
+        #add turn select
+        if turn == "TA":
+            day.append(data)
+        elif turn == "TB":
+            day.append(data)
+        else:
+            day.append(data)
+        #add data i conver in same list of dicts
+        self.listDayXlsx.append(day[0], day[1], day[2])
+        return self.listDayXlsx
+      
+    #add day list for organize in execel turns  
+    def addDictDayXlsx(self, data, setor):
+        dayTurn = {}
+        daySets = set()
+        if setor == "RASCHELL":
+            agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
+            for agulhas in agulhasEnums:
+                for key, value in data.items():
+                    if key == agulhas:
+                        dayTurn.update({agulhas: value})
+                        daySets.add(agulhas)
+                    elif not agulhas in daySets:
+                        dayTurn.update({agulhas: None})
+            return dayTurn
+        
+    
+    def addDayXlsx(self, month, day, setor)->Dict:
+        dictDay= {self.year: month, setor : day, "AGULHAS":
+                                    {"TA": self.listNeedlesBrokenDayTA,
+                                     "TB": self.listNeedlesBrokenDayTB, 
+                                     "TC": self.listNeedlesBrokenDayTC,
+                                     "TOTAL": self.listSumDayResult}}
+        return dictDay
+
+    def totalDayXlsx(self, path):
+        pass
