@@ -261,18 +261,22 @@ class Products():
       
     #add day list for organize in execel turns  
     def addDictDayXlsx(self, data, setor):
-        dayTurn = {}
-        daySets = set()
         if setor == "RASCHELL":
             agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
-            for agulhas in agulhasEnums:
-                for key, value in data.items():
-                    if key == agulhas:
-                        dayTurn.update({agulhas: value})
-                        daySets.add(agulhas)
-                    elif not agulhas in daySets:
-                        dayTurn.update({agulhas: None})
-            return dayTurn
+            print(self.funcAddDictTurns(data, agulhasEnums))
+            
+    #Slice addDictDayXlsx params for simple
+    def funcAddDictTurns(self, data, agulhasEnums):
+        dayTurn = {}
+        daySets = set()  
+        for agulhas in agulhasEnums:
+            for key, value in data.items():
+                if key == agulhas:
+                    dayTurn.update({agulhas: value})
+                    daySets.add(agulhas)
+                elif not agulhas in daySets:
+                    dayTurn.update({agulhas: None})
+        return dayTurn
         
     
     def addDayXlsx(self, month, day, setor)->Dict:

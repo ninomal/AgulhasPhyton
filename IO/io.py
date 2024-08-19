@@ -181,7 +181,7 @@ class IO:
         if not asw:
             self.popFinuras()
         else:
-            return True
+            return False
         
     def monthNotNumber(self, monthStr):
         try:
@@ -299,16 +299,18 @@ class IO:
         messagebox.showwarning(title="Erro",
                 message= "Clicar em Adicionar mais ou Passar o turno")
                                
-    def popExeception(self,finura="f14", month ="1", day=1, agulha = 1 ):
+    def popExeception(self,finura="F14", month ="1", day=1, agulha = 1 ):
         self.GraficsOpen = False
         if self.monthNotNumber(month):
-            self.popMonth()
+            self.popMonth()  
         elif self.dayNotnumber(day):
-            self.popDay()
+            self.popDay()      
         elif self.agulhaNotNumber(agulha):
             self.popAgulhaErrada()
-        if self.finurasCheck(finura):
-            return True
+        elif self.finurasCheck(finura):
+            self.popFinuras()
+        else: 
+            False
      
     def popADD(self):
         self.contsAdd +=1
@@ -605,8 +607,8 @@ class IO:
     #triger for popDayProducs       
     def popDayProductsSetor(self):
         try:
-            ask = self.popExeception(month=self.monthEntry.get(),
-                                     day= self.dayEntry.get())
+            ask = self.popExeception(month= self.monthEntry.get(),
+                                     day = self.dayEntry.get())
             if not ask:                           
                 day = int(self.dayEntry.get())
                 dictData= self.products.popDayProducts(self.monthEntry.get(), 
