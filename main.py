@@ -9,14 +9,15 @@ import pandas as pd
 def main():
     
        
-    io = IO()
+    #io = IO()
    
      
-    io.ioMainLoop()
+    #io.ioMainLoop()
     
-    #products = Products()
-    #products.popDayProducts()
-        
+    products = Products()
+    data ={"F12": 5 ,"F14": 5, "F18": 10}
+    products.addDictDayXlsx(8, "RASCHELL", data )
+    
 
     
     """

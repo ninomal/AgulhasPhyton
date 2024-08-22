@@ -7,8 +7,14 @@ FINURAS2660 = {"F1232","F932"}
 FINURAF18PL = "F18PL"
 FINURA24KET = "F24KET"
 FINURA24RAS = "F24PL"
-FINURASXLSXRASCHELL = ["Dia", "F9", "F9PL","F12", "F1269",
+FINURASXLSXRASCHELL = ["F9", "F9PL","F12", "F1269",
                 "F14","F18", "F18PL", "F24PL", "F1869"]
+
+FINURASXLSRASCHELL2 = ["F9", "F12", "F14", "F18"]
+
+FINURASXLSJACQUARD = ["4496", "2760"]
+
+FINURASXLSKET = ["2660"]
 
 
 class EnumsFinuras:
@@ -82,5 +88,14 @@ class EnumsFinuras:
             return "ERROR"
         
     def finurasXlsx(self, setor):
-        if setor == "RASCHELL":
-            return FINURASXLSXRASCHELL
+        match setor:
+            case  "RASCHELL":
+                return FINURASXLSXRASCHELL
+            case "JACQUARD":
+                return FINURASXLSJACQUARD
+            case "KETTEN":
+                return FINURASXLSKET
+            case "RASCHELL2":
+                return FINURASXLSRASCHELL2
+        
+    
