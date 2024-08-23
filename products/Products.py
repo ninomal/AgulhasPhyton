@@ -233,15 +233,33 @@ class Products():
         return self.listMonthTotalResult
     
     #update for xlsx
-    def addNewLine(self, path, newLineList):
+    def addNewLine(self, path, newLineList, setor):
         file_path = path
         try:
             # Load the existing file into a DataFrame
             df_existing = pd.read_excel(file_path, engine='openpyxl')
         except FileNotFoundError:
             # If the file does not exist, create a new DataFrame with the appropriate columns
-            df_existing = pd.DataFrame(columns=['ID', 'Name', 'Age', 'City'])
-
+            if setor == "RASCHELL":
+                df_existing = pd.DataFrame(columns=['DIA','TA', 'F9', 'F9PL', 'F12''F1269',
+                                                    'F14', 'F18','F18PL', 'F24PL', 'F1869',
+                'TB', 'F9', 'F9PL', 'F12', 'F1269','F14', 'F18','F18PL', 'F24PL', 'F1869',
+                'TC', 'F9', 'F9PL', 'F12', 'F1269','F14', 'F18','F18PL', 'F24PL', 'F1869',
+                'TOTAL3975', 'TOTAL4575','TOTAL4475', 'TOTAL4565'])
+                
+            elif setor == "JACQUARD":
+                df_existing = pd.DataFrame(columns=['DIA','TA', 'F7','F969','F1232', 'F1432',
+                                    'TB', 'F7','F969','F1232', 'F1432',
+                                    'TC', 'F7','F969','F1232', 'F1432',
+                                    "TOTAL4496", 'TOTAL2760'])
+                
+            elif setor == "RASCHELL2":     
+                 df_existing = pd.DataFrame(columns=[
+                                        'DIA','TA', 'F9','F12','F14', 'F18',
+                                        'TB', 'F9', 'F12', 'F14', 'F18', 
+                                        'TC', 'F9', 'F12', 'F14', 'F18',
+                                        'TOTAL3975'])
+                
         new_row = pd.DataFrame(newLineList)
         df_updated = pd.concat([df_existing, new_row])
 
