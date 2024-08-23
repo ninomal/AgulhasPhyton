@@ -65,7 +65,8 @@ class Products():
             case "TC":
                 self.listNeedlesBrokenDayTC.append(agulhasData)
                 return self.listNeedlesBrokenDayTC
-            
+            case _:
+                return "TURN ERROR"
     def clearList(self):
         self.listNeedlesBrokenDayTA = []
         self.listNeedlesBrokenDayTB = []
@@ -248,7 +249,7 @@ class Products():
         df_updated.to_excel(file_path, index=False, engine='openpyxl')
         
         #add turn select
-    def addDayDataXlsx(self,turn, data ):
+    def addDayDataListXlsx(self,turn, data ):
         match turn:
             case "TA":
                 return self.listNeedlesBrokenDayTA.append(data)
@@ -258,9 +259,26 @@ class Products():
                 return self.listNeedlesBrokenDayTC.append(data)
             case _:
                 return "TURN ERROR "
-             
+    
+    #triger for addDictDAy
+    def addDayXlxs(self, dia,setor):
+        conts = 0
+        listOfDayData = [self.listNeedlesBrokenDayTA, self.listNeedlesBrokenDayTB,
+                        self.listNeedlesBrokenDayTC]
+        for data in listOfDayData:
+            conts+= 1
+            if conts == 1:
+                turn = "TA"
+                self.addDictDayXlsx(dia, turn, setor, data)
+            elif conts == 2:
+                turn = "TB"
+                self.addDictDayXlsx(dia, turn, setor, data)
+            else:
+                turn = "TC"
+                self.addDictDayXlsx(dia, turn, setor, data)
+                
     #add day list for organize in execel turns  
-    def addDictDayXlsx(self,dia, setor, data):
+    def addDictDayXlsx(self, dia, turn, setor, data):
         agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
         """
         add finuras total day
@@ -268,13 +286,14 @@ class Products():
             print(self.sumList(key, value))
         print(self.sumDay())
         """
-        print(self.funcAddDictTurns(dia, data, agulhasEnums))
+        self.funcAddDictTurns(dia, turn, data[0], agulhasEnums)
             
     #Slice addDictDayXlsx params for simple
-    def funcAddDictTurns(self, dia, data,  agulhasEnums):
+    def funcAddDictTurns(self, dia, turn, data,  agulhasEnums):
         dayTurn = {}
         daySets = set()
-        dayTurn.update({"DIA":dia})  
+        if turn == "TA":
+            dayTurn.update({"DIA":dia})
         for agulhas in agulhasEnums:
             for key, value in data.items():
                 if key == agulhas:
@@ -282,6 +301,8 @@ class Products():
                     daySets.add(agulhas)
                 elif not agulhas in daySets:
                     dayTurn.update({agulhas: None})
-        dayTurn.update({"TOTAL": self.sumDay()})
+        if turn == "TC":
+            dayTurn.update({"TOTAL": self.sumDay()})
+            self.clearList()
         return dayTurn
         

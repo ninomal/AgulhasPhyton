@@ -16,7 +16,12 @@ def main():
     
     products = Products()
     data ={"F12": 5 ,"F14": 5, "F18": 10}
-    products.addDictDayXlsx(8, "RASCHELL", data )
+    data1 ={"F12": 10 ,"F14": 15, "F18": 110}
+    data3 ={"F12": 15 ,"F14": 20, "F18": 100}
+    products.addDayDataListXlsx("TA", data)
+    products.addDayDataListXlsx("TB", data1)
+    products.addDayDataListXlsx("TC", data3)
+    products.addDayXlxs(8, "RASCHELL")
     
 
     
