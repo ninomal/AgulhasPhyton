@@ -314,13 +314,13 @@ class IO:
      
     def popADD(self):
         self.contsAdd +=1
-        excp =self.popExeception( self.finuraEntry.get(),
+        self.popExeception( self.finuraEntry.get(),
                             month= self.monthEntry.get(),
                             day= self.dayEntry.get(),
                             agulha= self.agulhaEntry.get())
-        if self.contsAdd > 1:
+        if self.contsAdd < 1:
             self.popEraserError()          
-        elif self.finurasCheck(self.finuraEntry.get()) and  (excp != True): 
+        elif not self.finurasCheck(self.finuraEntry.get()) : 
             ask  = messagebox.askyesno("Confirmação", 
                                     message= "Confirmar os dados")
             self.askTrue(ask)

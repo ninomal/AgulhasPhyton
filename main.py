@@ -9,11 +9,11 @@ import pandas as pd
 def main():
     
        
-    #io = IO()
+    io = IO()
    
      
-    #io.ioMainLoop()
-    
+    io.ioMainLoop()
+    """
     products = Products()
     data ={"F12": 5 ,"F14": 5, "F18": 10}
     data1 ={"F12": 10 ,"F14": 15, "F18": 110}
@@ -23,7 +23,7 @@ def main():
     products.addDayDataListXlsx("TC", data3)
     products.addDayXlxs(8, "RASCHELL")
     
-
+    """
     
     """
     """
