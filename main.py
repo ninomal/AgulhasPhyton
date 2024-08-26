@@ -8,12 +8,12 @@ import pandas as pd
 
 def main():
     
-       
+    '''
     io = IO()
    
      
     io.ioMainLoop()
-    """
+    '''
     products = Products()
     data ={"F12": 5 ,"F14": 5, "F18": 10}
     data1 ={"F12": 10 ,"F14": 15, "F18": 110}
@@ -21,9 +21,15 @@ def main():
     products.addDayDataListXlsx("TA", data)
     products.addDayDataListXlsx("TB", data1)
     products.addDayDataListXlsx("TC", data3)
-    products.addDayXlxs(8, "RASCHELL")
+    products.addDayXlxs(11, "RASCHELL")
+    path = r"C:\Users\User\Desktop\CURSO PYTON\DiarioPython\new_Teste_pandas.xlsx"
+    teste = products.dayTurnData
+    print(teste)
+    products.addNewLine(path, teste, "RASCHELL")
+    #products.pathXlxs(path)
+  
     
-    """
+   
     
     """
     """

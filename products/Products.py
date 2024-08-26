@@ -28,6 +28,8 @@ class Products():
         self.listSumMonthResult = []
         self.listMonthTotalResult = []
         self.listDayXlsx = []
+        self.path = ''
+        self.dayTurnData = []
        
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
@@ -241,23 +243,24 @@ class Products():
         except FileNotFoundError:
             # If the file does not exist, create a new DataFrame with the appropriate columns
             if setor == "RASCHELL":
-                df_existing = pd.DataFrame(columns=['DIA','TA', 'F9', 'F9PL', 'F12''F1269',
-                                                    'F14', 'F18','F18PL', 'F24PL', 'F1869',
-                'TB', 'F9', 'F9PL', 'F12', 'F1269','F14', 'F18','F18PL', 'F24PL', 'F1869',
-                'TC', 'F9', 'F9PL', 'F12', 'F1269','F14', 'F18','F18PL', 'F24PL', 'F1869',
-                'TOTAL3975', 'TOTAL4575','TOTAL4475', 'TOTAL4565'])
+                df_existing = pd.DataFrame(columns=['DIA',
+                    'F9', 'F9PL','F12','F14', 'F18','F18PL', 'F24PL', 'F1869',
+                    'F9', 'F9PL','F12','F14', 'F18','F18PL', 'F24PL', 'F1869',
+                    'F9', 'F9PL', 'F12','F14', 'F18','F18PL', 'F24PL', 'F1869',
+                    "TOTAL3975", "TOTAL4575", "TOTAL4565", "TOTAL4475"])
                 
             elif setor == "JACQUARD":
-                df_existing = pd.DataFrame(columns=['DIA','TA', 'F7','F969','F1232', 'F1432',
-                                    'TB', 'F7','F969','F1232', 'F1432',
-                                    'TC', 'F7','F969','F1232', 'F1432',
+                df_existing = pd.DataFrame(columns=['DIA',
+                                    'F7','F969','F1232','F1432',
+                                    'F7','F969','F1232', 'F1432',
+                                    'F7','F969','F1232', 'F1432',
                                     "TOTAL4496", 'TOTAL2760'])
                 
             elif setor == "RASCHELL2":     
-                 df_existing = pd.DataFrame(columns=[
-                                        'DIA','TA', 'F9','F12','F14', 'F18',
-                                        'TB', 'F9', 'F12', 'F14', 'F18', 
-                                        'TC', 'F9', 'F12', 'F14', 'F18',
+                 df_existing = pd.DataFrame(columns=['DIA',
+                                        'F9','F12','F14', 'F18',
+                                        'F9', 'F12', 'F14', 'F18', 
+                                        'F9', 'F12', 'F14', 'F18',
                                         'TOTAL3975'])
                 
         new_row = pd.DataFrame(newLineList)
@@ -279,7 +282,7 @@ class Products():
                 return "TURN ERROR "
     
     #triger for addDictDAy
-    def addDayXlxs(self, dia,setor):
+    def addDayXlxs(self, dia, setor):
         conts = 0
         listOfDayData = [self.listNeedlesBrokenDayTA, self.listNeedlesBrokenDayTB,
                         self.listNeedlesBrokenDayTC]
@@ -305,13 +308,19 @@ class Products():
         print(self.sumDay())
         """
         self.funcAddDictTurns(dia, turn, data[0], agulhasEnums)
+       
             
     #Slice addDictDayXlsx params for simple
-    def funcAddDictTurns(self, dia, turn, data,  agulhasEnums):
+    def funcAddDictTurns(self, dia, turn, data, agulhasEnums):
         dayTurn = {}
         daySets = set()
         if turn == "TA":
             dayTurn.update({"DIA":dia})
+            dayTurn.update({"TA": None})
+        elif turn == "TB":
+            dayTurn.update({"TB": None})
+        else:
+            dayTurn.update({"TC": None})
         for agulhas in agulhasEnums:
             for key, value in data.items():
                 if key == agulhas:
@@ -322,5 +331,12 @@ class Products():
         if turn == "TC":
             dayTurn.update({"TOTAL": self.sumDay()})
             self.clearList()
-        return dayTurn
-        
+        self.dayTurnData.append(dayTurn)
+        return self.dayTurnData
+    
+    def pathXlxs(self, path):
+        self.path = path
+        return self.path
+    
+    def teste(self, path, data, setor):
+        self.addNewLine(path, data, setor)

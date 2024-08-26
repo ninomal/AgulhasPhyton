@@ -318,7 +318,7 @@ class IO:
                             month= self.monthEntry.get(),
                             day= self.dayEntry.get(),
                             agulha= self.agulhaEntry.get())
-        if self.contsAdd < 1:
+        if self.contsAdd > 1:
             self.popEraserError()          
         elif not self.finurasCheck(self.finuraEntry.get()) : 
             ask  = messagebox.askyesno("Confirmação", 
@@ -868,7 +868,7 @@ class IO:
             fig = Figure(figsize=(10, 10), dpi=100)
             ax = fig.add_subplot(111)
             ax.pie(sizes, explode=explode, labels=labels, colors=colors,
-                    autopct='%10.1f%%',  startangle=140, )
+                    autopct='%10.1f%%',  startangle=140 )
             ax.axis('equal')
             ax.set_title('Pizza grafico do mês', pad= 25.0)
             
@@ -909,7 +909,7 @@ class IO:
             fig = Figure(figsize=(10, 10), dpi=100)
             ax = fig.add_subplot(111)
             ax.pie(sizes, explode=explode, labels=labels, colors=colors,
-                autopct='%1.1f%%',  startangle=140, )
+                autopct='%1.1f%%',  startangle=140 )
             ax.axis('equal')
             ax.set_title('Quebra do Dia', pad= 25.0)
         
@@ -990,12 +990,10 @@ class IO:
             autopct='%10.1f%%',  startangle=140, )
         ax.axis('equal')
         ax.set_title('Pizza grafico do mês', pad= 25.0)
-       
         canvas = FigureCanvasTkAgg(fig, master=root)
         canvas.draw()
         canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
-    
     def ioMainLoop(self):
         self.windows.mainloop()
     
