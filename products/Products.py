@@ -243,7 +243,7 @@ class Products():
         except FileNotFoundError:
             # If the file does not exist, create a new DataFrame with the appropriate columns
             if setor == "RASCHELL":
-                nameTableList =  self.enumsFinuras.finurasXlsx(setor)[0]
+                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
                 df_existing = pd.DataFrame(columns= nameTableList)
                   
                 # Save the DataFrame to an Excel file
@@ -257,8 +257,8 @@ class Products():
             elif setor == "RASCHELL2":     
                  df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
                 
-            new_row = pd.DataFrame(newLineList)
-            df_updated = pd.concat([df_existing, new_row])
+        new_row = pd.DataFrame(newLineList)
+        df_updated = pd.concat([df_existing, new_row])
 
         # Step 3: Save the updated DataFrame to the Excel file (overwrite if it exists)
         df_updated.to_excel(file_path, index=False, engine='openpyxl')
@@ -285,16 +285,17 @@ class Products():
     def addDayXlxs(self, dia, setor):
         dictOfDayUpdate = {}
         listOfDayData = []
+        dictOfDayUpdate.update({"DIA": dia})
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTA[0])
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTB[0])
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTC[0])
         print(dictOfDayUpdate)
         listOfDayData.append(dictOfDayUpdate)
         print(listOfDayData)
-        self.addDictDayXlsx(dia, setor, listOfDayData[0])
+        self.addDictDayXlsx(setor, listOfDayData[0])
                   
     #add day list for organize in execel turns  
-    def addDictDayXlsx(self, dia, setor, data):
+    def addDictDayXlsx(self, setor, data):
         agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
         """
         add finuras total day
@@ -302,13 +303,12 @@ class Products():
             print(self.sumList(key, value))
         print(self.sumDay())
         """
-        self.funcAddDictTurns(dia, data, agulhasEnums)
+        self.funcAddDictTurns(data, agulhasEnums)
               
     #Slice addDictDayXlsx params for simple
-    def funcAddDictTurns(self, dia, data, agulhasEnums):
+    def funcAddDictTurns(self, data, agulhasEnums):
         dayTurn = {}
         daySets = set()
-        dayTurn.update({"DIA":dia})
         for agulhas in agulhasEnums:
             for key, value in data.items():
                 if key == agulhas:
