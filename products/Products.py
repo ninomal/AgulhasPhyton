@@ -5,7 +5,7 @@ from typing import Dict
 import collections, functools, operator, random
 import pandas as pd
 from openpyxl import load_workbook
-
+from openpyxl import Workbook
 
 RASCHELLIST = [3975, 4575, 4475, 4565]
 JAQUARDLIST = [4496, 2760]
@@ -243,28 +243,22 @@ class Products():
         except FileNotFoundError:
             # If the file does not exist, create a new DataFrame with the appropriate columns
             if setor == "RASCHELL":
-                df_existing = pd.DataFrame(columns=['DIA',
-                    'F9', 'F9PL','F12','F14', 'F18','F18PL', 'F24PL', 'F1869',
-                    'F9', 'F9PL','F12','F14', 'F18','F18PL', 'F24PL', 'F1869',
-                    'F9', 'F9PL', 'F12','F14', 'F18','F18PL', 'F24PL', 'F1869',
-                    "TOTAL3975", "TOTAL4575", "TOTAL4565", "TOTAL4475"])
-                
+                nameTableList =  self.enumsFinuras.finurasXlsx(setor)[0]
+                df_existing = pd.DataFrame(columns= nameTableList)
+                  
+                # Save the DataFrame to an Excel file
+                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+                    df_existing.to_excel(writer, sheet_name='Sheet1', index=False)
+                    df_updated = pd.concat([df_existing, new_row])
+
             elif setor == "JACQUARD":
-                df_existing = pd.DataFrame(columns=['DIA',
-                                    'F7','F969','F1232','F1432',
-                                    'F7','F969','F1232', 'F1432',
-                                    'F7','F969','F1232', 'F1432',
-                                    "TOTAL4496", 'TOTAL2760'])
+                df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
                 
             elif setor == "RASCHELL2":     
-                 df_existing = pd.DataFrame(columns=['DIA',
-                                        'F9','F12','F14', 'F18',
-                                        'F9', 'F12', 'F14', 'F18', 
-                                        'F9', 'F12', 'F14', 'F18',
-                                        'TOTAL3975'])
+                 df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
                 
-        new_row = pd.DataFrame(newLineList)
-        df_updated = pd.concat([df_existing, new_row])
+            new_row = pd.DataFrame(newLineList)
+            df_updated = pd.concat([df_existing, new_row])
 
         # Step 3: Save the updated DataFrame to the Excel file (overwrite if it exists)
         df_updated.to_excel(file_path, index=False, engine='openpyxl')
@@ -281,25 +275,26 @@ class Products():
             case _:
                 return "TURN ERROR "
     
+    def keyFinurasAppend(self,turn, finuras):
+        if turn == "TB":
+            return finuras + "TB"
+        elif turn == "TC":
+            return finuras + "TC"
+    
     #triger for addDictDAy
     def addDayXlxs(self, dia, setor):
-        conts = 0
-        listOfDayData = [self.listNeedlesBrokenDayTA, self.listNeedlesBrokenDayTB,
-                        self.listNeedlesBrokenDayTC]
-        for data in listOfDayData:
-            conts+= 1
-            if conts == 1:
-                turn = "TA"
-                self.addDictDayXlsx(dia, turn, setor, data)
-            elif conts == 2:
-                turn = "TB"
-                self.addDictDayXlsx(dia, turn, setor, data)
-            else:
-                turn = "TC"
-                self.addDictDayXlsx(dia, turn, setor, data)
-                
+        dictOfDayUpdate = {}
+        listOfDayData = []
+        dictOfDayUpdate.update(self.listNeedlesBrokenDayTA[0])
+        dictOfDayUpdate.update(self.listNeedlesBrokenDayTB[0])
+        dictOfDayUpdate.update(self.listNeedlesBrokenDayTC[0])
+        print(dictOfDayUpdate)
+        listOfDayData.append(dictOfDayUpdate)
+        print(listOfDayData)
+        self.addDictDayXlsx(dia, setor, listOfDayData[0])
+                  
     #add day list for organize in execel turns  
-    def addDictDayXlsx(self, dia, turn, setor, data):
+    def addDictDayXlsx(self, dia, setor, data):
         agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
         """
         add finuras total day
@@ -307,20 +302,13 @@ class Products():
             print(self.sumList(key, value))
         print(self.sumDay())
         """
-        self.funcAddDictTurns(dia, turn, data[0], agulhasEnums)
-       
-            
+        self.funcAddDictTurns(dia, data, agulhasEnums)
+              
     #Slice addDictDayXlsx params for simple
-    def funcAddDictTurns(self, dia, turn, data, agulhasEnums):
+    def funcAddDictTurns(self, dia, data, agulhasEnums):
         dayTurn = {}
         daySets = set()
-        if turn == "TA":
-            dayTurn.update({"DIA":dia})
-            dayTurn.update({"TA": None})
-        elif turn == "TB":
-            dayTurn.update({"TB": None})
-        else:
-            dayTurn.update({"TC": None})
+        dayTurn.update({"DIA":dia})
         for agulhas in agulhasEnums:
             for key, value in data.items():
                 if key == agulhas:
@@ -328,9 +316,7 @@ class Products():
                     daySets.add(agulhas)
                 elif not agulhas in daySets:
                     dayTurn.update({agulhas: None})
-        if turn == "TC":
-            dayTurn.update({"TOTAL": self.sumDay()})
-            self.clearList()
+        self.clearList()
         self.dayTurnData.append(dayTurn)
         return self.dayTurnData
     
@@ -338,5 +324,4 @@ class Products():
         self.path = path
         return self.path
     
-    def teste(self, path, data, setor):
-        self.addNewLine(path, data, setor)
+   

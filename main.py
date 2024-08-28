@@ -15,13 +15,16 @@ def main():
     io.ioMainLoop()
     '''
     products = Products()
+  
     data ={"F12": 5 ,"F14": 5, "F18": 10}
-    data1 ={"F12": 10 ,"F14": 15, "F18": 110}
-    data3 ={"F12": 15 ,"F14": 20, "F18": 100}
+    data1 ={"F12TB": 10 ,"F14TB": 15, "F24PL": 3}
+    data2 ={"F12TC": 15 ,"F14TC": 20, "TOTAL3975": 135}
     products.addDayDataListXlsx("TA", data)
     products.addDayDataListXlsx("TB", data1)
-    products.addDayDataListXlsx("TC", data3)
-    products.addDayXlxs(11, "RASCHELL")
+    products.addDayDataListXlsx("TC", data2)
+   
+    products.addDayXlxs(1, "RASCHELL")
+    
     path = r"C:\Users\User\Desktop\CURSO PYTON\DiarioPython\new_Teste_pandas.xlsx"
     teste = products.dayTurnData
     print(teste)
