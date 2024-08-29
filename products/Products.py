@@ -30,6 +30,7 @@ class Products():
         self.listDayXlsx = []
         self.path = ''
         self.dayTurnData = []
+        self.rowDataListDay = []
        
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
@@ -289,9 +290,7 @@ class Products():
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTA[0])
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTB[0])
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTC[0])
-        print(dictOfDayUpdate)
         listOfDayData.append(dictOfDayUpdate)
-        print(listOfDayData)
         self.addDictDayXlsx(setor, listOfDayData[0])
                   
     #add day list for organize in execel turns  
@@ -324,4 +323,18 @@ class Products():
         self.path = path
         return self.path
     
+    #select day and return list data not empty
+    def daySelectDataXlsx(self, month, day):
+        dayLine = (day -1)
+        path = self.path
+        nameSheet = month
+        df = pd.read_excel(path, sheet_name=nameSheet)
+        # Access the specific row
+        rowData = df.iloc[dayLine]
+        dataReal = rowData.dropna()
+        self.rowDataListDay = list(map(lambda item: {item[0]: item[1]}, dataReal.items()))
+        return self.rowDataListDay     
+       
+        
+        
    
