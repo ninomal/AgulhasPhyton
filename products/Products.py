@@ -28,7 +28,6 @@ class Products():
         self.listSumMonthResult = []
         self.listMonthTotalResult = []
         self.listDayXlsx = []
-        self.path = ''
         self.dayTurnData = []
         self.rowDataListDay = []
        
@@ -236,8 +235,8 @@ class Products():
         return self.listMonthTotalResult
     
     #update for xlsx
-    def addNewLine(self, path, newLineList, setor):
-        file_path = path
+    def addNewLine(self, month, day, setor, newLineList):
+        file_path = self.pathXlxs("2024")
         try:
             # Load the existing file into a DataFrame
             df_existing = pd.read_excel(file_path, engine='openpyxl')
@@ -249,7 +248,7 @@ class Products():
                   
                 # Save the DataFrame to an Excel file
                 with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                    df_existing.to_excel(writer, sheet_name='Sheet1', index=False)
+                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
                     df_updated = pd.concat([df_existing, new_row])
 
             elif setor == "JACQUARD":
@@ -283,15 +282,16 @@ class Products():
             return finuras + "TC"
     
     #triger for addDictDAy
-    def addDayXlxs(self, dia, setor):
+    def addDayXlxs(self, month,  day, setor):
         dictOfDayUpdate = {}
         listOfDayData = []
-        dictOfDayUpdate.update({"DIA": dia})
+        dictOfDayUpdate.update({"DIA": day})
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTA[0])
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTB[0])
         dictOfDayUpdate.update(self.listNeedlesBrokenDayTC[0])
         listOfDayData.append(dictOfDayUpdate)
-        self.addDictDayXlsx(setor, listOfDayData[0])
+        newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
+        self.addNewLine(month, day, setor, newLineList)
                   
     #add day list for organize in execel turns  
     def addDictDayXlsx(self, setor, data):
@@ -319,8 +319,8 @@ class Products():
         self.dayTurnData.append(dayTurn)
         return self.dayTurnData
     
-    def pathXlxs(self, path):
-        self.path = path
+    def pathXlxs(self, year):
+        self.path = f"C:Users/User/Desktop/CURSO PYTON/DiarioPython/{year}"
         return self.path
     
     #select day and return list data not empty

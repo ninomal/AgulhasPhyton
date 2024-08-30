@@ -33,7 +33,6 @@ class IO:
         self.day = 1
         self.month = "1"
         self.GraficsOpen = False
-        self.storeDataMode = ""
         
     def firma(self):
         label_footer = tk.Label(self.windows, text="Radical dreamers aw rpg ltda", 
@@ -44,6 +43,10 @@ class IO:
         self.anchorPane = tk.Frame(self.windows, width=251, height=276,
                                    background="#4A1985")
         self.anchorPane.place(x=55, y=64) 
+        
+        month_label = tk.Label(self.anchorPane, text="Mês:", font=("Helvetica", 21),
+                               bg="#4A1985")
+        month_label.place(x=29, y=14, width=54, height=31)
         
         label_day1 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21),
                               bg="#4A1985")
@@ -133,32 +136,18 @@ class IO:
                                       font=("Helvetica", 18),bg="#A580CA",
                                       command= self.popComparacaoGrafico)
         button_comparaMes.place(x= 207 , y= 104, width=200)
-              
+        
+                   
     def optionsFrame(self):
         optionPane = tk.Frame(self.windows, width=128, height=47,
                                background="#4A1985")
         optionPane.place(x=1040, y=20)
         
-        buttonOptions = tk.Button(optionPane, text="Options",
-                                      font=("Helvetica", 18),bg="#A580CA",
-                                      command= self.options)
-        buttonOptions.pack(padx= 2, pady= 1)
-        
-    def options(self):
-        optionPOP = Tk()
-        optionPOP.geometry("500x400")
-        optionPOP.config(bg="#A580CA")
-        optionPOP.title("Options")
-        #select storoge mode
-        labelDataStore = tk.Label(master= optionPOP,text= "armazenamento:",
-                                    font=("Helvetica", 27), background="#A580CA")
-        labelDataStore.pack(padx=2, pady= 4)
-        
-        self.storeDataMode = ttk.Combobox(master= optionPOP, values=["Xlsx","MongoDB"],
+        self.storeDataMode = ttk.Combobox(master= optionPane, values=["Xlsx","MongoDB"],
                                         font=("Helvetica", 14),width= 8)
         self.storeDataMode.pack(padx= 2, pady= 2)
         self.storeDataMode.set("Xlsx")
-             
+              
     def buttonPainel(self):
         button_pane = tk.Frame(self.windows, width=334, height=114, background="#4A1985")
         button_pane.place(x=55, y=352)
@@ -575,17 +564,23 @@ class IO:
         if self.combo_turno.get() != 'TC':
             self.popMissClick()
         else:
-            self.products.sumDay()
-            setorStr = self.combo_setor.get()
-            brokenDay = self.products.addDay(str(self.monthEntry.get()),
-                                             int(self.dayEntry.get()),
-                                             setorStr.upper())
-            self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
-            self.clearLIstEntrys()
-            self.products.clearList()
-            self.combo_turno.set("TA")
-            self.popDiaAdd()
-            
+            if self.storeDataMode.get() == "MongoDB":
+                self.products.sumDay()
+                setorStr = self.combo_setor.get()
+                brokenDay = self.products.addDay(str(self.monthEntry.get()),
+                                                int(self.dayEntry.get()),
+                                                setorStr.upper())
+                self.products.productService.addDayAgulhaBrokeMongoDB(brokenDay)
+                self.clearLIstEntrys()
+                self.products.clearList()
+                self.combo_turno.set("TA")
+                self.popDiaAdd()
+            else : 
+                self.products.sumDay()
+                setorStr = self.combo_setor.get()
+                self.products.addDayXlxs(str(self.monthEntry.get()),
+                                            int(self.dayEntry.get()),
+                                                setorStr.upper())
     def popDiaAdd(self):
         diaPOP= Tk()
         diaPOP.geometry("300x300")
