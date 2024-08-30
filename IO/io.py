@@ -27,11 +27,13 @@ class IO:
         self.frameButton2()
         self.canvasImage()
         self.firma()
+        self.optionsFrame()
         self.plot_window = None
         self.clearLIstEntrys()
         self.day = 1
         self.month = "1"
         self.GraficsOpen = False
+        self.storeDataMode = ""
         
     def firma(self):
         label_footer = tk.Label(self.windows, text="Radical dreamers aw rpg ltda", 
@@ -39,12 +41,9 @@ class IO:
         label_footer.place(x=820, y=791, width=349, height=45)
            
     def frame1(self):
-        self.anchorPane = tk.Frame(self.windows, width=251, height=276, background="#4A1985")
+        self.anchorPane = tk.Frame(self.windows, width=251, height=276,
+                                   background="#4A1985")
         self.anchorPane.place(x=55, y=64) 
-        
-        month_label = tk.Label(self.anchorPane, text="Mês:", font=("Helvetica", 21),
-                               bg="#4A1985")
-        month_label.place(x=29, y=14, width=54, height=31)
         
         label_day1 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21),
                               bg="#4A1985")
@@ -90,7 +89,7 @@ class IO:
         combo_turno.set("Turno")      
         self.comboTurno()
         self.comboxSetor()
-                          
+        
     def canvasImage(self): 
         image_frame = Canvas(self.windows, width=406, height=400, background="#080121")
         image_frame.place(x=742, y=378)
@@ -135,7 +134,31 @@ class IO:
                                       command= self.popComparacaoGrafico)
         button_comparaMes.place(x= 207 , y= 104, width=200)
               
-    
+    def optionsFrame(self):
+        optionPane = tk.Frame(self.windows, width=128, height=47,
+                               background="#4A1985")
+        optionPane.place(x=1040, y=20)
+        
+        buttonOptions = tk.Button(optionPane, text="Options",
+                                      font=("Helvetica", 18),bg="#A580CA",
+                                      command= self.options)
+        buttonOptions.pack(padx= 2, pady= 1)
+        
+    def options(self):
+        optionPOP = Tk()
+        optionPOP.geometry("500x400")
+        optionPOP.config(bg="#A580CA")
+        optionPOP.title("Options")
+        #select storoge mode
+        labelDataStore = tk.Label(master= optionPOP,text= "armazenamento:",
+                                    font=("Helvetica", 27), background="#A580CA")
+        labelDataStore.pack(padx=2, pady= 4)
+        
+        self.storeDataMode = ttk.Combobox(master= optionPOP, values=["Xlsx","MongoDB"],
+                                        font=("Helvetica", 14),width= 8)
+        self.storeDataMode.pack(padx= 2, pady= 2)
+        self.storeDataMode.set("Xlsx")
+             
     def buttonPainel(self):
         button_pane = tk.Frame(self.windows, width=334, height=114, background="#4A1985")
         button_pane.place(x=55, y=352)

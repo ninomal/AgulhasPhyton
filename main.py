@@ -8,15 +8,15 @@ import pandas as pd
 
 def main():
     
-    '''
+  
     io = IO()
    
      
     io.ioMainLoop()
     '''
-   
+    
     products = Products()
-    '''
+    
     data ={"F12": 5 ,"F14": 5, "F18": 10}
     data1 ={"F12TB": 10 ,"F14TB": 15, "F24PL": 3}
     data2 ={"F12TC": 15 ,"F14TC": 20, "TOTAL3975": 135}
@@ -29,17 +29,15 @@ def main():
     teste = products.dayTurnData
     print(teste)
     products.addNewLine(path, teste, "RASCHELL")
-    '''
-    path = r"C:\Users\User\Desktop\CURSO PYTON\DiarioPython\new_Teste_pandas.xlsx"
     
+ 
     products.pathXlxs(path)
     products.daySelectDataXlsx("Sheet1", 1)    
-
+ 
    
+    #This is first version make for test
     
-    """
-    """
-    """
+  
     api = Api() 
     #remove
     today = 0
@@ -107,8 +105,7 @@ def main():
         totalDayList = products.getTotalofDay(self):
         for intens in totalDayList:
             print(intens)
-    """
-        
+    '''
     
     
     
