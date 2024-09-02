@@ -51,11 +51,7 @@ class IO:
         label_day1 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21),
                               bg="#4A1985")
         label_day1.place(x=25, y=45, width=53, height=25)
-        
-        #label_day2 = tk.Label(self.anchorPane, text="Dia:", font=("Helvetica", 21)
-                              #,bg="#4A1985")
-        #label_day2.place(x=22, y=141, width=53, height=25)
-           
+          
         label_finura = tk.Label(self.anchorPane, text="Finura:", font=("Helvetica", 21),
                                 bg="#4A1985")
         label_finura.place(x=20, y=182, width=90, height=31)
@@ -69,9 +65,6 @@ class IO:
 
         self.dayEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.dayEntry.place(x=89, y=48, width=45, height=25)
-
-        #self.dayEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
-        #self.dayEntry.place(x=120, y=144, width=81, height=26)
 
         self.finuraEntry = tk.Entry(self.anchorPane, font=("Helvetica", 14))
         self.finuraEntry.place(x=120, y=185, width=81, height=26)
@@ -347,6 +340,9 @@ class IO:
                 agulhas = int(self.agulhaEntry.get())
                 turn = self.combo_turno.get()
                 self.addFunc(turn, finura, agulhas)
+                dataXlsx = {self.products.keyFinurasAppend(turn,
+                                             finura.upper()),agulhas}
+                self.products.addDayDataListXlsx(turn, dataXlsx)
                 self.clearLIstEntrys()
         except ValueError:
             self.popValueError()
@@ -579,8 +575,11 @@ class IO:
                 self.products.sumDay()
                 setorStr = self.combo_setor.get()
                 self.products.addDayXlxs(str(self.monthEntry.get()),
-                                            int(self.dayEntry.get()),
-                                                setorStr.upper())
+                                        int(self.dayEntry.get()), setorStr.upper())
+                self.products.clearList()
+                self.combo_turno.set("TA")
+                self.popDiaAdd()
+                
     def popDiaAdd(self):
         diaPOP= Tk()
         diaPOP.geometry("300x300")

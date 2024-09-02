@@ -264,11 +264,13 @@ class Products():
         df_updated.to_excel(file_path, index=False, engine='openpyxl')
         
         #add turn select
-    def addDayDataListXlsx(self,turn, data ):
+    def addDayDataListXlsx(self,turn, data):
         match turn:
             case "TA":
+                print(data)
                 return self.listNeedlesBrokenDayTA.append(data)
             case "TB":
+                print(data)
                 return self.listNeedlesBrokenDayTB.append(data)
             case "TC":
                 return self.listNeedlesBrokenDayTC.append(data)
@@ -276,7 +278,9 @@ class Products():
                 return "TURN ERROR "
     
     def keyFinurasAppend(self,turn, finuras):
-        if turn == "TB":
+        if turn == "TA":
+            return finuras
+        elif turn == "TB":
             return finuras + "TB"
         elif turn == "TC":
             return finuras + "TC"
