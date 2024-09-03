@@ -341,8 +341,8 @@ class IO:
                 turn = self.combo_turno.get()
                 self.addFunc(turn, finura, agulhas)
                 dataXlsx = {self.products.keyFinurasAppend(turn,
-                                             finura.upper()),agulhas}
-                self.products.addDayDataListXlsx(turn, dataXlsx)
+                                             finura.upper()): agulhas}
+                self.products.addDayDataListXlsx(dia, turn, dataXlsx)
                 self.clearLIstEntrys()
         except ValueError:
             self.popValueError()

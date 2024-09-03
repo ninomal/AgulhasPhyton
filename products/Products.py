@@ -30,6 +30,8 @@ class Products():
         self.listDayXlsx = []
         self.dayTurnData = []
         self.rowDataListDay = []
+        self.dictDataXlsx = {}
+        self.conts = 0
        
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
@@ -98,7 +100,6 @@ class Products():
         finuraCode = self.enumsFinuras.finurasCodeReturn(finura) 
         result_dict = {finuraCode: agulha}
         self.listSumNedlleDict.append(result_dict)
-        print(self.listSumNedlleDict)
         return self.listSumNedlleDict
    
     def randImage(self):
@@ -264,16 +265,19 @@ class Products():
         df_updated.to_excel(file_path, index=False, engine='openpyxl')
         
         #add turn select
-    def addDayDataListXlsx(self,turn, data):
+    def addDayDataListXlsx(self, day,  turn, data):
         match turn:
             case "TA":
-                print(data)
-                return self.listNeedlesBrokenDayTA.append(data)
+                if self.conts == 0:
+                    self.dictDataXlsx.update({"DIA": day})
+                    self.conts += 1
+                    self.dictDataXlsx.update(data)
+                else:
+                    self.dictDataXlsx.update(data)
             case "TB":
-                print(data)
-                return self.listNeedlesBrokenDayTB.append(data)
-            case "TC":
-                return self.listNeedlesBrokenDayTC.append(data)
+                self.dictDataXlsx.update(data)
+            case "TC":   
+                self.dictDataXlsx.update(data)
             case _:
                 return "TURN ERROR "
     
@@ -282,18 +286,13 @@ class Products():
             return finuras
         elif turn == "TB":
             return finuras + "TB"
-        elif turn == "TC":
+        else :
             return finuras + "TC"
     
     #triger for addDictDAy
     def addDayXlxs(self, month,  day, setor):
-        dictOfDayUpdate = {}
         listOfDayData = []
-        dictOfDayUpdate.update({"DIA": day})
-        dictOfDayUpdate.update(self.listNeedlesBrokenDayTA[0])
-        dictOfDayUpdate.update(self.listNeedlesBrokenDayTB[0])
-        dictOfDayUpdate.update(self.listNeedlesBrokenDayTC[0])
-        listOfDayData.append(dictOfDayUpdate)
+        listOfDayData.append(self.dictDataXlsx)
         newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
         self.addNewLine(month, day, setor, newLineList)
                   
@@ -324,7 +323,7 @@ class Products():
         return self.dayTurnData
     
     def pathXlxs(self, year):
-        self.path = f"C:Users/User/Desktop/CURSO PYTON/DiarioPython/{year}"
+        self.path = r"C:\Users\User\Desktop\CURSO PYTON\DiarioPython\new_Teste_pandas.xlsx"
         return self.path
     
     #select day and return list data not empty
