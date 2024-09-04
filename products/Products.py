@@ -6,6 +6,7 @@ import collections, functools, operator, random
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
+import os
 
 RASCHELLIST = [3975, 4575, 4475, 4565]
 JAQUARDLIST = [4496, 2760]
@@ -237,16 +238,24 @@ class Products():
     
     #update for xlsx
     def addNewLine(self, month, day, setor, newLineList):
-        file_path = self.pathXlxs("2024")
+        file_path = self.pathXlxs(month)
+        month = self.enumsMonthDays.colectMonthsName(int(month))
         try:
             # Load the existing file into a DataFrame
             df_existing = pd.read_excel(file_path, engine='openpyxl')
+            #  Save the updated DataFrame to the Excel file (overwrite if it exists)                    
+            new_row = pd.DataFrame(newLineList)
+            df_updated = pd.concat([df_existing, new_row])
+            df_updated.to_excel(file_path, index=False, engine='openpyxl')
         except FileNotFoundError:
-            # If the file does not exist, create a new DataFrame with the appropriate columns
+            directory = os.path.dirname(file_path)
+            # Create the directory if it does not exist
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            # create a new DataFrame with the appropriate columns
             if setor == "RASCHELL":
                 nameTableList =  self.enumsFinuras.finurasXlsx(setor)
-                df_existing = pd.DataFrame(columns= nameTableList)
-                  
+                df_existing = pd.DataFrame(columns= nameTableList)   
                 # Save the DataFrame to an Excel file
                 with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
                     df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
@@ -257,12 +266,12 @@ class Products():
                 
             elif setor == "RASCHELL2":     
                  df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
-                
-        new_row = pd.DataFrame(newLineList)
-        df_updated = pd.concat([df_existing, new_row])
+                               
+            new_row = pd.DataFrame(newLineList)
+            df_updated = pd.concat([df_existing, new_row])
 
-        # Step 3: Save the updated DataFrame to the Excel file (overwrite if it exists)
-        df_updated.to_excel(file_path, index=False, engine='openpyxl')
+            #  Save the updated DataFrame to the Excel file (overwrite if it exists)
+            df_updated.to_excel(file_path, index=False, engine='openpyxl')
         
         #add turn select
     def addDayDataListXlsx(self, day,  turn, data):
@@ -322,8 +331,9 @@ class Products():
         self.dayTurnData.append(dayTurn)
         return self.dayTurnData
     
-    def pathXlxs(self, year):
-        self.path = r"C:\Users\User\Desktop\CURSO PYTON\DiarioPython\new_Teste_pandas.xlsx"
+    def pathXlxs(self, month):
+        month = self.enumsMonthDays.colectMonthsName(int(month))
+        self.path = f"C:/Users/User/Desktop/CURSO PYTON/DiarioPython/{self.year}/{month}.xlsx"
         return self.path
     
     #select day and return list data not empty
