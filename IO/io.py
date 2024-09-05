@@ -342,6 +342,8 @@ class IO:
                 self.addFunc(turn, finura, agulhas)
                 dataXlsx = {self.products.keyFinurasAppend(turn,
                                              finura.upper()): agulhas}
+                print(dataXlsx)
+                print("esse")
                 self.products.addDayDataListXlsx(dia, turn, dataXlsx)
                 self.clearLIstEntrys()
         except ValueError:
