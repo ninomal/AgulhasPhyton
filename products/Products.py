@@ -7,6 +7,7 @@ import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
 import os
+import numpy
 
 RASCHELLIST = [3975, 4575, 4475, 4565]
 JAQUARDLIST = [4496, 2760]
@@ -253,24 +254,29 @@ class Products():
                 nameTableList =  self.enumsFinuras.finurasXlsx(setor)
                 df_existing = pd.DataFrame(columns= nameTableList)   
                 # Save the DataFrame to an Excel file
+                new_row = pd.DataFrame(newLineList)
                 with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
                     df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
                     df_updated = pd.concat([df_existing, new_row])
 
                     # Optionally, save the empty DataFrame to the file
                     df_existing.to_excel(file_path, index=False, engine='openpyxl')
+            
             elif setor == "JACQUARD":
                 df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
             
             elif setor == "RASCHELL2":     
                  df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
                  
-        new_row = pd.DataFrame(newLineList)
-        df_updated = pd.concat([df_existing, new_row],  ignore_index=True)
-        #  Save the updated DataFrame to the Excel file (overwrite if it exists)
-        df_updated.to_excel(file_path, index=False, engine='openpyxl')
-        
-        #add turn select
+        try:
+            new_row = pd.DataFrame(newLineList) 
+            df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+            print("\nUpdated DataFrame:")
+            print(df_updated)
+        except Exception as e:
+            print(f"Error saving the file: {e}")
+                #add turn select
+                
     def addDayDataListXlsx(self, day,  turn, data):
         match turn:
             case "TA":
@@ -306,27 +312,30 @@ class Products():
     #add day list for organize in execel turns  
     def addDictDayXlsx(self, setor, data):
         agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
+        
         """
         add finuras total day
         for key, value in data.items():
             print(self.sumList(key, value))
         print(self.sumDay())
         """
-        self.funcAddDictTurns(data, agulhasEnums)
+        dataSelect = self.funcAddDictTurns(data, agulhasEnums)
+        print(dataSelect)
+        return dataSelect
               
     #Slice addDictDayXlsx params for simple
     def funcAddDictTurns(self, data, agulhasEnums):
         dayTurn = {}
         daySets = set()
-        for agulhas in agulhasEnums:
+        for agulhas in agulhasEnums:  
             for key, value in data.items():
                 if key == agulhas:
                     dayTurn.update({agulhas: value})
                     daySets.add(agulhas)
                 elif not agulhas in daySets:
-                    dayTurn.update({agulhas: None})
-        self.clearList()
+                    dayTurn.update({agulhas: numpy.nan})
         self.dayTurnData.append(dayTurn)
+        self.clearList()
         return self.dayTurnData
     
     def pathXlxs(self):
