@@ -257,25 +257,43 @@ class Products():
                 new_row = pd.DataFrame(newLineList)
                 with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
                     df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                    df_updated = pd.concat([df_existing, new_row])
+                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
 
-                    # Optionally, save the empty DataFrame to the file
-                    df_existing.to_excel(file_path, index=False, engine='openpyxl')
-            
             elif setor == "JACQUARD":
-                df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
+                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
+                df_existing = pd.DataFrame(columns= nameTableList)   
+                # Save the DataFrame to an Excel file
+                new_row = pd.DataFrame(newLineList)
+                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
+                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
             
             elif setor == "RASCHELL2":     
-                 df_existing = pd.DataFrame(columns= self.enumsFinuras.finurasXlsx(setor))
-                 
+                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
+                df_existing = pd.DataFrame(columns= nameTableList)   
+                # Save the DataFrame to an Excel file
+                new_row = pd.DataFrame(newLineList)
+                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
+                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+
+            elif setor == "KETTEN":
+                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
+                df_existing = pd.DataFrame(columns= nameTableList)   
+                # Save the DataFrame to an Excel file
+                new_row = pd.DataFrame(newLineList)
+                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
+                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+        
+        #save and re-write xlsx      
         try:
             new_row = pd.DataFrame(newLineList) 
             df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-            print("\nUpdated DataFrame:")
-            print(df_updated)
+            df_updated.to_excel(file_path, index=False, engine='openpyxl')
+            return ("\nUpdated DataFrame:", df_updated)
         except Exception as e:
-            print(f"Error saving the file: {e}")
-                #add turn select
+            return (f"Error saving the file: {e}")
                 
     def addDayDataListXlsx(self, day,  turn, data):
         match turn:
@@ -320,7 +338,6 @@ class Products():
         print(self.sumDay())
         """
         dataSelect = self.funcAddDictTurns(data, agulhasEnums)
-        print(dataSelect)
         return dataSelect
               
     #Slice addDictDayXlsx params for simple
