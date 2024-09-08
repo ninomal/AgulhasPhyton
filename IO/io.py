@@ -732,8 +732,8 @@ class IO:
                 self.GraficsOpen = True
                 self.day = int(self.dayEntry.get())
                 self.month = self.monthEntry.get()
-        except:
-            ValueError
+        except ValueError:
+            return self.popDay()
         if self.GraficsOpen:
             for setor in range(3):    
                 dictData = self.products.popDayProducts(self.month,

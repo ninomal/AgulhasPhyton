@@ -34,6 +34,8 @@ class Products():
         self.rowDataListDay = []
         self.dictDataXlsx = {}
         self.conts = 0
+        self.path = self.pathXlxs()
+        
        
     def monthTotalSum(self, data): 
         totalSum = collections.defaultdict(int)
@@ -366,8 +368,7 @@ class Products():
     def daySelectDataXlsx(self, month, day):
         dayLine = (day -1)
         path = self.path
-        nameSheet = month
-        df = pd.read_excel(path, sheet_name=nameSheet)
+        df = pd.read_excel(path, sheet_name=month)
         # Access the specific row
         rowData = df.iloc[dayLine]
         dataReal = rowData.dropna()
