@@ -310,6 +310,9 @@ class Products():
                 self.dictDataXlsx.update(data)
             case _:
                 return "TURN ERROR "
+            
+    def totalAddXlsx(self):
+        return self.dictDataXlsx.update(self.listSumDayResult[0])
     
     def keyFinurasAppend(self,turn, finuras):
         if turn == "TA":
@@ -322,9 +325,9 @@ class Products():
     #triger for addDictDAy
     def addDayXlxs(self, month,  day, setor):
         listOfDayData = []
+        self.totalAddXlsx()
         listOfDayData.append(self.dictDataXlsx)
         newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
-        #error here 
         self.addNewLine(month, day, setor, newLineList)
                   
     #add day list for organize in execel turns  

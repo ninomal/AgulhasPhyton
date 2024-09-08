@@ -12,20 +12,21 @@ FINURASXLSXRASCHELL =  ["DIA", "F9", "F9PL","F12", "F1269",
                         "F9TB", "F9PLTB","F12TB", "F1269TB",
                             "F14TB","F18TB", "F18PLTB", "F24PLTB", "F1869TB",
                         "F9TC", "F9PLTC","F12TC", "F1269TC",
-                            "F14TC","F18TC", "F18PLTC", "F24PLTC", "F1869TC",
-                            "TOTAL3975", "TOTAL4575", "TOTAL4565", "TOTAL4475"]
+                            "F14TC","F18TC", "F18PLTC", "F24PLTC", "F1869TC","TOTAL",
+                            "3975", "4575", "4565", "4475"]
 
 FINURASXLSRASCHELL2 = ["DIA","F9", "F12", "F14", "F18",
                        "F9TB", "F12TB", "F14TB", "F18TB",
                        "F9TC", "F12TC", "F14TC", "F18TC",
-                       'TOTAL3975']
+                       "TOTAL","3975"]
 
 FINURASXLSJACQUARD = ["DIA",'F7','F969','F1232','F1432',
                     'F7TB','F969TB','F1232TB', 'F1432TB',
                     'F7TC','F969TC','F1232TC', 'F1432TC',
-                    "TOTAL4496", 'TOTAL2760']
+                    'TOTAL','4496','2760']
 
-FINURASXLSKET = ["DIA","F24KET", "F24KETTB","F24KETTC"]
+FINURASXLSKET = ["DIA","F24KET", "F24KETTB","F24KETTC",
+                 "TOTAL", "TOTAL2660"]
 
 
 class EnumsFinuras:
