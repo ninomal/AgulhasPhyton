@@ -227,8 +227,8 @@ class IO:
                               font=("Helvetica", 27))
         messagebox.pack(padx= 40, pady= 40)   
         self.agulhaEntry.delete(0, END)
-        self.dayEntry.delete(0, END)
-        self.monthEntry.delete(0, END)
+        #self.dayEntry.delete(0, END)
+        #self.monthEntry.delete(0, END)
         self.listData = []
         self.contsAdd = 0
             
@@ -318,7 +318,6 @@ class IO:
             False
      
     def popADD(self):
-        self.contsAdd +=1
         self.popExeception( self.finuraEntry.get(),
                             month= self.monthEntry.get(),
                             day= self.dayEntry.get(),
@@ -333,6 +332,7 @@ class IO:
      
     def askTrue(self, ask):
         try:
+            self.contsAdd +=1
             if ask == True:
                 dia = int(self.dayEntry.get())   
                 mes = int(self.monthEntry.get())
@@ -344,9 +344,16 @@ class IO:
                                              finura.upper()): agulhas}
                 self.products.addDayDataListXlsx(dia, turn, dataXlsx)
                 self.clearLIstEntrys()
+            else: 
+                self.askNot()
+                
         except ValueError:
             self.popValueError()
                   
+    def askNot(self):
+        self.finuraEntry.delete(0, END)
+        self.agulhaEntry.delete(0, END)
+        
     def clearLIstEntrys(self):
         self.listData = []
         self.finuraEntry.delete(0, END)
