@@ -288,11 +288,12 @@ class Products():
                     df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
                     df_updated = pd.concat([df_existing, new_row], ignore_index=True)
         
-        #save and re-write xlsx      
+        #save and re-write xlsx   
         try:
             new_row = pd.DataFrame(newLineList) 
             df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-            df_updated.to_excel(file_path, index=False, engine='openpyxl')
+            df_updated.to_excel(file_path, sheet_name=f'{month}',
+                                    index=False, engine='openpyxl')
             return ("\nUpdated DataFrame:", df_updated)
         except Exception as e:
             return (f"Error saving the file: {e}")
@@ -366,15 +367,35 @@ class Products():
     
     #select day and return list data not empty
     def daySelectDataXlsx(self, month, day):
-        dayLine = (day -1)
-        path = self.path
-        df = pd.read_excel(path, sheet_name=month)
-        # Access the specific row
-        rowData = df.iloc[dayLine]
-        dataReal = rowData.dropna()
-        self.rowDataListDay = list(map(lambda item: {item[0]: item[1]}, dataReal.items()))
-        return self.rowDataListDay     
-       
+        try:
+            dayLine = (day -1)
+            enumsMonth = self.enumsMonthDays.colectMonthsName(month)
+            df = pd.read_excel(self.path, sheet_name=enumsMonth)
+            rowData = df.iloc[dayLine]
+            dataReal = rowData.dropna()
+            self.rowDataListDay = list(map(lambda item: {item[0]: item[1]}, dataReal.items()))
+            print(len(self.rowDataListDay))
+            return self.rowDataListDay     
+        except ValueError:
+            return "Valuer ERROR"
+        except IndexError:
+            pass
+      
+    #select month and return list data not empty
+    def monthSelectDataXlsx(self, month):
+        try:
+            enumsMonth = self.enumsMonthDays.colectMonthsName(month)
+            df = pd.read_excel(self.path, sheet_name=enumsMonth)
+            dfRowsLen = len(df)
+            for days in range(dfRowsLen):
+                rowData = df.iloc[days -1]
+                dataReal = rowData.dropna()
+                self.rowDataListDay = list(map(lambda item: {item[0]: item[1]}, dataReal.items()))
+            return self.rowDataListDay     
+        except ValueError:
+            return "Valuer ERROR"
+        except IndexError:
+            pass        
         
         
    
