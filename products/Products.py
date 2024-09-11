@@ -100,8 +100,11 @@ class Products():
         return self.listSumDayResult
     
     #convert code and nedlle in dict list
-    def sumList(self, finura, agulha):
-        finuraCode = self.enumsFinuras.finurasCodeReturn(finura) 
+    def sumList(self, finura, agulha, dataMode):
+        if dataMode == "MongoDB":
+            finuraCode = self.enumsFinuras.finurasCodeReturn(finura)
+        else:
+            finuraCode = self.enumsFinuras.finurasCodeReturnXlsx(finura)
         result_dict = {finuraCode: agulha}
         self.listSumNedlleDict.append(result_dict)
         return self.listSumNedlleDict
@@ -315,6 +318,7 @@ class Products():
                 return "TURN ERROR "
             
     def totalAddXlsx(self):
+        print(self.listSumDayResult)
         return self.dictDataXlsx.update(self.listSumDayResult[0])
     
     def keyFinurasAppend(self,turn, finuras):
@@ -330,7 +334,9 @@ class Products():
         listOfDayData = []
         self.totalAddXlsx()
         listOfDayData.append(self.dictDataXlsx)
+        print(listOfDayData)
         newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
+        print(newLineList)
         self.addNewLine(month, day, setor, newLineList)
                   
     #add day list for organize in execel turns  

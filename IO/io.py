@@ -561,7 +561,7 @@ class IO:
         dataList = [{finura : agulha}]
         list(map(lambda data: self.listData.append(data), dataList))
         self.products.addAgulhasinDictList(turn, self.listData)
-        self.products.sumList(finura, agulha)
+        self.products.sumList(finura, agulha, self.storeDataMode.get())
            
     def addDayMongo(self):
         if self.combo_turno.get() != 'TC':

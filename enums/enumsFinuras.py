@@ -13,20 +13,20 @@ FINURASXLSXRASCHELL =  ["DIA", "F9", "F9PL","F12", "F1269",
                             "F14TB","F18TB", "F18PLTB", "F24PLTB", "F1869TB",
                         "F9TC", "F9PLTC","F12TC", "F1269TC",
                             "F14TC","F18TC", "F18PLTC", "F24PLTC", "F1869TC","TOTAL",
-                            "3975", "4575", "4565", "4475"]
+                            "T3975", "T4575", "T4565", "T4475"]
 
 FINURASXLSRASCHELL2 = ["DIA","F9", "F12", "F14", "F18",
                        "F9TB", "F12TB", "F14TB", "F18TB",
                        "F9TC", "F12TC", "F14TC", "F18TC",
-                       "TOTAL","3975"]
+                       "TOTAL","T3975"]
 
 FINURASXLSJACQUARD = ["DIA",'F7','F969','F1232','F1432',
                     'F7TB','F969TB','F1232TB', 'F1432TB',
                     'F7TC','F969TC','F1232TC', 'F1432TC',
-                    'TOTAL','4496','2760']
+                    'TOTAL','T4496','T2760']
 
 FINURASXLSKET = ["DIA","F24KET", "F24KETTB","F24KETTC",
-                 "TOTAL", "TOTAL2660"]
+                 "TOTAL", "T2660"]
 
 
 class EnumsFinuras:
@@ -98,6 +98,26 @@ class EnumsFinuras:
             return "2660"
         else :
             return "ERROR"
+
+    def finurasCodeReturnXlsx(self, finuras):
+            finurasStr = str(finuras)
+            finurasUpper = finurasStr.upper()
+            if finurasUpper in FINURAS3975:
+                return "T3975"
+            elif finurasUpper == "F1869":
+                return "T4475"
+            elif finurasUpper == "F18PL":
+                return "T4575"
+            elif finurasUpper == "F24PL":
+                return "T4565"
+            elif finurasUpper in FINURAS4496:
+                return "T4496"
+            elif finurasUpper in FINURAS2660:
+                    return "T2660"
+            elif finurasUpper == "F24KET":
+                return "T2660"
+            else :
+                return "ERROR"
         
     def finurasXlsx(self, setor):
         match setor:
