@@ -7,16 +7,16 @@ import pandas as pd
 
 
 def main():
-    io = IO()
-    io.ioMainLoop()
+    #io = IO()
+    #io.ioMainLoop()
     
-    '''
+   
     products = Products()
     try:
-        print(products.monthSelectDataXlsx(9))
+        print(products.daySelectDataXlsx(9, 12))
     except TypeError:
         pass
-   '''
+   
    
    
    

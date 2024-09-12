@@ -636,7 +636,8 @@ class IO:
             if not ask:                           
                 day = int(self.dayEntry.get())
                 dictData= self.products.popDayProducts(self.monthEntry.get(), 
-                                                    self.combo_setorDay.get(), day)
+                                                    self.combo_setorDay.get(), day,
+                                                    self.storeDataMode.get())
                 self.popDayResult(dictData)
         except AttributeError:
             self.popDay()
@@ -648,50 +649,53 @@ class IO:
         graphicDay.geometry("900x400")
         graphicDay.config(background="#A580CA")
         
-        #TA
-        dataSlice = data[0]
-        messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
-                                    font=("Helvetica", 30), bg="#A580CA")
-        messageboxTotalTATOP.place(x=10, y =valueY)
-        for key, values in dataSlice.items():
-            valueY += 53
-            messageboxTA = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#A580CA")
-            messageboxTA.place(x=10, y =valueY)
-        #TB
-        dataSlice = data[1]
-        valueY = 2
-        messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
-                                    font=("Helvetica", 30), bg="#A580CA")
-        messageboxTotalTBTOP.place(x= 240, y = valueY)
-        for key, values in dataSlice.items():
-            valueY += 53
-            messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#A580CA")
-            messageboxTB.place(x=240, y=valueY)
-        #TC
-        dataSlice = data[2]
-        valueY = 2
-        messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TC:",
-                                    font=("Helvetica", 30), bg="#A580CA")
-        messageboxTotalTCTOP.place(x=440, y=valueY)
-        for key, values in dataSlice.items():
-            valueY += 53
-            messageboxTC = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#A580CA")
-            messageboxTC.place(x=440, y=valueY)
-        #TOTAL      
-        dataSlice = data[3]
-        valueY = 2
-        messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
-                                    font=("Helvetica", 30), bg="#A580CA")
-        messageboxTotalTop.place(x=650, y= valueY)
-        for key, values in dataSlice.items():
-            valueY += 53
-            messageboxTotal = tk.Label(master= graphicDay, text= f"{key} : {values}",
-                                    font=("Helvetica", 30), bg="#A580CA")
-            messageboxTotal.place(x=650, y=valueY)
-                               
+        try:
+            #TA
+            dataSlice = data[0]
+            messageboxTotalTATOP = tk.Label(master= graphicDay, text= "TA:",
+                                        font=("Helvetica", 30), bg="#A580CA")
+            messageboxTotalTATOP.place(x=10, y =valueY)
+            for key, values in dataSlice.items():
+                valueY += 53
+                messageboxTA = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                        font=("Helvetica", 30), bg="#A580CA")
+                messageboxTA.place(x=10, y =valueY)
+            #TB
+            dataSlice = data[1]
+            valueY = 2
+            messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
+                                        font=("Helvetica", 30), bg="#A580CA")
+            messageboxTotalTBTOP.place(x= 240, y = valueY)
+            for key, values in dataSlice.items():
+                valueY += 53
+                messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                        font=("Helvetica", 30), bg="#A580CA")
+                messageboxTB.place(x=240, y=valueY)
+            #TC
+            dataSlice = data[2]
+            valueY = 2
+            messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TC:",
+                                        font=("Helvetica", 30), bg="#A580CA")
+            messageboxTotalTCTOP.place(x=440, y=valueY)
+            for key, values in dataSlice.items():
+                valueY += 53
+                messageboxTC = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                        font=("Helvetica", 30), bg="#A580CA")
+                messageboxTC.place(x=440, y=valueY)
+            #TOTAL      
+            dataSlice = data[3]
+            valueY = 2
+            messageboxTotalTop = tk.Label(master= graphicDay, text= "TOTAL:",
+                                        font=("Helvetica", 30), bg="#A580CA")
+            messageboxTotalTop.place(x=650, y= valueY)
+            for key, values in dataSlice.items():
+                valueY += 53
+                messageboxTotal = tk.Label(master= graphicDay, text= f"{key} : {values}",
+                                        font=("Helvetica", 30), bg="#A580CA")
+                messageboxTotal.place(x=650, y=valueY)
+        except TypeError:
+            self.popValueError()                       
+                            
     def graficoPizzaPoP(self):
         pizzaGraf = Tk()
         pizzaGraf.title("Grafico pizza")
@@ -744,7 +748,8 @@ class IO:
         if self.GraficsOpen:
             for setor in range(3):    
                 dictData = self.products.popDayProducts(self.month,
-                                Enumstoday.getEnumsSetorNames(self, setor), self.day)
+                        Enumstoday.getEnumsSetorNames(self, setor), self.day,
+                        self.storeDataMode.get())
                 varStack.append(dictData[-1]) 
                 #add dict in list of value
                 for dictList in dictData:
