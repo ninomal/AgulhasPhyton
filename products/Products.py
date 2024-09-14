@@ -412,8 +412,8 @@ class Products():
             enumsMonth = self.enumsMonthDays.colectMonthsName(int(month))
             df = pd.read_excel(self.path, sheet_name=enumsMonth)
             rowData = df[df['DIA']== day]
-            self.rowDataListDay = rowData.to_dict(orient='records')
-            return self.rowDataListDay     
+            self.rowDataListDay.append(rowData.to_dict(orient='records'))
+            return self.rowDataListDay[0]     
         except ValueError:
             return "Valuer ERROR"
         except IndexError:
@@ -434,6 +434,23 @@ class Products():
             return "Valuer ERROR"
         except IndexError:
             pass        
-        
-        
+               
+    def dayPoPxlsx(self, month, day, turn):
+       dictDay = dict()
+       data = self.daySelectDataXlsx(month, day)[0]
+       finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
+       for keys , value in data.items():
+           if ((keys in finurasTurn) and value > 0):
+               dictDay.update({keys: value}) 
+       self.listOfGetDocumentsDay.append(dictDay)
+       return self.listOfGetDocumentsDay
    
+    def dayPoPtotalUP(self, month , day):
+        dictDay = dict()
+        data = self.daySelectDataXlsx(month, day)[0]
+        finurasCode = self.enumsFinuras.finurasCodeTotal()
+        for keys , value in data.items():
+           if ((keys in finurasCode) and value > 0):
+               dictDay.update({keys: value}) 
+        self.listOfGetDocumentsDay.append(dictDay)
+        return self.listOfGetDocumentsDay

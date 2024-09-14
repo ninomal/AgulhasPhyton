@@ -13,7 +13,10 @@ def main():
    
     products = Products()
     try:
-        print(products.daySelectDataXlsx(9, 12))
+        products.dayPoPxlsx(9, 12, 'TA')
+        products.dayPoPxlsx(9, 12, 'TB')
+        products.dayPoPxlsx(9, 12, 'TC')
+        products.dayPoPtotalUP(9, 12)
     except TypeError:
         pass
    

@@ -28,6 +28,17 @@ FINURASXLSJACQUARD = ["DIA",'F7','F969','F1232','F1432',
 FINURASXLSKET = ["DIA","F24KET", "F24KETTB","F24KETTC",
                  "TOTAL", "T2660"]
 
+FINURASTA = ["F9", "F9PL","F12", "F1269","F14","F18", "F18PL", "F24PL", "F1869",
+             'F7','F969', 'F1232', 'F1432', "F24KET"]
+
+FINURASTB = ["F9TB", "F9PLTB","F12TB", "F1269TB","F14TB","F18TB", "F18PLTB", "F24PLTB",
+             "F1869TB",'F7TB','F969TB', 'F1232TB', 'F1432TB', "F24KETTB"]
+
+
+FINURASTC = ["F9TC", "F9PLTC","F12TC", "F1269TC","F14TC","F18TC", "F18PLTC", "F24PLTC",
+             "F1869TC",'F7TC','F969TC', 'F1232TC', 'F1432TC', "F24KETTC"]
+
+FINURASCODETOTAL = ["T3975", "T4575", "T4565", "T4475", "T4496", "T2760", "T2660"]
 
 class EnumsFinuras:
     def __init__(self):
@@ -130,4 +141,14 @@ class EnumsFinuras:
             case "RASCHELL2":
                 return FINURASXLSRASCHELL2
         
-    
+    def finurasTurnXlsx(self, turn):
+        match turn:
+            case "TA":
+                return FINURASTA
+            case "TB":
+                    return FINURASTB
+            case "TC":
+                    return FINURASTC
+                
+    def finurasCodeTotal(self):
+        return FINURASCODETOTAL
