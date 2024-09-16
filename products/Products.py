@@ -1,6 +1,7 @@
 from productsService.productsService import ProductsService
 from enums.enumsMonth import EnumsMonthDays
 from enums.enumsFinuras import EnumsFinuras
+from enums.enumsToday import Enumstoday
 from typing import Dict
 import collections, functools, operator, random
 import pandas as pd
@@ -19,6 +20,7 @@ class Products():
         self.productService = ProductsService()
         self.enumsMonthDays = EnumsMonthDays()
         self.enumsFinuras = EnumsFinuras()
+        self.enumsToday = Enumstoday()
         self.listNeedlesBrokenDayTA = [] 
         self.listNeedlesBrokenDayTB = []  
         self.listNeedlesBrokenDayTC = [] 
@@ -434,23 +436,25 @@ class Products():
             return "Valuer ERROR"
         except IndexError:
             pass        
-               
-    def dayPoPxlsx(self, month, day, turn):
-       dictDay = dict()
-       data = self.daySelectDataXlsx(month, day)[0]
-       finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
-       for keys , value in data.items():
-           if ((keys in finurasTurn) and value > 0):
-               dictDay.update({keys: value}) 
-       self.listOfGetDocumentsDay.append(dictDay)
-       return self.listOfGetDocumentsDay
+    
+    #Output data for pop day display          
+    def dayPoPxlsx(self, month, day):  
+        dictDay = []
+        data = self.daySelectDataXlsx(month, day)[0]
+        for turn in self.enumsToday.getEnumsTurns(): 
+            finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
+            for keys , value in data.items():
+                if ((keys in finurasTurn) and value > 0):
+                    dictDay.append({keys: value}) 
+            self.listOfGetDocumentsDay.append(dictDay)
+        return self.listOfGetDocumentsDay
    
     def dayPoPtotalUP(self, month , day):
-        dictDay = dict()
+        dictDay = []
         data = self.daySelectDataXlsx(month, day)[0]
         finurasCode = self.enumsFinuras.finurasCodeTotal()
         for keys , value in data.items():
            if ((keys in finurasCode) and value > 0):
-               dictDay.update({keys: value}) 
+               dictDay.append({keys: value}) 
         self.listOfGetDocumentsDay.append(dictDay)
         return self.listOfGetDocumentsDay

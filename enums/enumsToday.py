@@ -1,3 +1,5 @@
+TURNS = ["TA", "TB", "TC"]
+
 class Enumstoday:
     def __init__(self):
         pass    
@@ -23,3 +25,6 @@ class Enumstoday:
                 return "KETTEN"
             case _:
                 return "turn ERROR"
+            
+    def getEnumsTurns(self):
+        return TURNS
