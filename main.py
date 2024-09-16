@@ -7,18 +7,16 @@ import pandas as pd
 
 
 def main():
-    #io = IO()
-    #io.ioMainLoop()
+    io = IO()
+    io.ioMainLoop()
     
-   
+    '''
     products = Products()
     try:
-        products.dayPoPxlsx(9, 12)
-        products.daySelectDataXlsx(9, 12)
-        products.dayPoPtotalUP(9, 12)
+        print(products.popDayProducts(9, "RASCHELL", 12, "XLSX"))
     except TypeError:
         print("ERRORR")
-        pass
+        pass'''
    
    
    
