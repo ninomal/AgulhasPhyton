@@ -665,23 +665,23 @@ class IO:
             valueY = 2
             messageboxTotalTBTOP = tk.Label(master= graphicDay, text= "TB:",
                                         font=("Helvetica", 30), bg="#A580CA")
-            messageboxTotalTBTOP.place(x= 240, y = valueY)
+            messageboxTotalTBTOP.place(x= 185, y = valueY)
             for key, values in dataSlice.items():
                 valueY += 53
                 messageboxTB = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                         font=("Helvetica", 30), bg="#A580CA")
-                messageboxTB.place(x=240, y=valueY)
+                messageboxTB.place(x=185, y=valueY)
             #TC
             dataSlice = data[2]
             valueY = 2
             messageboxTotalTCTOP = tk.Label(master= graphicDay, text= "TC:",
                                         font=("Helvetica", 30), bg="#A580CA")
-            messageboxTotalTCTOP.place(x=440, y=valueY)
+            messageboxTotalTCTOP.place(x=395, y=valueY)
             for key, values in dataSlice.items():
                 valueY += 53
                 messageboxTC = tk.Label(master= graphicDay, text= f"{key} : {values}",
                                         font=("Helvetica", 30), bg="#A580CA")
-                messageboxTC.place(x=440, y=valueY)
+                messageboxTC.place(x=395, y=valueY)
             #TOTAL      
             dataSlice = data[3]
             valueY = 2

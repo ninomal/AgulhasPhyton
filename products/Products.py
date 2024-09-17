@@ -134,10 +134,10 @@ class Products():
       
     def popDayProducts(self, month, setor, day, dataMode):
         self.clearList()
-        #TA
         dictVar = {}
         if dataMode == "MongoDB":
             try:
+                #TA
                 document = self.getDocumentFind({"2024": month, f"{setor}": day})
                 agulhas = document.get('AGULHAS', {})
                 ta = agulhas.get('TA', [])
@@ -330,7 +330,6 @@ class Products():
                 return "TURN ERROR "
             
     def totalAddXlsx(self):
-        print(self.listSumDayResult)
         return self.dictDataXlsx.update(self.listSumDayResult[0])
     
     def keyFinurasAppend(self,turn, finuras):
@@ -346,21 +345,12 @@ class Products():
         listOfDayData = []
         self.totalAddXlsx()
         listOfDayData.append(self.dictDataXlsx)
-        print(listOfDayData)
         newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
-        print(newLineList)
         self.addNewLine(month, day, setor, newLineList)
                   
     #add day list for organize in execel turns  
     def addDictDayXlsx(self, setor, data):
         agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
-        
-        """
-        add finuras total day
-        for key, value in data.items():
-            print(self.sumList(key, value))
-        print(self.sumDay())
-        """
         dataSelect = self.funcAddDictTurns(data, agulhasEnums)
         return dataSelect
               
@@ -414,22 +404,24 @@ class Products():
     
     #Output data for pop day display          
     def dayPoPxlsx(self, month, day):  
-        dictDay = []
+        dictDay = {}
         data = self.daySelectDataXlsx(month, day)[0]
-        for turn in self.enumsToday.getEnumsTurns(): 
+        for turn in self.enumsToday.getEnumsTurns():
             finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
             for keys , value in data.items():
                 if ((keys in finurasTurn) and value > 0):
-                    dictDay.append({keys: value}) 
-        self.listOfGetDocumentsDay.append(dictDay)
+                    dictDay.update({keys: value}) 
+            self.listOfGetDocumentsDay.append(dictDay)
+            dictDay = {}
         return self.listOfGetDocumentsDay
-   
+    
+    #Add day total 
     def dayPoPtotalUP(self, month , day):
-        dictDay = []
+        dictDay = {}
         data = self.daySelectDataXlsx(month, day)[0]
         finurasCode = self.enumsFinuras.finurasCodeTotal()
         for keys , value in data.items():
            if ((keys in finurasCode) and value > 0):
-               dictDay.append({keys: value}) 
+               dictDay.update({keys: value})
         self.listOfGetDocumentsDay.append(dictDay)
         return self.listOfGetDocumentsDay
