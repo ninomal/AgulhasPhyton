@@ -410,7 +410,8 @@ class Products():
             finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
             for keys , value in data.items():
                 if ((keys in finurasTurn) and value > 0):
-                    dictDay.update({keys: value}) 
+                    key = self.eraseTurnName(turn, keys)
+                    dictDay.update({key: value}) 
             self.listOfGetDocumentsDay.append(dictDay)
             dictDay = {}
         return self.listOfGetDocumentsDay
@@ -422,6 +423,19 @@ class Products():
         finurasCode = self.enumsFinuras.finurasCodeTotal()
         for keys , value in data.items():
            if ((keys in finurasCode) and value > 0):
-               dictDay.update({keys: value})
+               key = keys.split("T")[1]
+               dictDay.update({key: value})
         self.listOfGetDocumentsDay.append(dictDay)
         return self.listOfGetDocumentsDay
+    
+    def eraseTurnName(self,turn, key):    
+        match turn:
+            case "TA":
+                return key
+            case "TB":
+                keySplit = key.split("TB") 
+                return keySplit[0]
+            case "TC":
+                keySplit = key.split("TC") 
+                return keySplit[0]
+         
