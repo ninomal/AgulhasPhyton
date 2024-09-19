@@ -169,8 +169,8 @@ class Products():
                 return self.listOfGetDocumentsDay
         else:
             try:
-                self.dayPoPxlsx(month, day)
-                self.dayPoPtotalUP(month, day)
+                self.dayPoPxlsx(month, day, setor)
+                self.dayPoPtotalUP(month, day, setor)
                 return self.listOfGetDocumentsDay
             except AttributeError:
                 self.listOfGetDocumentsDay.append({"Nao teve quebra": 0})
@@ -230,8 +230,8 @@ class Products():
         dataMonthSum = self.monthTotalSum(data)  
         return dataMonthSum
     
-    def pizzaDataDay(self, month, setor, day):
-        data = self.popDayProducts(month, setor , day)
+    def pizzaDataDay(self, month, setor, day, dataMode):
+        data = self.popDayProducts(month, setor , day, dataMode)
         return data
     
     def pizzaDataComp(self, month, setor, finura):
@@ -255,11 +255,11 @@ class Products():
         return self.listMonthTotalResult
     
     #update for xlsx
-    def addNewLine(self, month, day, setor, newLineList):
+    def addNewLine(self, month, newLineList):
         file_path = self.pathXlxs()
         month = self.enumsMonthDays.colectMonthsName(int(month))
+        # Load the existing file into a DataFrame
         try:
-            # Load the existing file into a DataFrame
             df_existing = pd.read_excel(file_path, engine='openpyxl')  
         except FileNotFoundError:
             directory = os.path.dirname(file_path)
@@ -267,42 +267,14 @@ class Products():
             if not os.path.exists(directory):
                 os.makedirs(directory)
             # create a new DataFrame with the appropriate columns
-            if setor == "RASCHELL":
-                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
-                df_existing = pd.DataFrame(columns= nameTableList)   
-                # Save the DataFrame to an Excel file
-                new_row = pd.DataFrame(newLineList)
-                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-
-            elif setor == "JACQUARD":
-                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
-                df_existing = pd.DataFrame(columns= nameTableList)   
-                # Save the DataFrame to an Excel file
-                new_row = pd.DataFrame(newLineList)
-                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-            
-            elif setor == "RASCHELL2":     
-                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
-                df_existing = pd.DataFrame(columns= nameTableList)   
-                # Save the DataFrame to an Excel file
-                new_row = pd.DataFrame(newLineList)
-                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-
-            elif setor == "KETTEN":
-                nameTableList =  self.enumsFinuras.finurasXlsx(setor)
-                df_existing = pd.DataFrame(columns= nameTableList)   
-                # Save the DataFrame to an Excel file
-                new_row = pd.DataFrame(newLineList)
-                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-        
+            nameTableList = self.enumsFinuras.getAllFinurasXlsx()
+            df_existing = pd.DataFrame(columns= nameTableList)   
+            # Save the DataFrame to an Excel file
+            new_row = pd.DataFrame(newLineList)
+            with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+                df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
+                df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+                
         #save and re-write xlsx   
         try:
             new_row = pd.DataFrame(newLineList) 
@@ -312,7 +284,8 @@ class Products():
             return ("\nUpdated DataFrame:", df_updated)
         except Exception as e:
             return (f"Error saving the file: {e}")
-                
+             
+        
     def addDayDataListXlsx(self, day,  turn, data):
         match turn:
             case "TA":
@@ -346,7 +319,7 @@ class Products():
         self.totalAddXlsx()
         listOfDayData.append(self.dictDataXlsx)
         newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
-        self.addNewLine(month, day, setor, newLineList)
+        self.addNewLine(month, newLineList)
                   
     #add day list for organize in execel turns  
     def addDictDayXlsx(self, setor, data):
@@ -403,7 +376,7 @@ class Products():
             pass        
     
     #Output data for pop day display          
-    def dayPoPxlsx(self, month, day):  
+    def dayPoPxlsx(self, month, day, setor):  
         dictDay = {}
         data = self.daySelectDataXlsx(month, day)[0]
         for turn in self.enumsToday.getEnumsTurns():
@@ -417,7 +390,7 @@ class Products():
         return self.listOfGetDocumentsDay
     
     #Add day total 
-    def dayPoPtotalUP(self, month , day):
+    def dayPoPtotalUP(self, month , day, setor):
         dictDay = {}
         data = self.daySelectDataXlsx(month, day)[0]
         finurasCode = self.enumsFinuras.finurasCodeTotal()
@@ -438,4 +411,6 @@ class Products():
             case "TC":
                 keySplit = key.split("TC") 
                 return keySplit[0]
-         
+    
+    def teste(self):
+        print(self.enumsFinuras.getAllFinurasXlsx())

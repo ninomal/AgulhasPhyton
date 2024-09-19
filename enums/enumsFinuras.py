@@ -15,18 +15,20 @@ FINURASXLSXRASCHELL =  ["DIA", "F9", "F9PL","F12", "F1269",
                             "F14TC","F18TC", "F18PLTC", "F24PLTC", "F1869TC","TOTAL",
                             "T3975", "T4575", "T4565", "T4475"]
 
-FINURASXLSRASCHELL2 = ["DIA","F9", "F12", "F14", "F18",
+FINURASXLSRASCHELL2 = ["  ", "RASCHEL2", "F9", "F12", "F14", "F18",
                        "F9TB", "F12TB", "F14TB", "F18TB",
                        "F9TC", "F12TC", "F14TC", "F18TC",
-                       "TOTAL","T3975"]
+                       "TOTAL ","T3975"]
 
-FINURASXLSJACQUARD = ["DIA",'F7','F969','F1232','F1432',
+FINURASXLSJACQUARD = ["   ","JACQUARD", 'F7','F969','F1232','F1432',
                     'F7TB','F969TB','F1232TB', 'F1432TB',
                     'F7TC','F969TC','F1232TC', 'F1432TC',
-                    'TOTAL','T4496','T2760']
+                    'TOTAL  ','T4496','T2760']
 
-FINURASXLSKET = ["DIA","F24KET", "F24KETTB","F24KETTC",
-                 "TOTAL", "T2660"]
+FINURASXLSKET = ["    ","KETTEN"," ","F24KET", "F24KETTB","F24KETTC",
+                 "TOTAL   ", "T2660"]
+
+ALLFINURAS = FINURASXLSXRASCHELL + FINURASXLSJACQUARD + FINURASXLSRASCHELL2 + FINURASXLSKET
 
 FINURASTA = ["F9", "F9PL","F12", "F1269","F14","F18", "F18PL", "F24PL", "F1869",
              'F7','F969', 'F1232', 'F1432', "F24KET"]
@@ -152,3 +154,6 @@ class EnumsFinuras:
                 
     def finurasCodeTotal(self):
         return FINURASCODETOTAL
+    
+    def getAllFinurasXlsx(self):
+        return ALLFINURAS

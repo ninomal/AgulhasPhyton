@@ -918,7 +918,8 @@ class IO:
         elif not askMonth == None and not askDay == None:
             data = self.products.pizzaDataDay(self.pizzaGraficEntryMonth.get(),
                                             self.comboSetorPizza.get(),
-                                            int(self.pizzaGraficEntryDay.get()))
+                                            int(self.pizzaGraficEntryDay.get()),
+                                            self.storeDataMode.get())
             for lists in data:
                 for keys , values in lists.items():
                     nameList.append((keys))
