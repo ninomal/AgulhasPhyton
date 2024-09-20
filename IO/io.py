@@ -731,11 +731,7 @@ class IO:
         buttonDia.place(x= 110 , y= 140, width= 95, height= 25)              
     
     def popDayGrafico(self):
-        valueAgulha = []
-        finuraKey = []
-        agulhaTotalRed = []
-        varStack = []
-        varItemsStack = []
+        
         try:
             ask = self.popExeception(day= self.dayEntry.get(),
                     month=self.monthEntry.get())
@@ -746,28 +742,38 @@ class IO:
         except ValueError:
             return self.popDay()
         if self.GraficsOpen:
-            for setor in range(3):    
-                dictData = self.products.popDayProducts(self.month,
-                        Enumstoday.getEnumsSetorNames(self, setor), self.day,
-                        self.storeDataMode.get())
-                varStack.append(dictData[-1]) 
-                #add dict in list of value
-                for dictList in dictData:
-                    for keys , value in dictList.items():
-                        valueAgulha.append(value)
-                        finuraKey.append(keys)
-                        if dictList != varStack[0]:
-                            agulhaTotalRed.append(0)       
-                #Paint red for total
-                for totalDicts in varStack:
-                    varItemsStack.append(totalDicts)
-                    for totalKeys, totalValues in totalDicts.items():
-                        agulhaTotalRed.append(totalValues)
-                #add space
-                for space in range(3):
-                    valueAgulha.append(0)
-                    finuraKey.append("")
-                    agulhaTotalRed.append(0)
+            #if self.storeDataMode == "MongoDB":
+            self.popDayFuncMongoDB()
+           
+                    
+    def popDayFuncMongoDB(self):  
+        valueAgulha = []
+        finuraKey = []
+        agulhaTotalRed = []
+        varStack = []
+        varItemsStack = []
+        for setor in range(3):    
+            dictData = self.products.popDayProducts(self.month,
+                    Enumstoday.getEnumsSetorNames(self, setor), self.day,
+                    self.storeDataMode.get())
+            varStack.append(dictData[-1]) 
+            #add dict in list of value
+            for dictList in dictData:
+                for keys , value in dictList.items():
+                    valueAgulha.append(value)
+                    finuraKey.append(keys)
+                    if dictList != varStack[0]:
+                        agulhaTotalRed.append(0)       
+            #Paint red for total
+            for totalDicts in varStack:
+                varItemsStack.append(totalDicts)
+            for totalKeys, totalValues in totalDicts.items():
+                agulhaTotalRed.append(totalValues)
+            #add space
+            for space in range(3):
+                valueAgulha.append(0)
+                finuraKey.append("")
+                agulhaTotalRed.append(0)
                 varStack = []
             # Check if there's already an open window, close it
             if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
@@ -809,7 +815,7 @@ class IO:
                 self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
                 self.plot_window.mainloop()
             except ValueError:
-                self.popValueError()          
+                self.popValueError()                         
                                         
     def allMonthGraphic(self):
         self.products.clearList()
