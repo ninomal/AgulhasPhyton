@@ -11,9 +11,15 @@ def main():
     io = IO()
     io.ioMainLoop()
    
+    
     '''
     products = Products()
-    
+    print(products.dayPoPxlsx(9, 12, "RASCHELL"))
+    print("FOII")
+    products.clearList()
+    print(products.dayPoPxlsx(9, 12, "JACQUARD"))
+    '''
+    '''
     try:
         print(products.popDayProducts(9, "RASCHELL", 12, "XLSX"))
     except TypeError:

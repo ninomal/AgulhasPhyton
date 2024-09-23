@@ -742,10 +742,11 @@ class IO:
         except ValueError:
             return self.popDay()
         if self.GraficsOpen:
-            #if self.storeDataMode == "MongoDB":
-            self.popDayFuncMongoDB()
-           
-                    
+            if self.storeDataMode == "MongoDB":
+                self.popDayFuncMongoDB()
+            else:
+                self.popDayFuncXlsx()
+                  
     def popDayFuncMongoDB(self):  
         valueAgulha = []
         finuraKey = []
@@ -816,6 +817,77 @@ class IO:
                 self.plot_window.mainloop()
             except ValueError:
                 self.popValueError()                         
+                                      
+    def popDayFuncXlsx(self):
+        valueAgulha = []
+        finuraKey = []
+        agulhaTotalRed = []
+        varStack = []
+        varItemsStack = []
+        for setor in range(3):    
+            dictData = self.products.dayPoPxlsx(self.month, self.day,
+                    Enumstoday.getEnumsSetorNames(self, setor))
+            varStack.append(dictData[-1]) 
+            #add dict in list of value
+            for dictList in dictData:
+                for keys , value in dictList.items():
+                    valueAgulha.append(value)
+                    finuraKey.append(keys)
+                    if dictList != varStack[0]:
+                        agulhaTotalRed.append(0)       
+            #Paint red for total
+            for totalDicts in varStack:
+                varItemsStack.append(totalDicts)
+            for totalKeys, totalValues in totalDicts.items():
+                agulhaTotalRed.append(totalValues)
+            #add space
+            for space in range(3):
+                valueAgulha.append(0)
+                finuraKey.append("")
+                agulhaTotalRed.append(0)
+                varStack = []
+            # Check if there's already an open window, close it
+            if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
+                self.plot_window.destroy()
+            # Create a new top-level window
+            self.plot_window = tk.Toplevel()  # Use Toplevel instead of Tk
+            self.plot_window.title("PoP Day Graphics Bar")
+            self.plot_window.config(background="#A580CA")
+            self.plot_window.geometry("1000x500")
+            try: 
+                categories = np.arange(1, (len(valueAgulha)+1))
+                fig, ax = plt.subplots(figsize=(50, 6))
+
+                x = np.arange(len(categories))
+                plt.bar(x , valueAgulha,  label='Value 1', color='b', align='center')
+                ax.set_xlabel('Agulhas')
+                ax.set_title('Agulhas quebradas')
+                plt.xticks(x, labels= finuraKey)  
+                plt.xlim(-0.5, len(categories) - 0.5)
+                plt.ylim(0, 130) 
+                plt.yticks(np.arange(0, 131, 5))
+                
+                #add Red color in total
+                plt.bar(x , agulhaTotalRed,  label='Value 1', color='r', align='center')
+                plt.xlim(-0.5, len(categories) - 0.5)
+                
+                #Labels setors
+                ax.text(3, 0+ 40.0, f'("Raschell")', ha='center', color='red', fontsize=21)
+                ax.text(11, 0+ 40.0, f'("Jacquard")', ha='center', color='red', fontsize=21)
+                ax.text(18, 0+ 40.0, f'("Ketten")', ha='center', color='red', fontsize=21)
+                
+                # Embed the plot in the Tkinter window
+                canvas = FigureCanvasTkAgg(fig, master=self.plot_window)
+                canvas.draw()
+                canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        
+                # Schedule the window to close after 15 seconds
+                self.close_after_id = self.plot_window.after(150000, self.closedPlt)
+                self.plot_window.protocol("WM_DELETE_WINDOW", self.closedPlt)
+                self.plot_window.mainloop()
+            except ValueError:
+                self.popValueError()
+            self.products.clearList()              
                                         
     def allMonthGraphic(self):
         self.products.clearList()

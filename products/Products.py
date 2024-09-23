@@ -381,21 +381,23 @@ class Products():
         data = self.daySelectDataXlsx(month, day)[0]
         for turn in self.enumsToday.getEnumsTurns():
             finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
+            finurasSetor = self.enumsFinuras.finurasXlsx(setor)
             for keys , value in data.items():
-                if ((keys in finurasTurn) and value > 0):
+                if ((keys in finurasTurn) and value > 0) and keys in finurasSetor:
                     key = self.eraseTurnName(turn, keys)
                     dictDay.update({key: value}) 
             self.listOfGetDocumentsDay.append(dictDay)
-            dictDay = {}
+            dictDay = {}        
         return self.listOfGetDocumentsDay
-    
+     
     #Add day total 
     def dayPoPtotalUP(self, month , day, setor):
         dictDay = {}
         data = self.daySelectDataXlsx(month, day)[0]
         finurasCode = self.enumsFinuras.finurasCodeTotal()
+        finurasSetor = self.enumsFinuras.finurasXlsx(setor)
         for keys , value in data.items():
-           if ((keys in finurasCode) and value > 0):
+           if ((keys in finurasCode) and value > 0) and keys in finurasSetor:
                key = keys.split("T")[1]
                dictDay.update({key: value})
         self.listOfGetDocumentsDay.append(dictDay)
@@ -412,5 +414,3 @@ class Products():
                 keySplit = key.split("TC") 
                 return keySplit[0]
     
-    def teste(self):
-        print(self.enumsFinuras.getAllFinurasXlsx())
