@@ -142,6 +142,23 @@ class EnumsFinuras:
                 return FINURASXLSKET
             case "RASCHELL2":
                 return FINURASXLSRASCHELL2
+            
+    def finurasXlsxAddDAY(self, setor):
+        match setor:
+            case  "RASCHELL":
+                return FINURASXLSXRASCHELL
+            case "JACQUARD":
+                jacquard = FINURASXLSJACQUARD
+                jacquard.append("DIA")
+                return jacquard
+            case "KETTEN":
+                ketten = FINURASXLSKET
+                ketten.append("DIA")
+                return ketten
+            case "RASCHELL2":
+                raschell2 = FINURASXLSRASCHELL2
+                raschell2.append("DIA")
+                return raschell2
         
     def finurasTurnXlsx(self, turn):
         match turn:

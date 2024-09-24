@@ -1,24 +1,22 @@
 from products.Products import Products
 from api.api import Api
 from enums.enumsToday import Enumstoday
+from enums.enumsFinuras import EnumsFinuras
 from IO.io import IO
 import pandas as pd
 
 
 
 def main():
-    
+   
     io = IO()
     io.ioMainLoop()
-   
+ 
     
-    '''
-    products = Products()
-    print(products.dayPoPxlsx(9, 12, "RASCHELL"))
-    print("FOII")
-    products.clearList()
-    print(products.dayPoPxlsx(9, 12, "JACQUARD"))
-    '''
+    #products = Products()
+    #products.popDiagraficoXlsx(9, 12, "RASCHELL")
+    #products.popDiagraficoXlsx(9, 24, "JACQUARD")
+    
     '''
     try:
         print(products.popDayProducts(9, "RASCHELL", 12, "XLSX"))

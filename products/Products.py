@@ -314,16 +314,16 @@ class Products():
             return finuras + "TC"
     
     #triger for addDictDAy
-    def addDayXlxs(self, month,  day, setor):
+    def addDayXlxs(self, month, day, setor):
         listOfDayData = []
         self.totalAddXlsx()
         listOfDayData.append(self.dictDataXlsx)
-        newLineList = self.addDictDayXlsx(setor, listOfDayData[0])
+        newLineList = self.addDictDayXlsx(setor,day, listOfDayData[0])
         self.addNewLine(month, newLineList)
                   
     #add day list for organize in execel turns  
-    def addDictDayXlsx(self, setor, data):
-        agulhasEnums = self.enumsFinuras.finurasXlsx(setor)
+    def addDictDayXlsx(self, setor, day, data):
+        agulhasEnums = self.enumsFinuras.finurasXlsxAddDAY(setor)
         dataSelect = self.funcAddDictTurns(data, agulhasEnums)
         return dataSelect
               
@@ -353,11 +353,13 @@ class Products():
             df = pd.read_excel(self.path, sheet_name=enumsMonth)
             rowData = df[df['DIA']== day]
             self.rowDataListDay.append(rowData.to_dict(orient='records'))
+            print(self.rowDataListDay)
+            print(type(self.rowDataListDay))
             return self.rowDataListDay[0]     
         except ValueError:
             return "Valuer ERROR"
         except IndexError:
-            pass
+            return "INDEX ERROR"
       
     #select month and return list data not empty
     def monthSelectDataXlsx(self, month):
@@ -369,21 +371,23 @@ class Products():
                 rowData = df.iloc[days -1]
                 dataReal = rowData.dropna()
                 self.rowDataListDay = list(map(lambda item: {item[0]: item[1]}, dataReal.items()))
-            return self.rowDataListDay     
+            return self.rowDataListDay 
         except ValueError:
             return "Valuer ERROR"
         except IndexError:
-            pass        
+            return "INDEX ERROR"     
     
     #Output data for pop day display          
     def dayPoPxlsx(self, month, day, setor):  
         dictDay = {}
         data = self.daySelectDataXlsx(month, day)[0]
+        finurasSetor = self.enumsFinuras.finurasXlsx(setor)
         for turn in self.enumsToday.getEnumsTurns():
             finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
-            finurasSetor = self.enumsFinuras.finurasXlsx(setor)
             for keys , value in data.items():
+                print(keys, value)
                 if ((keys in finurasTurn) and value > 0) and keys in finurasSetor:
+                    print(keys)
                     key = self.eraseTurnName(turn, keys)
                     dictDay.update({key: value}) 
             self.listOfGetDocumentsDay.append(dictDay)
@@ -403,6 +407,14 @@ class Products():
         self.listOfGetDocumentsDay.append(dictDay)
         return self.listOfGetDocumentsDay
     
+    #pop Diagrafico
+    def popDiagraficoXlsx(self, month, day, setorNames):
+        #for setorNames in self.enumsToday.getSetorNames():
+        self.dayPoPxlsx(month, day, setorNames)
+        self.dayPoPtotalUP(month , day, setorNames)
+        #print(self.listOfGetDocumentsDay)
+        print(self.listOfGetDocumentsDay)
+        
     def eraseTurnName(self,turn, key):    
         match turn:
             case "TA":

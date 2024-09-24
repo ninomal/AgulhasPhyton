@@ -583,7 +583,6 @@ class IO:
                 setorStr = self.combo_setor.get()
                 self.products.addDayXlxs(str(self.monthEntry.get()),
                                         int(self.dayEntry.get()), setorStr.upper())
-                self.products.clearList()
                 self.combo_turno.set("TA")
                 self.popDiaAdd()
                 

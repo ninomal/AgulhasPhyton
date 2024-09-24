@@ -1,4 +1,5 @@
 TURNS = ["TA", "TB", "TC"]
+SETORNAMES = ["RASCHELL", "JACQUARD", "RASCHELL2", "KETTEN"]
 
 class Enumstoday:
     def __init__(self):
@@ -22,9 +23,14 @@ class Enumstoday:
             case 1:
                 return "JACQUARD"
             case 2:
+                return "RASCHELL2"
+            case 3:
                 return "KETTEN"
             case _:
                 return "turn ERROR"
+            
+    def getSetorNames(self):
+        return SETORNAMES
             
     def getEnumsTurns(self):
         return TURNS
