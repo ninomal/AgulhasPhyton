@@ -16,8 +16,8 @@ class Enumstoday:
             case _:
                 return "turn ERROR"
             
-    def getEnumsSetorNames(self, turn):
-        match turn:
+    def getEnumsSetorNames(self, setorRange):
+        match setorRange:
             case 0:
                 return "RASCHELL"
             case 1:

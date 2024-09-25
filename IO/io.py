@@ -8,7 +8,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
 from functools import cache
-from enums.enumsToday import Enumstoday
 
 
 class IO:
@@ -730,7 +729,6 @@ class IO:
         buttonDia.place(x= 110 , y= 140, width= 95, height= 25)              
     
     def popDayGrafico(self):
-        
         try:
             ask = self.popExeception(day= self.dayEntry.get(),
                     month=self.monthEntry.get())
@@ -741,12 +739,12 @@ class IO:
         except ValueError:
             return self.popDay()
         if self.GraficsOpen:
-            if self.storeDataMode == "MongoDB":
+            if self.storeDataMode.get() == "MongoDB":
                 self.popDayFuncMongoDB()
             else:
                 self.popDayFuncXlsx()
                   
-    def popDayFuncMongoDB(self):  
+    def popDayFuncMongoDB(self): 
         valueAgulha = []
         finuraKey = []
         agulhaTotalRed = []
@@ -754,7 +752,7 @@ class IO:
         varItemsStack = []
         for setor in range(3):    
             dictData = self.products.popDayProducts(self.month,
-                    Enumstoday.getEnumsSetorNames(self, setor), self.day,
+                    self.products.getEnumsSetorNames(self, setor), self.day,
                     self.storeDataMode.get())
             varStack.append(dictData[-1]) 
             #add dict in list of value
@@ -763,7 +761,7 @@ class IO:
                     valueAgulha.append(value)
                     finuraKey.append(keys)
                     if dictList != varStack[0]:
-                        agulhaTotalRed.append(0)       
+                        agulhaTotalRed.append(0)     
             #Paint red for total
             for totalDicts in varStack:
                 varItemsStack.append(totalDicts)
@@ -821,30 +819,37 @@ class IO:
         valueAgulha = []
         finuraKey = []
         agulhaTotalRed = []
-        varStack = []
-        varItemsStack = []
-        for setor in range(3):    
-            dictData = self.products.dayPoPxlsx(self.month, self.day,
-                    Enumstoday.getEnumsSetorNames(self, setor))
-            varStack.append(dictData[-1]) 
-            #add dict in list of value
+        dictteste = {}
+        teste = []
+        dictData = self.products.popDiagraficoXlsx(self.monthEntry.get(),
+                                                        self.dayEntry.get())
+        
+        #add dict in list of value
+        for setorRange in range(3):
+            setor = self.products.getEnumsSetorNames(setorRange)
+            finuras = self.products.getEnumsFinuras(setor)
+            print(setor)
+            print(finuras)
             for dictList in dictData:
                 for keys , value in dictList.items():
-                    valueAgulha.append(value)
-                    finuraKey.append(keys)
-                    if dictList != varStack[0]:
-                        agulhaTotalRed.append(0)       
-            #Paint red for total
-            for totalDicts in varStack:
-                varItemsStack.append(totalDicts)
-            for totalKeys, totalValues in totalDicts.items():
-                agulhaTotalRed.append(totalValues)
-            #add space
-            for space in range(3):
-                valueAgulha.append(0)
-                finuraKey.append("")
-                agulhaTotalRed.append(0)
-                varStack = []
+                    print(value)
+                    if (keys in finuras) and value > 0:
+                        print(keys, value)
+                        dictteste.update({keys: value})
+                teste.append(dictteste)
+                #Paint red for total
+                #for totalDicts in varStack:
+                    #varItemsStack.append(totalDicts)
+                #for totalKeys, totalValues in totalDicts.items():
+                    #agulhaTotalRed.append(totalValues)
+                #add space
+                #for space in range(3):
+                    #valueAgulha.append(0)
+                    #finuraKey.append("")
+                    #agulhaTotalRed.append(0)
+                    #varStack = []
+            print(teste, "aaa")
+            '''
             # Check if there's already an open window, close it
             if self.plot_window and tk.Toplevel.winfo_exists(self.plot_window):
                 self.plot_window.destroy()
@@ -886,8 +891,8 @@ class IO:
                 self.plot_window.mainloop()
             except ValueError:
                 self.popValueError()
-            self.products.clearList()              
-                                        
+            self.products.clearList()    
+            ''' 
     def allMonthGraphic(self):
         self.products.clearList()
         self.comboSetorMonth =""

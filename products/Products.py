@@ -254,6 +254,14 @@ class Products():
                 continue
         return self.listMonthTotalResult
     
+    def getEnumsFinuras(self, setor):
+        return self.enumsFinuras.finurasXlsx(setor)
+    
+    def getEnumsTotal(self):
+        return self.enumsFinuras.finurasCodeTotal()
+    
+    def getEnumsSetorNames(self, setorRange):
+        return self.enumsToday.getEnumsSetorNames(setorRange)
     #update for xlsx
     def addNewLine(self, month, newLineList):
         file_path = self.pathXlxs()
@@ -353,8 +361,6 @@ class Products():
             df = pd.read_excel(self.path, sheet_name=enumsMonth)
             rowData = df[df['DIA']== day]
             self.rowDataListDay.append(rowData.to_dict(orient='records'))
-            print(self.rowDataListDay)
-            print(type(self.rowDataListDay))
             return self.rowDataListDay[0]     
         except ValueError:
             return "Valuer ERROR"
@@ -385,9 +391,7 @@ class Products():
         for turn in self.enumsToday.getEnumsTurns():
             finurasTurn = self.enumsFinuras.finurasTurnXlsx(turn)
             for keys , value in data.items():
-                print(keys, value)
                 if ((keys in finurasTurn) and value > 0) and keys in finurasSetor:
-                    print(keys)
                     key = self.eraseTurnName(turn, keys)
                     dictDay.update({key: value}) 
             self.listOfGetDocumentsDay.append(dictDay)
@@ -405,16 +409,17 @@ class Products():
                key = keys.split("T")[1]
                dictDay.update({key: value})
         self.listOfGetDocumentsDay.append(dictDay)
+        dictDay = {}
         return self.listOfGetDocumentsDay
     
     #pop Diagrafico
-    def popDiagraficoXlsx(self, month, day, setorNames):
-        #for setorNames in self.enumsToday.getSetorNames():
-        self.dayPoPxlsx(month, day, setorNames)
-        self.dayPoPtotalUP(month , day, setorNames)
-        #print(self.listOfGetDocumentsDay)
-        print(self.listOfGetDocumentsDay)
+    def popDiagraficoXlsx(self, month, day):
+        for setor in self.enumsToday.getSetorNames():
+            self.dayPoPxlsx(month, day, setor)
+            self.dayPoPtotalUP(month , day, setor)
+            return  self.listOfGetDocumentsDay
         
+    
     def eraseTurnName(self,turn, key):    
         match turn:
             case "TA":
