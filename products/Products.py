@@ -114,7 +114,7 @@ class Products():
     def randImage(self):
         rng = random.Random()
         randInt = rng.randint(1, 5)
-        path = f"IO\image\ess{randInt}.png"
+        path = f'AgulhasPhyton\IO\image\ess{randInt}.png'
         return path
     
     def addAgulhasDayMongo(self, dict : dict) ->Dict:
@@ -262,37 +262,45 @@ class Products():
     
     def getEnumsSetorNames(self, setorRange):
         return self.enumsToday.getEnumsSetorNames(setorRange)
+    
     #update for xlsx
-    def addNewLine(self, month, newLineList):
+    def addNewLine(self,setorGet, month, newLineList):
         file_path = self.pathXlxs()
-        month = self.enumsMonthDays.colectMonthsName(int(month))
-        # Load the existing file into a DataFrame
-        try:
-            df_existing = pd.read_excel(file_path, engine='openpyxl')  
-        except FileNotFoundError:
-            directory = os.path.dirname(file_path)
+        month_name = self.enumsMonthDays.colectMonthsName(int(month))
+        setor = setorGet + month_name
+
+        # Check if the file exists
+        if not os.path.exists(file_path):
             # Create the directory if it does not exist
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-            # create a new DataFrame with the appropriate columns
-            nameTableList = self.enumsFinuras.getAllFinurasXlsx()
-            df_existing = pd.DataFrame(columns= nameTableList)   
-            # Save the DataFrame to an Excel file
-            new_row = pd.DataFrame(newLineList)
-            with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-                
-        #save and re-write xlsx   
+            directory = os.path.dirname(file_path)
+            os.makedirs(directory)
+
+        # Try to read the existing sheet or handle the case where it doesn't exist
         try:
-            new_row = pd.DataFrame(newLineList) 
-            df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-            df_updated.to_excel(file_path, sheet_name=f'{month}',
-                                    index=False, engine='openpyxl')
-            return ("\nUpdated DataFrame:", df_updated)
-        except Exception as e:
-            return (f"Error saving the file: {e}")
-             
+            df_existing = pd.read_excel(file_path, engine='openpyxl', sheet_name=setor)
+        except ValueError:
+            # The sheet does not exist, so we need to create a new DataFrame
+            if setorGet == "RASCHELL":
+                nameTableList = self.enumsFinuras.finurasXlsx(setorGet)
+                df_existing = pd.DataFrame(columns=nameTableList)
+            
+            # Create a new Excel file and add the new sheet
+            with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
+                df_existing.to_excel(writer, sheet_name=setor, index=False)
+
+            # If df_existing was successfully loaded, we concatenate the new row
+            if df_existing is not None:
+                new_row = pd.DataFrame(newLineList)
+                df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+
+            # Save the updated DataFrame back to the same sheet
+            try:
+                with pd.ExcelWriter(file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+                    df_updated.to_excel(writer, sheet_name=setor, index=False)
+                return ("\nUpdated DataFrame:", df_updated)
+            except Exception as e:
+                return (f"Error saving the file: {e}")
+                    
         
     def addDayDataListXlsx(self, day,  turn, data):
         match turn:
@@ -327,7 +335,7 @@ class Products():
         self.totalAddXlsx()
         listOfDayData.append(self.dictDataXlsx)
         newLineList = self.addDictDayXlsx(setor,day, listOfDayData[0])
-        self.addNewLine(month, newLineList)
+        self.addNewLine(setor, month, newLineList)
                   
     #add day list for organize in execel turns  
     def addDictDayXlsx(self, setor, day, data):
@@ -351,7 +359,7 @@ class Products():
         return self.dayTurnData
     
     def pathXlxs(self):
-        self.path = f"C:/Users/User/Desktop/CURSO PYTON/DiarioPython/{self.year}.xlsx"
+        self.path = f"C:/Users/ninomal/Documents/phyton projetos/diariohPhyton/AgulhasPhyton/{self.year}.xlsx"
         return self.path
     
     #select day and return list data not empty

@@ -11,9 +11,10 @@ def main():
    
     io = IO()
     io.ioMainLoop()
- 
+
     
     #products = Products()
+    #print(products.daySelectDataXlsx(9, 24))
     #products.popDiagraficoXlsx(9, 12, "RASCHELL")
     #products.popDiagraficoXlsx(9, 24, "JACQUARD")
     
