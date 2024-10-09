@@ -268,39 +268,42 @@ class Products():
         file_path = self.pathXlxs()
         month_name = self.enumsMonthDays.colectMonthsName(int(month))
         setor = setorGet + month_name
-
-        # Check if the file exists
-        if not os.path.exists(file_path):
-            # Create the directory if it does not exist
-            directory = os.path.dirname(file_path)
-            os.makedirs(directory)
-
-        # Try to read the existing sheet or handle the case where it doesn't exist
+        file_path = self.pathXlxs()
+        month = self.enumsMonthDays.colectMonthsName(int(month))
+        # Load the existing file into a DataFrame
         try:
-            df_existing = pd.read_excel(file_path, engine='openpyxl', sheet_name=setor)
-        except ValueError:
-            # The sheet does not exist, so we need to create a new DataFrame
-            if setorGet == "RASCHELL":
-                nameTableList = self.enumsFinuras.finurasXlsx(setorGet)
-                df_existing = pd.DataFrame(columns=nameTableList)
-            
-            # Create a new Excel file and add the new sheet
-            with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
-                df_existing.to_excel(writer, sheet_name=setor, index=False)
+            df_existing = pd.read_excel(file_path, engine='openpyxl')  
+        except FileNotFoundError:
+            directory = os.path.dirname(file_path)
 
-            # If df_existing was successfully loaded, we concatenate the new row
-            if df_existing is not None:
+         # Create the directory if it does not exist
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+                # The sheet does not exist, so we need to create a new DataFrame
+            for setores in self.enumsFinuras.getAllSetor():
+                nameTableList = self.enumsFinuras.finurasXlsx(setores)
+                df_existing = pd.DataFrame(columns= nameTableList)
+                
+                # Create a new Excel file and add the new sheet
+                with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
+                    df_existing.to_excel(writer, sheet_name=setor, index=False)
+
+                # If df_existing was successfully loaded, we concatenate the new row
                 new_row = pd.DataFrame(newLineList)
-                df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
+                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
 
             # Save the updated DataFrame back to the same sheet
-            try:
-                with pd.ExcelWriter(file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
-                    df_updated.to_excel(writer, sheet_name=setor, index=False)
-                return ("\nUpdated DataFrame:", df_updated)
-            except Exception as e:
-                return (f"Error saving the file: {e}")
-                    
+        print(file_path)
+        try:
+            new_row = pd.DataFrame(newLineList) 
+            df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+            df_updated.to_excel(file_path, sheet_name=f'{month}',
+                                    index=False, engine='openpyxl')
+            return ("\nUpdated DataFrame:", df_updated)
+        except Exception as e:
+            return (f"Error saving the file: {e}")
         
     def addDayDataListXlsx(self, day,  turn, data):
         match turn:

@@ -7,6 +7,8 @@ FINURAS2660 = {"F1232","F932"}
 FINURAF18PL = "F18PL"
 FINURA24KET = "F24KET"
 FINURA24RAS = "F24PL"
+
+
 FINURASXLSXRASCHELL =  ["DIA", "", "RASCHEL", "F9", "F9PL","F12", "F1269",
                             "F14","F18", "F18PL", "F24PL", "F1869",
                         "F9TB", "F9PLTB","F12TB", "F1269TB",
@@ -41,6 +43,8 @@ FINURASTC = ["F9TC", "F9PLTC","F12TC", "F1269TC","F14TC","F18TC", "F18PLTC", "F2
              "F1869TC",'F7TC','F969TC', 'F1232TC', 'F1432TC', "F24KETTC"]
 
 FINURASCODETOTAL = ["T3975", "T4575", "T4565", "T4475", "T4496", "T2760", "T2660"]
+
+ALLSETOR = [FINURASXLSXRASCHELL,  FINURASXLSJACQUARD, FINURASXLSKET ,FINURASXLSRASCHELL2]
 
 class EnumsFinuras:
     def __init__(self):
@@ -134,7 +138,7 @@ class EnumsFinuras:
         
     def finurasXlsx(self, setor):
         match setor:
-            case  "RASCHELL":
+            case  "RASCHELL": 
                 return FINURASXLSXRASCHELL
             case "JACQUARD":
                 return FINURASXLSJACQUARD
@@ -174,3 +178,6 @@ class EnumsFinuras:
     
     def getAllFinurasXlsx(self):
         return ALLFINURAS
+    
+    def getAllSetor(self):
+        return ALLSETOR
