@@ -7,6 +7,7 @@ import collections, functools, operator, random
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl import Workbook
+from pathlib import Path
 import os
 import numpy
 
@@ -114,7 +115,7 @@ class Products():
     def randImage(self):
         rng = random.Random()
         randInt = rng.randint(1, 5)
-        path = f'AgulhasPhyton\IO\image\ess{randInt}.png'
+        path = Path(fr'AgulhasPhyton\IO\image\ess{randInt}.png')
         return path
     
     def addAgulhasDayMongo(self, dict : dict) ->Dict:
@@ -265,46 +266,44 @@ class Products():
     
     #update for xlsx
     def addNewLine(self,setorGet, month, newLineList):
-        file_path = self.pathXlxs()
         month_name = self.enumsMonthDays.colectMonthsName(int(month))
         setor = setorGet + month_name
         file_path = self.pathXlxs()
-        month = self.enumsMonthDays.colectMonthsName(int(month))
+        #month = self.enumsMonthDays.colectMonthsName(int(month))
         # Load the existing file into a DataFrame
         try:
-            df_existing = pd.read_excel(file_path, engine='openpyxl')  
+            df_existing = pd.read_excel(file_path, engine='openpyxl')
         except FileNotFoundError:
             directory = os.path.dirname(file_path)
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            
+        # Get the column names
+        nameTableList = self.enumsFinuras.getAllFinurasXlsx()
+        df_existing = pd.DataFrame(columns=nameTableList)   
 
-         # Create the directory if it does not exist
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-                # The sheet does not exist, so we need to create a new DataFrame
-            for setores in self.enumsFinuras.getAllSetor():
-                nameTableList = self.enumsFinuras.finurasXlsx(setores)
-                df_existing = pd.DataFrame(columns= nameTableList)
-                
-                # Create a new Excel file and add the new sheet
-                with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
-                    df_existing.to_excel(writer, sheet_name=setor, index=False)
+        # Create a new DataFrame from the new row data
+        new_row = pd.DataFrame(newLineList)
 
-                # If df_existing was successfully loaded, we concatenate the new row
-                new_row = pd.DataFrame(newLineList)
-                with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
-                    df_existing.to_excel(writer, sheet_name=f'{month}', index=False)
-                    df_updated = pd.concat([df_existing, new_row], ignore_index=True)
+        # Save the DataFrame to an Excel file for the first time
+        with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+            df_existing.to_excel(writer, sheet_name=month, index=False)
+            df_existing = pd.concat([df_existing, new_row], ignore_index=True)
+            df_existing.to_excel(writer, sheet_name=month, index=False)
+
+        # Update the existing DataFrame
+        try:
+            new_row = pd.DataFrame(newLineList)
+            df_existing = pd.concat([df_existing, new_row], ignore_index=True)
 
             # Save the updated DataFrame back to the same sheet
-        print(file_path)
-        try:
-            new_row = pd.DataFrame(newLineList) 
-            df_updated = pd.concat([df_existing, new_row], ignore_index=True)
-            df_updated.to_excel(file_path, sheet_name=f'{month}',
-                                    index=False, engine='openpyxl')
-            return ("\nUpdated DataFrame:", df_updated)
+            with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
+                df_existing.to_excel(writer, sheet_name=month, index=False)
+
+            return ("\nUpdated DataFrame:", df_existing)
         except Exception as e:
             return (f"Error saving the file: {e}")
-        
+            
     def addDayDataListXlsx(self, day,  turn, data):
         match turn:
             case "TA":
